@@ -1,6 +1,0 @@
-﻿  MapControl.cpp
-c:\users\夢兎\source\repos\project2\project2\mapcontrol.cpp(96): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\夢兎\source\repos\project2\project2\mapcontrol.cpp(100): warning C4018: '<': signed と unsigned の数値を比較しようとしました。
-c:\users\夢兎\source\repos\project2\project2\mapcontrol.cpp(154): warning C4838: 'int' から 'char' への変換には縮小変換が必要です
-c:\users\夢兎\source\repos\project2\project2\mapcontrol.cpp(154): warning C4309: '初期化中': 定数値が切り捨てられました。
-  Project2.vcxproj -> C:\Users\夢兎\source\repos\Project2\Debug\Project2.exe
