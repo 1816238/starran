@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 
-#define SCREEN_SIZE_X 800
-#define SCREEN_SIZE_Y 600
+#define SCREEN_SIZE_X 1280
+#define SCREEN_SIZE_Y 680
 
 #define GAME_SCREEN_X 40
 #define GAME_SCREEN_Y 75

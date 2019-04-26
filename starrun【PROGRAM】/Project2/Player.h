@@ -4,6 +4,7 @@
 #include "MapControl.h"
 
 #define PLAYER_DF_SPEED ( 2 )
+#define MOUSE_ROT_VOL (Rot)
 
 enum DIR_TBL_ID
 {
@@ -40,11 +41,14 @@ public:
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Playerの移動
 	int speed;											//移動速度
-	DIR_TBL_ARRAY keyID_Tbl;								//移動に使うｷｰ情報のﾃｰﾌﾞﾙ
-	DIR_TBL_PTR_ARRAY pos_Tbl;								//進行方向のposのﾃｰﾌﾞﾙ
-	DIR_TBL_ARRAY speed_Tbl;								//移動量のﾃｰﾌﾞﾙ
-	DIR_TBL_ARRAY_DIR dir_Tbl;								//移動させたい方向のﾃｰﾌﾞﾙ
-	MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//移動制限をかけるﾌﾞﾛｯｸIDを保管しておく
 
+	int Rot;											//ﾎｲｰﾙ回転量
+
+	bool jumpFlag;											//左ｸﾘｯｸしたらtrue
+	bool shotFlag;											//右ｸﾘｯｸでtrue
+
+	DIR_TBL_ARRAY keyID_Tbl;								//移動に使うｷｰ情報のﾃｰﾌﾞﾙ
+	DIR_TBL_ARRAY speed_Tbl;								//移動量のﾃｰﾌﾞﾙ
+	MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//移動制限をかけるﾌﾞﾛｯｸIDを保管しておく
 };
 

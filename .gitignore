@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+/starrun【PROGRAM】/.vs
+/starrun【PROGRAM】/Project2/Log.txt
+/starrun【PROGRAM】/Project1/Debug
+/starrun【PROGRAM】/Project1/.vs
