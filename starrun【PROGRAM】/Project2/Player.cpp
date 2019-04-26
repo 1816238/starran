@@ -11,18 +11,15 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
 	speed = PLAYER_DF_SPEED;
-	dir = DIR_RIGHT;
-	/*MAIN*/
-	keyID_Tbl = { KEY_INPUT_NUMPAD2,//下 
-				  KEY_INPUT_NUMPAD4,//左
-				  KEY_INPUT_NUMPAD6,//右
-				  KEY_INPUT_NUMPAD8,/*上*/ };
+
+	jumpFlag = false;
+	shotFlag = false;
 
 	/*MAIN*/
-	pos_Tbl = { &pos.y,/*下*/
-				&pos.x,/*左*/
-				&pos.x,/*右*/
-				&pos.y /*上*/ };
+	keyID_Tbl = { MOUSE_INPUT_LEFT,//左
+				  MOUSE_INPUT_RIGHT,//右
+				  MOUSE_ROT_VOL		//ﾎｲｰﾙ回転量
+				  };
 
 	/*MAIN*/
 	speed_Tbl = { (PLAYER_DF_SPEED),/*下*/
@@ -30,11 +27,6 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 				  (PLAYER_DF_SPEED),/*右*/
 				  (-PLAYER_DF_SPEED) /*上*/ };
 
-	/*MAIN	  OPP	  SUB1	   SUB2*/
-	dir_Tbl = { DIR_DOWN,DIR_UP	,DIR_LEFT	 ,DIR_RIGHT ,/*下*/
-				DIR_LEFT	,DIR_RIGHT	,DIR_DOWN,DIR_UP,/*左*/
-				DIR_RIGHT	,DIR_LEFT	,DIR_DOWN,DIR_UP,/*右*/
-				DIR_UP	,DIR_DOWN,DIR_LEFT	 ,DIR_RIGHT  /*上*/ };
 	mapMove_Tbl = {
 		true,		//MAP_ID_CUR,
 		true,		//MAP_ID_FLOOR1,
@@ -73,8 +65,14 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Tbl = controller.GetCtl(KEY_TYPE_NOW);
 	auto &key_Old_Tbl = controller.GetCtl(KEY_TYPE_OLD);
 
-	if (key_Tbl[KEY_INPUT_SPACE] & (~key_Old_Tbl[KEY_INPUT_SPACE]))
+	if (key_Tbl[MOUSE_INPUT_RIGHT])
 	{
+		shotFlag = true;
+	}
+	
+	if (key_Tbl[MOUSE_INPUT_LEFT] & (~key_Old_Tbl[MOUSE_INPUT_LEFT]))
+	{
+		jumpFlag = true;
 	}
 
 	auto &chipSize = lpMapControl.GetChipSize().x;
@@ -103,34 +101,16 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	[/*ｷｬﾌﾟﾁｬｰ部*/](/*引数部（省略できる）*/) {/*実行部*/};
 	auto Mover = [&](DIR_TBL_ID Dir)
 	{
-
-		if (key_Tbl[keyID_Tbl[dir_Tbl[dir][Dir]]])
+		//補正処理
+		if (!mapMove_Tbl[lpMapControl.GetMapDate(sidePos(dir))])
 		{
-			dir = dir_Tbl[dir][Dir];
+			//移動不可のｵﾌﾞｼﾞｪｸﾄが隣に存在した場合
+			SetAnim("停止");
+			return false;
 
-			//補正処理
-			if (dir == DIR_DOWN || dir == DIR_UP)
-			{
-				pos.x = (((pos.x + (chipSize / 2))) / chipSize) * chipSize;
-			}
-			if (dir == DIR_LEFT || dir == DIR_RIGHT)
-			{
-				pos.y = (((pos.y + (chipSize / 2))) / chipSize) * chipSize;
-			}
-			if (!mapMove_Tbl[lpMapControl.GetMapDate(sidePos(dir))])
-			{
-				//移動不可のｵﾌﾞｼﾞｪｸﾄが隣に存在した場合
-				SetAnim("停止");
-				return false;
-
-			}
-			//移動処理
-			(*pos_Tbl[dir]) += speed_Tbl[dir];
-
-			SetAnim("移動");
-			return true;
 		}
-		return false;
+		SetAnim("移動");
+		return true;
 	};
 	Mover(DIR_TBL_MAIN);
 	Mover(DIR_TBL_OPP);
@@ -142,6 +122,4 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 			Mover(DIR_TBL_SUB2);
 		}
 	}
-
-
 }
