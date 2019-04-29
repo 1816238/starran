@@ -73,13 +73,12 @@ bool EditScene::EditDraw(void)
 	{
 		(*itr)->Draw();
 	}
-
+	//üˆø‚­
 	for ( ; tmp1.x <= GAME_SCREEN_SIZE_X; tmp1.x += CHIP_SIZE )
 	{
 		tmp2.x = tmp1.x;
-		DrawLine(EditCursor::GetInstance().SetMove_Mouse() + tmp1 , EditCursor::GetInstance().SetMove_Mouse() + tmp2 , GetColor( 0 , 255 , 255 ) , true );
+		DrawLine(  tmp1-EditCursor::GetInstance().SetMove_Mouse() ,  tmp2 - EditCursor::GetInstance().SetMove_Mouse() , GetColor( 0 , 255 , 255 ) , true );
 	}
-
 	tmp1 = VECTOR2( 0, 0 );
 	tmp2.x = GAME_SCREEN_SIZE_X;
 	for (; tmp1.y <= GAME_SCREEN_SIZE_Y; tmp1.y += CHIP_SIZE )
@@ -88,6 +87,7 @@ bool EditScene::EditDraw(void)
 		DrawLine(tmp1 , tmp2 , GetColor( 0 , 255 , 255 ) , true);
 	}
 
+	DrawFormatString(0, 0, 0xffffff, "%d", EditCursor::GetInstance().SetMove_Mouse().x);
 	ScreenFlip();
 	return true;
 }
@@ -102,6 +102,6 @@ int EditScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(GAME_SCREEN_SIZE_X, GAME_SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<EditCursor>(lpSceneMng.GetDrawOffset()));
-	(*obj)->init("image/map.png", VECTOR2(20, 20), VECTOR2(4, 3));
+	(*obj)->init("image/EDGE1.png", VECTOR2(32, 32), VECTOR2(4, 1));
 	return 0;
 }

@@ -45,38 +45,24 @@ void MapControl::Draw(bool EditFlag)
 			switch (id)
 			{
 				//常に描画しない
-			case MAP_ID_NON:
-				break;
-			case MAP_ID_BOMB:
-				if (!EditFlag)
-				{
-					break;
-				}
-				//editMode時は描画するのでそのまま処理を下に流す
-				//break
-
+		
 
 	//背景
 
-			case MAP_ID_WALL1:
-			case MAP_ID_WALL2:
-			case MAP_ID_BLOCK:
-			case MAP_ID_ITEM_FIRE:
-			case MAP_ID_ITEM_BOMB:
-			case MAP_ID_ITEM_CTL:
-			case MAP_ID_ITEM_SPEED:
+			case MAP_ID_RED:
+			case MAP_ID_BLUE:
+			case MAP_ID_GReEN:
+			case MAP_ID_YELLOW:
 				DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-					, lpImageMng.GetID("image/map.png")[id], true);
+					, lpImageMng.GetID("image/EDGE1.png")[id], true);
 				break;
-			case MAP_ID_CUR:
-			case MAP_ID_FLOOR1:
-			case MAP_ID_FLOOR2:
+			
 				break;
 				//ｴﾗｰ
 			default:
 #ifdef _DEBUG
-				DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-					, lpImageMng.GetID("image/map.png")[MAP_ID_CUR], true);
+				DrawGraph( x * chipSize.x, y * chipSize.y
+					, lpImageMng.GetID("image/EDGE1.png")[MAP_ID_YELLOW], true);
 #endif
 				break;
 			}
@@ -98,7 +84,7 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	}
 	for (int j = 0; j < mapDataBace.size(); j++)
 	{
-		mapDataBace[j] = MAP_ID_NON;
+		mapDataBace[j] = MAP_ID_RED;
 	}
 	return false;
 }
@@ -134,7 +120,7 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 	if (!CheckSize()(selpos, mapSize))
 	{
 		//範囲外の場合、下記のIDを固定で返す
-		return MAP_ID_WALL1;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
+		return MAP_ID_BLUE;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
 
 	return mapData[selpos.y][selpos.x];
@@ -199,7 +185,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 	{
 		for (auto &data : mapDataBace)
 		{
-			data = MAP_ID_NON;
+			data = MAP_ID_RED;
 			if (MessageBox(NULL, "ERROR!!",
 				"確認ダイアログ", MB_OK) == IDOK)
 			{
@@ -220,48 +206,8 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 	{
 		return false;
 	}
-	bool MakePlayerflag = false;
-	for (int y = 0; y < mapSize.y; y++)
-	{
-		for (int x = 0; x < mapSize.x; x++)
-		{
-			MAP_ID id = mapData[y][x];
-			LIST_INT obj;
-			switch (id)
-			{
-
-			case MAP_ID_BOMB:
-				if (MakePlayerflag)
-				{
-					break;
-				}
-				{
-					//ﾌﾟﾚｲﾔｰキャラをｲﾝｽﾀﾝｽする
-					MakePlayerflag = true;
-				}
-				break;
 
 
-				//何もｲﾝｽﾀﾝｽしない
-			case MAP_ID_NON:
-			case MAP_ID_WALL1:
-			case MAP_ID_WALL2:
-			case MAP_ID_BLOCK:
-			case MAP_ID_ITEM_FIRE:
-			case MAP_ID_ITEM_BOMB:
-			case MAP_ID_ITEM_CTL:
-			case MAP_ID_ITEM_SPEED:
-				break;
-			case MAP_ID_CUR:
-			case MAP_ID_FLOOR1:
-			case MAP_ID_FLOOR2:
-				break;
-				//ｴﾗｰ
-			default:
-				break;
-			}
-		}
-	}
 	return true;
 }
 

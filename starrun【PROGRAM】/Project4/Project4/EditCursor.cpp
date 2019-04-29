@@ -9,12 +9,12 @@
 
 EditCursor::EditCursor()
 {
-	id = MAP_ID_WALL1;
+	id = MAP_ID_BLUE;
 }
 
 EditCursor::EditCursor(VECTOR2 drawOffset) :Obj(drawOffset)
 {
-	id = MAP_ID_WALL1;
+	id = MAP_ID_BLUE;
 }
 
 EditCursor::~EditCursor()
@@ -34,15 +34,18 @@ void EditCursor::Draw(void)
 
 VECTOR2 EditCursor::SetMove_Mouse()
 {
-	if (ChipPos.x > 0)
+
+	if (ChipPos.x < 0)
 	{
 		ChipPos.x = 0;
 	}
-	if (ChipPos.x < -(SCREEN_SIZE_X * 3))
+	if (ChipPos.x > (SCREEN_SIZE_X * 3))
 	{
-		ChipPos.x = -(SCREEN_SIZE_X * 3);
+		ChipPos.x = (SCREEN_SIZE_X * 3);
 	}
-	ChipPos.x += (GetMouseWheelRotVol()%2) * 30;
+	
+	ChipPos.x -= (GetMouseWheelRotVol()%2) * 30;
+	
 	return VECTOR2(ChipPos);
 }
 
@@ -113,22 +116,14 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 		}
 	};
 
-	SetID(cnt[KEY_INPUT_1], MAP_ID_BOMB);
-	SetID(cnt[KEY_INPUT_2], MAP_ID_NON);
-	SetID(cnt[KEY_INPUT_3], MAP_ID_WALL1);
-	SetID(cnt[KEY_INPUT_4], MAP_ID_WALL2);
-	SetID(cnt[KEY_INPUT_5], MAP_ID_BLOCK);
-	SetID(cnt[KEY_INPUT_6], MAP_ID_ITEM_FIRE);
-	SetID(cnt[KEY_INPUT_7], MAP_ID_ITEM_BOMB);
-	SetID(cnt[KEY_INPUT_8], MAP_ID_ITEM_CTL);
-	SetID(cnt[KEY_INPUT_9], MAP_ID_ITEM_SPEED);
+
 
 	if (cnt[KEY_INPUT_LCONTROL] & (~cntOld[KEY_INPUT_LCONTROL]))
 	{
 		id = (MAP_ID)(id + 1);
 		if (id >= MAP_ID_MAX)
 		{
-			id = MAP_ID_BOMB;
+			id = MAP_ID_BLUE;
 		}
 	}
 
@@ -137,4 +132,8 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 		lpMapControl.SetMapData(pos, id);
 	}
 
+	if (cnt[KEY_INPUT_RIGHT] & (~cntOld[KEY_INPUT_RIGHT]))
+	{
+		ChipPos.x += 600;
+	}
 }
