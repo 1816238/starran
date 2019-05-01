@@ -74,10 +74,12 @@ bool EditScene::EditDraw(void)
 		(*itr)->Draw();
 	}
 	//üˆø‚­
+	VECTOR2 Mpos;
+	Mpos=EditCursor::GetInstance().SetMove_Mouse();
 	for ( ; tmp1.x <= GAME_SCREEN_SIZE_X; tmp1.x += CHIP_SIZE )
 	{
 		tmp2.x = tmp1.x;
-		DrawLine(  tmp1-EditCursor::GetInstance().SetMove_Mouse() ,  tmp2 - EditCursor::GetInstance().SetMove_Mouse() , GetColor( 0 , 255 , 255 ) , true );
+		DrawLine(  tmp1- Mpos,  tmp2 - Mpos, GetColor( 0 , 255 , 255 ) , true );
 	}
 	tmp1 = VECTOR2( 0, 0 );
 	tmp2.x = GAME_SCREEN_SIZE_X;
@@ -87,7 +89,7 @@ bool EditScene::EditDraw(void)
 		DrawLine(tmp1 , tmp2 , GetColor( 0 , 255 , 255 ) , true);
 	}
 
-	DrawFormatString(0, 0, 0xffffff, "%d", EditCursor::GetInstance().SetMove_Mouse().x);
+	DrawFormatString(0, 0, 0xffffff, "%d", Mpos);
 	ScreenFlip();
 	return true;
 }

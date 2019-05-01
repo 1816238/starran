@@ -38,6 +38,7 @@ public:
 	~EditCursor();
 	void Draw(void);
 	VECTOR2 SetMove_Mouse();
+
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);
 	MAP_ID id;
@@ -45,5 +46,7 @@ private:
 	int inputFram;
 	VECTOR2 ChipPos;
 	MAP_EDIT_KEY_ARRAY edit_Key;
+	VECTOR2 SetCur(void);
+	VECTOR2 CurPos;
 };
 

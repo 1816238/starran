@@ -3,7 +3,7 @@
 #include "Obj.h"
 #include "ImageMng.h"
 #include "MapControl.h"
-
+#include "EditCursor.h"
 
 #define BBM_VER_ID 0x01		//failﾊﾞｰｼﾞｮﾝID
 #define BBM_FILE_ID "BBM_MAP_DATA"		//failID
@@ -21,53 +21,10 @@ struct DataHeader
 
 void MapControl::Draw(bool EditFlag)
 {
+	VECTOR2 Mpos;
+	Mpos = EditCursor::GetInstance().SetMove_Mouse();
 
-	//if (!EditFlag)
-	//{
-	//	int Cnt = 0;
-	//	for (int y = 0; y < mapSize.y; y++)
-	//	{
-	//		Cnt = (y % 2);
-	//		for (int x = 0; x < mapSize.x; x++)
-	//		{
-	//			Cnt++;
-	//			DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-	//				, lpImageMng.GetID("image/map.png")[MAP_ID_FLOOR1 + (Cnt % 2)], true);
-	//		}
-	//	}
-	//}
-
-	for (int y = 0; y < mapSize.y; y++)
-	{
-		for (int x = 0; x < mapSize.x; x++)
-		{
-			MAP_ID id = mapData[y][x];
-			switch (id)
-			{
-				//常に描画しない
-		
-
-	//背景
-
-			case MAP_ID_RED:
-			case MAP_ID_BLUE:
-			case MAP_ID_GReEN:
-			case MAP_ID_YELLOW:
-				DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-					, lpImageMng.GetID("image/EDGE1.png")[id], true);
-				break;
-			
-				break;
-				//ｴﾗｰ
-			default:
-#ifdef _DEBUG
-				DrawGraph( x * chipSize.x, y * chipSize.y
-					, lpImageMng.GetID("image/EDGE1.png")[MAP_ID_YELLOW], true);
-#endif
-				break;
-			}
-		}
-	}
+	
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -84,7 +41,7 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	}
 	for (int j = 0; j < mapDataBace.size(); j++)
 	{
-		mapDataBace[j] = MAP_ID_RED;
+		mapDataBace[j] = MAP_ID_NON;
 	}
 	return false;
 }
@@ -120,7 +77,7 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 	if (!CheckSize()(selpos, mapSize))
 	{
 		//範囲外の場合、下記のIDを固定で返す
-		return MAP_ID_BLUE;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
+		return MAP_ID_YELLOW;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
 
 	return mapData[selpos.y][selpos.x];
@@ -185,7 +142,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 	{
 		for (auto &data : mapDataBace)
 		{
-			data = MAP_ID_RED;
+			data = MAP_ID_NON;
 			if (MessageBox(NULL, "ERROR!!",
 				"確認ダイアログ", MB_OK) == IDOK)
 			{
