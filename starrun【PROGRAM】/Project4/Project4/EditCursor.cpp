@@ -34,7 +34,8 @@ void EditCursor::Draw(void)
 	animCnt += 5;
 	//SetCur();
 	//GetMousePoint(&CurPos.x, &CurPos.y);
-	DrawBox(CurPos.x-CHIP_SIZE/2, CurPos.y-CHIP_SIZE/2, CurPos.x + CHIP_SIZE/2, CurPos.y + CHIP_SIZE/2, 0xff00ff, true);
+
+	//DrawBox(CurPos.x-CHIP_SIZE/2, CurPos.y-CHIP_SIZE/2, CurPos.x + CHIP_SIZE/2, CurPos.y + CHIP_SIZE/2, 0xff00ff, true);
 }
 
 VECTOR2 EditCursor::SetMove_Mouse()
@@ -74,7 +75,7 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 	tmp= SetCur();*/
 	//GetMousePoint(&CurPos.x, &CurPos.y);
 	SetCur();
-
+	MouseCheck(MOUSE_INPUT_LEFT, false);//ãÛì«Ç›çûÇ›
 	
 
 	auto SetID = [&](int keyState, /*MAP_ID id,*/ MAP_ID SetID)
@@ -103,6 +104,17 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 
 	
 	//SetMove_Mouse();
+}
+
+int EditCursor::MouseCheck(int CheckInfo, bool OldCheck)//CheckInfoÇ…ímÇËÇΩÇ¢Œﬁ¿›ÇÃêîílÅAOldCheckÇ™trueÇ≈âﬂãéÇÃèÓïÒ
+{
+	if (!OldCheck)
+	{
+		input = GetMouseInput();
+		return input&CheckInfo;
+	}
+	oldin = input;
+	return oldin& CheckInfo;
 }
 
 VECTOR2 EditCursor::SetCur(void)
