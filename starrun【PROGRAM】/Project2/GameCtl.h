@@ -3,9 +3,9 @@
 
 enum KEY_TYPE			//¡‚Æ1‚Â‘O‚Ì·°î•ñ
 {
-	KEY_TYPE_NOW,
-	KEY_TYPE_OLD,
-	KEY_TYPE_MAX,
+	NOW,
+	OLD,
+	MAX,
 };
 
 class EditCursor;

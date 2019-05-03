@@ -6,6 +6,7 @@
 #include "MapControl.h"
 #include "GameCtl.h"
 #include "Player.h"
+#include "TitleScene.h"
 #include "SceneMng.h"
 
 SceneMng::SceneMng()
@@ -19,7 +20,7 @@ SceneMng::~SceneMng()
 
 void SceneMng::Run(void)
 {
-	activeScene = make_unique<GameScene>();
+	activeScene = make_unique<TitleScene>();
 
 	// ---------- ¹Þ°ÑÙ°Ìß
 	while (ProcessMessage() == 0 && CheckHitKey(KEY_INPUT_ESCAPE) == 0)

@@ -69,6 +69,9 @@
     <ClCompile Include="MapControl.cpp">
       <Filter>ソース ファイル\Ctl</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VECTOR2.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="GameCtl.h">
       <Filter>ヘッダー ファイル\Ctl</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

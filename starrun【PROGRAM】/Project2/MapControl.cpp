@@ -20,69 +20,9 @@ struct DataHeader
 	char sum;
 };
 
-void MapControl::Draw(bool EditFlag)
+void MapControl::Draw(bool TitleFlag)
 {
-
-	//if (!EditFlag)
-	//{
-	//	int Cnt = 0;
-	//	for (int y = 0; y < mapSize.y; y++)
-	//	{
-	//		Cnt = (y % 2);
-	//		for (int x = 0; x < mapSize.x; x++)
-	//		{
-	//			Cnt++;
-	//			DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-	//				, lpImageMng.GetID("image/map.png")[MAP_ID_FLOOR1 + (Cnt % 2)], true);
-	//		}
-	//	}
-	//}
-
-	for (int y = 0; y < mapSize.y; y++)
-	{
-		for (int x = 0; x < mapSize.x; x++)
-		{
-			MAP_ID id = mapData[y][x];
-			switch (id)
-			{
-				//í‚É•`‰æ‚µ‚È‚¢
-			case MAP_ID_NON:
-				break;
-			case MAP_ID_BOMB:
-				if (!EditFlag)
-				{
-					break;
-				}
-				//editModeŽž‚Í•`‰æ‚·‚é‚Ì‚Å‚»‚Ì‚Ü‚Üˆ—‚ð‰º‚É—¬‚·
-				//break
-
-
-	//”wŒi
-
-			case MAP_ID_WALL1:
-			case MAP_ID_WALL2:
-			case MAP_ID_BLOCK:
-			case MAP_ID_ITEM_FIRE:
-			case MAP_ID_ITEM_BOMB:
-			case MAP_ID_ITEM_CTL:
-			case MAP_ID_ITEM_SPEED:
-				DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-					, lpImageMng.GetID("image/map.png")[id], true);
-				break;
-			case MAP_ID_CUR:
-			case MAP_ID_FLOOR1:
-			case MAP_ID_FLOOR2:
-				break;
-				//´×°
-			default:
-#ifdef _DEBUG
-				DrawGraph(drawOffSet.x + x * chipSize.x, drawOffSet.y + y * chipSize.y
-					, lpImageMng.GetID("image/map.png")[MAP_ID_CUR], true);
-#endif
-				break;
-			}
-		}
-	}
+	DrawGraph(0 ,0 , lpImageMng.GetID("image/backImage.png")[0],true);
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)

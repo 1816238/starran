@@ -33,7 +33,7 @@ public:
 		static MapControl s_Instance;
 		return s_Instance;
 	}
-	void Draw(bool EditFlag);		//map画像の描画
+	void Draw(bool TitleFlag);		//map画像の描画
 	bool SetUp(const VECTOR2& size, const VECTOR2& chipsize, const VECTOR2 drawOffSet);
 	bool SetMapData(const VECTOR2& pos, MAP_ID id);			//画像を配置しようとしている場所がmapの範囲内かの判定
 	MAP_ID GetMapDate(const VECTOR2& pos/*座標*/);					//指定した座標の情報の取得

@@ -62,8 +62,8 @@ bool Player::initAnim(void)
 
 void Player::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	auto &key_Tbl = controller.GetCtl(KEY_TYPE_NOW);
-	auto &key_Old_Tbl = controller.GetCtl(KEY_TYPE_OLD);
+	auto &key_Tbl = controller.GetCtl(NOW);
+	auto &key_Old_Tbl = controller.GetCtl(OLD);
 
 	if (key_Tbl[MOUSE_INPUT_RIGHT])
 	{

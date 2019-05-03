@@ -33,8 +33,8 @@ void EditCursor::Draw(void)
 
 void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 {
-	auto cnt = controller.GetCtl(KEY_TYPE_NOW);
-	auto cntOld = controller.GetCtl(KEY_TYPE_OLD);
+	auto cnt = controller.GetCtl(NOW);
+	auto cntOld = controller.GetCtl(OLD);
 	VECTOR2 tmpPos = pos;
 
 	auto Mover = [](int keyState, int &pos /*x, y‚Ç‚¿‚ç‚à“ü‚é*/, int addNum /*‰ÁŽZ’l*/)

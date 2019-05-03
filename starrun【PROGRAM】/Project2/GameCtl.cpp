@@ -22,7 +22,7 @@ bool GameCtl::UpDate(void)
 
 const KEY_ARRAY & GameCtl::GetCtl(KEY_TYPE type) const
 {
-	if (type == KEY_TYPE_OLD)
+	if (type == OLD)
 	{
 		return dataOld;
 	}
