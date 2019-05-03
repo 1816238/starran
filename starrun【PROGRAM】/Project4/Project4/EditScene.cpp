@@ -73,6 +73,12 @@ bool EditScene::EditDraw(void)
 	{
 		(*itr)->Draw();
 	}
+	//カーソルの位置の描画
+	VECTOR2 CurPos = EditCursor::GetInstance().SetCur();
+	CurPos.x = (CurPos.x / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
+	CurPos.y = (CurPos.y / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
+	DrawBox(CurPos.x - CHIP_SIZE / 2, CurPos.y - CHIP_SIZE / 2, CurPos.x + CHIP_SIZE / 2, CurPos.y + CHIP_SIZE / 2, 0xff00ff, true);
+
 	//線引く
 	VECTOR2 Mpos;
 	Mpos=EditCursor::GetInstance().SetMove_Mouse();
@@ -88,8 +94,7 @@ bool EditScene::EditDraw(void)
 		tmp2.y = tmp1.y;
 		DrawLine(tmp1 , tmp2 , GetColor( 0 , 255 , 255 ) , true);
 	}
-
-	DrawFormatString(0, 0, 0xffffff, "%d", Mpos);
+		DrawFormatString(0, 0, 0xffffff, "%d", Mpos);
 	ScreenFlip();
 	return true;
 }
