@@ -4,6 +4,15 @@
 #include <mutex>
 #include "VECTOR2.h"
 
+#ifdef _DEBUG
+#define AST(){\
+	CHAR ast_mes[256];\
+	wsprintf(ast_mes, "%s %dçsñ⁄Åè0", __FILE__, __LINE__);\
+	MessageBox(0, ast_mes, "±ª∞ƒï\é¶", MB_OK);\
+	}
+#else
+#define AST()
+#endif    // _DEBUG
 class VECTOR2;
 
 using namespace std;

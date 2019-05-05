@@ -39,6 +39,7 @@ public:
 	void Draw(void);
 	VECTOR2 SetMove_Mouse();
 	VECTOR2 SetCur(void);
+	bool ifCurShift(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);
 	MAP_ID id;

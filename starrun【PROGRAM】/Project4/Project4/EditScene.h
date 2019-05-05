@@ -34,6 +34,8 @@ private:
 	virtual int Init(void);
 	bool EditDraw(void);		//EditŠÖŒW‚Ì•`‰æ
 	int Color;					//•¶š‚ÌFî•ñ‚ğ“ü‚ê‚é
-	EDIT_DRAW_TXT string_Tbl;	//DrawString‚Åg—p‚·‚é•¶š—ñ‚ğŠi”[
+	EDIT_DRAW_TXT string_Tbl;	//
+	
+	String‚Åg—p‚·‚é•¶š—ñ‚ğŠi”[
 };
 

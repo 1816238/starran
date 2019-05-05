@@ -34,8 +34,9 @@ void EditCursor::Draw(void)
 	animCnt += 5;
 	//SetCur();
 	//GetMousePoint(&CurPos.x, &CurPos.y);
-
+	DrawFormatString(0, 20, 0xffffff, "id:%d", (MAP_ID)id);
 	//DrawBox(CurPos.x-CHIP_SIZE/2, CurPos.y-CHIP_SIZE/2, CurPos.x + CHIP_SIZE/2, CurPos.y + CHIP_SIZE/2, 0xff00ff, true);
+	
 }
 
 VECTOR2 EditCursor::SetMove_Mouse()
@@ -48,7 +49,7 @@ VECTOR2 EditCursor::SetMove_Mouse()
 	{
 		ChipPos.x = (SCREEN_SIZE_X * 3);
 	}
-	ChipPos.x -= (GetMouseWheelRotVol() % 2) * 30;
+	ChipPos.x -= (GetMouseWheelRotVol() % 2) * 48;
 
 
 
@@ -78,6 +79,7 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 	MouseCheck(MOUSE_INPUT_LEFT, false);//‹ó“Ç‚Ýž‚Ý
 	
 
+
 	auto SetID = [&](int keyState, /*MAP_ID id,*/ MAP_ID SetID)
 	{
 		if (keyState)
@@ -86,20 +88,23 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 		}
 	};
 
-
+	if (GetMouseInput()&MOUSE_INPUT_LEFT)
+	{
+		lpMapControl.SetMapData(CurPos+ChipPos, id);
+	}
 
 	if (cnt[KEY_INPUT_LCONTROL] & (~cntOld[KEY_INPUT_LCONTROL]))
 	{
 		id = (MAP_ID)(id + 1);
 		if (id >= MAP_ID_MAX)
 		{
-			id = MAP_ID_YELLOW;
+			id = MAP_ID_NON;
 		}
 	}
 
 	if (cnt[KEY_INPUT_SPACE] & (cntOld[KEY_INPUT_SPACE]))
 	{
-		lpMapControl.SetMapData(pos, id);
+		lpMapControl.SetMapData(CurPos + ChipPos, id);
 	}
 
 	
@@ -121,4 +126,9 @@ VECTOR2 EditCursor::SetCur(void)
 {
 	GetMousePoint(&CurPos.x, &CurPos.y);
 	return CurPos;
+}
+
+bool EditCursor::ifCurShift(void)
+{
+	return (ChipPos.x%32);
 }
