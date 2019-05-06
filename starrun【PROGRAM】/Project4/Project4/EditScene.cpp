@@ -77,8 +77,9 @@ bool EditScene::EditDraw(void)
 	VECTOR2 CurPos = EditCursor::GetInstance().SetCur();
 	CurPos.x = (CurPos.x / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
 	CurPos.y = (CurPos.y / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
+	CurPos.x += (EditCursor::GetInstance().ifCurShift() * 16);
 	DrawBox(CurPos.x - CHIP_SIZE / 2, CurPos.y - CHIP_SIZE / 2, CurPos.x + CHIP_SIZE / 2, CurPos.y + CHIP_SIZE / 2, 0xff00ff, true);
-
+	
 	//ê¸à¯Ç≠
 	VECTOR2 Mpos;
 	Mpos=EditCursor::GetInstance().SetMove_Mouse();
@@ -109,6 +110,6 @@ int EditScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(GAME_SCREEN_SIZE_X, GAME_SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<EditCursor>(lpSceneMng.GetDrawOffset()));
-	(*obj)->init("image/EDGE1.png", VECTOR2(32, 32), VECTOR2(4, 1));
+	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	return 0;
 }

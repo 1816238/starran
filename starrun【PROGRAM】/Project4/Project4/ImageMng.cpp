@@ -9,6 +9,10 @@ const VEC_INT& ImageMng::GetID(string f_name)
 		imgMap[f_name][0] = LoadGraph(f_name.c_str());
 		/*imgMap[map•ª][VEC_INT•ª]*/
 	}
+	if (imgMap[f_name][0] == -1)
+	{
+		AST();
+	}
 	return imgMap[f_name];
 }
 
@@ -18,6 +22,10 @@ const VEC_INT & ImageMng::GetID(string f_name, VECTOR2 divSize, VECTOR2 divCnt)
 	{
 		imgMap[f_name].resize(divCnt.x * divCnt.y);
 		LoadDivGraph(f_name.c_str(), divCnt.x*divCnt.y, divCnt.x, divCnt.y, divSize.x, divSize.y, &imgMap[f_name][0], false);
+	}
+	if (imgMap[f_name][0] == -1)
+	{
+		AST();
 	}
 	return imgMap[f_name];
 }

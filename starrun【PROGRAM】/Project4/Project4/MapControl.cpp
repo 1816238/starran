@@ -23,7 +23,14 @@ void MapControl::Draw(bool EditFlag)
 {
 	VECTOR2 Mpos;
 	Mpos = EditCursor::GetInstance().SetMove_Mouse();
-
+	for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
+	{
+		for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
+		{
+			MAP_ID id = mapData[y][x];
+			DrawGraph(x*CHIP_SIZE, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
+		}
+	}
 	
 }
 
