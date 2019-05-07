@@ -2,7 +2,6 @@
 #include "SceneMng.h"
 #include "Obj.h"
 #include "ImageMng.h"
-#include "StageMove.h"
 #include "MapControl.h"
 #include "Player.h"
 
