@@ -35,7 +35,7 @@ private:
 	bool EditDraw(void);		//Edit関係の描画
 	int Color;					//文字の色情報を入れる
 	EDIT_DRAW_TXT string_Tbl;	//
-	
-	Stringで使用する文字列を格納
+	VECTOR2 pos;
+	//Stringで使用する文字列を格納
 };
 

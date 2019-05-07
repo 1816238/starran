@@ -22,13 +22,23 @@ struct DataHeader
 void MapControl::Draw(bool EditFlag)
 {
 	VECTOR2 Mpos;
-	Mpos = EditCursor::GetInstance().SetMove_Mouse();
+	//Mpos = EditCursor::GetInstance().GetChipPos();
+	//pos.x -= (GetMouseWheelRotVol() % 2) * 48;
+	//if (pos.x < 0)
+	//{
+	//	pos.x = 0;
+	//}
+	//if (pos.x > (SCREEN_SIZE_X * 3))
+	//{
+	//	pos.x = (SCREEN_SIZE_X * 3);
+	//}
+
 	for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 	{
 		for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 		{
 			MAP_ID id = mapData[y][x];
-			DrawGraph(x*CHIP_SIZE, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
+			DrawGraph(EditCursor::GetInstance().ifCurShift()*CHIP_SIZE/2 + x*CHIP_SIZE - pos.x, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
 		}
 	}
 	
@@ -50,6 +60,7 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	{
 		mapDataBace[j] = MAP_ID_NON;
 	}
+	pos = { 0,0 };
 	return false;
 }
 struct CheckSize
@@ -102,7 +113,7 @@ bool MapControl::MapSave(sharedListObj objList)
 		0xff
 	};
 	//SUMﾁｪｯｸ-------------------------------------------------------------------
-	int sum = 0;
+	unsigned int sum = 0;
 
 	for (auto data : mapDataBace)
 	{
@@ -111,7 +122,7 @@ bool MapControl::MapSave(sharedListObj objList)
 	expData.sum = (char)sum;
 
 	FILE *file;
-	fopen_s(&file, "date/mapdate.map", "wb");
+	fopen_s(&file, "data/mapdata.map", "wb");
 	fwrite(&expData, sizeof(expData), 1, file);
 	fwrite(&mapDataBace[0], sizeof(MAP_ID)*mapDataBace.size(), 1, file);
 	fclose(file);
@@ -122,7 +133,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 {
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "date/mapdate.map", "rb");
+	fopen_s(&file, "data/mapdata.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
 	mapDataBace.resize(expData.sizeX * expData.sizeY);
@@ -150,7 +161,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 		for (auto &data : mapDataBace)
 		{
 			data = MAP_ID_NON;
-			if (MessageBox(NULL, "ERROR!!",
+			if (MessageBox(NULL, "さてはオメーアンチだな",
 				"確認ダイアログ", MB_OK) == IDOK)
 			{
 				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
@@ -178,6 +189,11 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 const VECTOR2 & MapControl::GetChipSize(void)
 {
 	return chipSize;
+}
+
+void MapControl::SetPos(VECTOR2 pos)
+{
+	MapControl::pos = pos;
 }
 
 MapControl::MapControl()

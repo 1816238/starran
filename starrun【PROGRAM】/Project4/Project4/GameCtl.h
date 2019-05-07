@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+#include "VECTOR2.h"
+#include <DxLib.h>
 
 enum KEY_TYPE			//ç°Ç∆1Ç¬ëOÇÃ∑∞èÓïÒ
 {
@@ -19,6 +21,7 @@ public:
 	~GameCtl();
 	bool UpDate(void);
 	const KEY_ARRAY &GetCtl(KEY_TYPE type) const;		//Åwstd::array<char, 256>Åx=>å^   std::array<char, 256> GetCtl(void);
+	const VECTOR2 &GetChipPos(VECTOR2 pos) const;
 private:
 	KEY_ARRAY data;
 	KEY_ARRAY dataOld;

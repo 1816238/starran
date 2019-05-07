@@ -23,6 +23,7 @@ EditScene::EditScene()
 		"F5ｷｰでMap情報のﾛｰﾄﾞ",
 		"F6ｷｰでMap情報のｾｰﾌﾞ"
 	};
+	 pos = { 0,0 };
 }
 
 EditScene::~EditScene()
@@ -56,6 +57,7 @@ unique_Base EditScene::UpDate( unique_Base own, const GameCtl & controller )
 	{
 		(*itr)->UpDate( controller,objList );
 	}
+	
 	EditDraw();
 	return move(own);
 }
@@ -73,29 +75,8 @@ bool EditScene::EditDraw(void)
 	{
 		(*itr)->Draw();
 	}
-	//カーソルの位置の描画
-	VECTOR2 CurPos = EditCursor::GetInstance().SetCur();
-	CurPos.x = (CurPos.x / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
-	CurPos.y = (CurPos.y / CHIP_SIZE * CHIP_SIZE) + CHIP_SIZE / 2;
-	CurPos.x += (EditCursor::GetInstance().ifCurShift() * 16);
-	DrawBox(CurPos.x - CHIP_SIZE / 2, CurPos.y - CHIP_SIZE / 2, CurPos.x + CHIP_SIZE / 2, CurPos.y + CHIP_SIZE / 2, 0xff00ff, true);
+
 	
-	//線引く
-	VECTOR2 Mpos;
-	Mpos=EditCursor::GetInstance().SetMove_Mouse();
-	for ( ; tmp1.x <= GAME_SCREEN_SIZE_X; tmp1.x += CHIP_SIZE )
-	{
-		tmp2.x = tmp1.x;
-		DrawLine(  tmp1- Mpos,  tmp2 - Mpos, GetColor( 0 , 255 , 255 ) , true );
-	}
-	tmp1 = VECTOR2( 0, 0 );
-	tmp2.x = GAME_SCREEN_SIZE_X;
-	for (; tmp1.y <= GAME_SCREEN_SIZE_Y; tmp1.y += CHIP_SIZE )
-	{
-		tmp2.y = tmp1.y;
-		DrawLine(tmp1 , tmp2 , GetColor( 0 , 255 , 255 ) , true);
-	}
-		DrawFormatString(0, 0, 0xffffff, "%d", Mpos);
 	ScreenFlip();
 	return true;
 }

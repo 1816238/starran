@@ -37,6 +37,7 @@ public:
 	bool MapLoad(sharedListObj objList, bool objFlag);		//•Û‘¶‚³‚ê‚½Ï¯Ìßî•ñ‚Ì“Ç‚İ‚İ‹y‚ÑSUMÁª¯¸
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
 	const VECTOR2 & GetChipSize(void);
+	void SetPos(VECTOR2 pos);
 private:
 	MapControl();
 	~MapControl();
@@ -45,7 +46,7 @@ private:
 	VECTOR2 mapSize;			//map‚Ìc‚Æ‰¡‚ğ“ü‚ê‚Ä‚¨‚­•Ï”
 	VECTOR2 chipSize;			//•ªŠ„Œã‚Ì1‚Â“–‚½‚è‚Ì‰æ‘œ‚Ì»²½Ş‚ğ“ü‚ê‚Ä‚¨‚­•Ï”
 	VECTOR2 drawOffSet;		//‚Ç‚ê‚¾‚¯‚¸‚ç‚·‚©‚Ì”’l‚ğ“ü‚ê‚Ä‚¨‚­•Ï”
-
+	VECTOR2 pos;
 
 };
 
