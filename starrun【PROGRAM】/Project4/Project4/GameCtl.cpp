@@ -28,3 +28,20 @@ const KEY_ARRAY & GameCtl::GetCtl(KEY_TYPE type) const
 	}
 	return data;
 }
+
+const VECTOR2 &GameCtl::GetChipPos(VECTOR2 pos) const
+{
+
+	if (pos.x < 0)
+	{
+		pos.x = 0;
+	}
+	if (pos.x > (1280 * 3))
+	{
+		pos.x = (1280 * 3);
+	}
+	pos.x -= (GetMouseWheelRotVol() % 2) * 48;
+
+
+	return pos;
+}

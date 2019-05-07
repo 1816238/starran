@@ -37,7 +37,7 @@ public:
 	EditCursor(VECTOR2 drawOffset);
 	~EditCursor();
 	void Draw(void);
-	VECTOR2 SetMove_Mouse();
+	VECTOR2 GetChipPos();
 	VECTOR2 SetCur(void);
 	bool ifCurShift(void);
 private:

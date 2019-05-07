@@ -22,13 +22,24 @@ struct DataHeader
 void MapControl::Draw(bool EditFlag)
 {
 	VECTOR2 Mpos;
-	Mpos = EditCursor::GetInstance().SetMove_Mouse();
+	//Mpos = EditCursor::GetInstance().GetChipPos();
+	pos.x -= (GetMouseWheelRotVol() % 2) * 48;
+	if (pos.x < 0)
+	{
+		pos.x = 0;
+	}
+	if (pos.x > (SCREEN_SIZE_X * 3))
+	{
+		pos.x = (SCREEN_SIZE_X * 3);
+	}
+	
+
 	for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 	{
 		for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 		{
 			MAP_ID id = mapData[y][x];
-			DrawGraph(x*CHIP_SIZE, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
+			DrawGraph(EditCursor::GetInstance().ifCurShift()*CHIP_SIZE/2 + x*CHIP_SIZE - pos.x, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
 		}
 	}
 	
@@ -50,6 +61,7 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	{
 		mapDataBace[j] = MAP_ID_NON;
 	}
+	pos = { 0,0 };
 	return false;
 }
 struct CheckSize
