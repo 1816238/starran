@@ -32,6 +32,17 @@ void MapControl::Draw(bool TitleFlag)
 	//	pos = StageMove::GetInstance().GetPos().x;
 	//	DrawGraph(StageMove::GetInstance().GetPos().x, 0, lpImageMng.GetID("image/back.jpg")[0], true);
 	//}
+
+	for (int y = 0; y < mapSize.y; y++)
+	{
+		for (int x = 0; x < mapSize.y; x++)
+		{
+			MAP_ID id;
+			id = mapData[y][x];
+			if(id>0)
+			DrawGraph(x*CHIP_SIZE, y*CHIP_SIZE, IMAGE_ID("image/map.png")[id], true);
+		}
+	}
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -107,7 +118,10 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 	{
 		sum += (int)data;
 	}
-
+	for (int count = 0; count < mapData.size(); count++)
+	{
+		mapData[count] = &mapDataBace[mapSize.x * count];
+	}
 	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
 	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
 	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
