@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "SceneMng.h"
 #include "MapControl.h"
+#include "Obj.h"
 #include "GameCtl.h"
 
 

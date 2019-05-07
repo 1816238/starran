@@ -21,7 +21,6 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 				  };
 
 	speed = PLAYER_DF_SPEED;
-	Obj::init("image/back.jpg", VECTOR2(1280, 680), VECTOR2(1, 1), VECTOR2(-drawOffset.x*5, -drawOffset.y));
 	initAnim();
 }
 
@@ -55,8 +54,4 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 
 	auto &chipSize = lpMapControl.GetChipSize().x;
-	SetAnim("í èÌ");
-	SetAnim("í èÌ");
-	pos = pos - VECTOR2(speed, 0);
-
 }

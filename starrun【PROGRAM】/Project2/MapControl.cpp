@@ -26,12 +26,10 @@ void MapControl::Draw(bool TitleFlag)
 	{
 		DrawGraph(0, 0, lpImageMng.GetID("image/backImage.png")[0], true);
 	}
-	//else
-	//{
-	//	int pos = 0;
-	//	pos = StageMove::GetInstance().GetPos().x;
-	//	DrawGraph(StageMove::GetInstance().GetPos().x, 0, lpImageMng.GetID("image/back.jpg")[0], true);
-	//}
+	else
+	{
+		DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
+	}
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)

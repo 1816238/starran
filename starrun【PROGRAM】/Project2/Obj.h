@@ -54,6 +54,7 @@ protected:
 	unsigned int animCnt;			//±ÆÒ°¼®İ¶³İÀ°
 	const VECTOR2 drawOffset;		//•`‰æµÌ¾¯Ä
 	VECTOR2 pos;					//À•W
+	VECTOR2 pos2;					//À•W
 	void SetPos(VECTOR2 pos);
 	string imageName;				//•\¦±ÆÒ°¼®İ–¼
 	VECTOR2 divSize;				//•ªŠ„»²½Ş

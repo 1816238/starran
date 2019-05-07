@@ -1,6 +1,7 @@
 #include <Dxlib.h>
 #include "ImageMng.h"
 #include "GameCtl.h"
+#include "BaseScene.h"
 #include "Obj.h"
 
 Obj::Obj(VECTOR2 drawOffset) :drawOffset(drawOffset)		//	‰Šú‰»‚·‚é‚±‚Æ‚Åconst‚É’l‚ğ“n‚¹‚é‚æ‚¤‚É‚È‚é
@@ -72,7 +73,7 @@ void Obj::Draw(void)
 
 	if (ID < IMAGE_ID(imageName).size())
 	{
-		DrawGraph(drawOffset.x + (pos.x/5), drawOffset.y + pos.y, IMAGE_ID(imageName)[ID], true);
+		DrawGraph(drawOffset.x + pos.x, drawOffset.y + pos.y, IMAGE_ID(imageName)[ID], true);
 	}
 	DrawFormatString(0, 0, 0xFFFFFF, "PLAYER‚ÌÀ•W\nX...%d\nY...%d\n", pos.x, pos.y);
 

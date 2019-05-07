@@ -12,6 +12,8 @@
 
 #define CHIP_SIZE 20
 
+#define BG_SPEED 1
+
 class BaseScene;
 class GameCtl;
 
