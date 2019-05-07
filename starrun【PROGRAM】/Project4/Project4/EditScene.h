@@ -36,6 +36,6 @@ private:
 	int Color;					//文字の色情報を入れる
 	EDIT_DRAW_TXT string_Tbl;	//
 	
-	Stringで使用する文字列を格納
+	//Stringで使用する文字列を格納
 };
 

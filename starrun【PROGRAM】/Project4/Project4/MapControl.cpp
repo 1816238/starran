@@ -102,7 +102,7 @@ bool MapControl::MapSave(sharedListObj objList)
 		0xff
 	};
 	//SUM¡™Ø∏-------------------------------------------------------------------
-	int sum = 0;
+	unsigned int sum = 0;
 
 	for (auto data : mapDataBace)
 	{
@@ -111,7 +111,7 @@ bool MapControl::MapSave(sharedListObj objList)
 	expData.sum = (char)sum;
 
 	FILE *file;
-	fopen_s(&file, "date/mapdate.map", "wb");
+	fopen_s(&file, "data/mapdata.map", "wb");
 	fwrite(&expData, sizeof(expData), 1, file);
 	fwrite(&mapDataBace[0], sizeof(MAP_ID)*mapDataBace.size(), 1, file);
 	fclose(file);
@@ -122,7 +122,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 {
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "date/mapdate.map", "rb");
+	fopen_s(&file, "data/mapdata.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ÕØ¿ﬁ∞ÇÃª≤ΩﬁèÓïÒÇå≥Ç…mapDataBaceÇÃª≤ΩﬁÇ∑ÇÈ
 	mapDataBace.resize(expData.sizeX * expData.sizeY);
