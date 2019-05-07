@@ -5,7 +5,6 @@
 #include "GameScene.h"
 #include "MapControl.h"
 #include "GameCtl.h"
-#include "Player.h"
 #include "TitleScene.h"
 #include "SceneMng.h"
 

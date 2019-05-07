@@ -72,7 +72,7 @@ void Obj::Draw(void)
 
 	if (ID < IMAGE_ID(imageName).size())
 	{
-		DrawGraph(drawOffset.x + pos.x, drawOffset.y + pos.y, IMAGE_ID(imageName)[ID], true);
+		DrawGraph(drawOffset.x + (pos.x/5), drawOffset.y + pos.y, IMAGE_ID(imageName)[ID], true);
 	}
 	DrawFormatString(0, 0, 0xFFFFFF, "PLAYER‚ÌÀ•W\nX...%d\nY...%d\n", pos.x, pos.y);
 
@@ -108,8 +108,6 @@ bool Obj::SetAnim(string animName)
 
 	return false;
 }
-
-
 
 std::string Obj::GetAnim(void)
 {

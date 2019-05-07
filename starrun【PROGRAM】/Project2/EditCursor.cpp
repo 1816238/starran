@@ -8,12 +8,12 @@
 
 EditCursor::EditCursor()
 {
-	id = MAP_ID_WALL1;
+	id = MAP_ID_YELLOW;
 }
 
 EditCursor::EditCursor(VECTOR2 drawOffset) :Obj(drawOffset)
 {
-	id = MAP_ID_WALL1;
+	id = MAP_ID_YELLOW;
 }
 
 EditCursor::~EditCursor()
@@ -97,29 +97,4 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 			id = SetID;
 		}
 	};
-
-	SetID(cnt[KEY_INPUT_1], MAP_ID_BOMB);
-	SetID(cnt[KEY_INPUT_2], MAP_ID_NON);
-	SetID(cnt[KEY_INPUT_3], MAP_ID_WALL1);
-	SetID(cnt[KEY_INPUT_4], MAP_ID_WALL2);
-	SetID(cnt[KEY_INPUT_5], MAP_ID_BLOCK);
-	SetID(cnt[KEY_INPUT_6], MAP_ID_ITEM_FIRE);
-	SetID(cnt[KEY_INPUT_7], MAP_ID_ITEM_BOMB);
-	SetID(cnt[KEY_INPUT_8], MAP_ID_ITEM_CTL);
-	SetID(cnt[KEY_INPUT_9], MAP_ID_ITEM_SPEED);
-
-	if (cnt[KEY_INPUT_LCONTROL] & (~cntOld[KEY_INPUT_LCONTROL]))
-	{
-		id = (MAP_ID)(id + 1);
-		if (id >= MAP_ID_MAX)
-		{
-			id = MAP_ID_BOMB;
-		}
-	}
-
-	if (cnt[KEY_INPUT_SPACE] & (cntOld[KEY_INPUT_SPACE]))
-	{
-		lpMapControl.SetMapData(pos, id);
-	}
-
 }

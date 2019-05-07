@@ -4,6 +4,10 @@ class VECTOR2
 public:
 	VECTOR2();
 	VECTOR2(int x ,int y);
+	VECTOR2(float x ,int y);
+	VECTOR2(int x ,float y);
+	VECTOR2(float x ,float y);
+
 	~VECTOR2();
 	int x;
 	int y;

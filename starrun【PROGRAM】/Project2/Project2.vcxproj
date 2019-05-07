@@ -128,7 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
-    <ClCompile Include="EditCursor.cpp" />
     <ClCompile Include="GameCtl.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="ImageMng.cpp" />
@@ -142,13 +141,13 @@
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneMng.cpp" />
+    <ClCompile Include="StageMove.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VECTOR2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="classObj.h" />
-    <ClInclude Include="EditCursor.h" />
     <ClInclude Include="GameCtl.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="ImageMng.h" />
@@ -156,6 +155,7 @@
     <ClInclude Include="Obj.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneMng.h" />
+    <ClInclude Include="StageMove.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VECTOR2.h" />
   </ItemGroup>

@@ -66,6 +66,6 @@ int GameScene::Init(void)
 
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(GAME_SCREEN_SIZE_X, GAME_SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-//	lpMapControl.MapLoad(objList, false);
+	lpMapControl.MapLoad(objList, false);
 	return 0;
 }

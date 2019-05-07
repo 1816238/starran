@@ -3,7 +3,7 @@
 #include "Obj.h"
 #include "MapControl.h"
 
-#define PLAYER_DF_SPEED ( 2 )
+#define PLAYER_DF_SPEED ( 1)
 #define MOUSE_ROT_VOL (Rot)
 
 enum DIR_TBL_ID
@@ -40,7 +40,7 @@ public:
 	bool initAnim(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
-	int speed;											//ˆÚ“®‘¬“x
+	float speed;											//ˆÚ“®‘¬“x
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
 
@@ -49,6 +49,6 @@ private:
 
 	DIR_TBL_ARRAY keyID_Tbl;								//ˆÚ“®‚Ég‚¤·°î•ñ‚ÌÃ°ÌŞÙ
 	DIR_TBL_ARRAY speed_Tbl;								//ˆÚ“®—Ê‚ÌÃ°ÌŞÙ
-	MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//ˆÚ“®§ŒÀ‚ğ‚©‚¯‚éÌŞÛ¯¸ID‚ğ•ÛŠÇ‚µ‚Ä‚¨‚­
+	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//ˆÚ“®§ŒÀ‚ğ‚©‚¯‚éÌŞÛ¯¸ID‚ğ•ÛŠÇ‚µ‚Ä‚¨‚­
 };
 

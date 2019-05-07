@@ -2,6 +2,7 @@
 #include "SceneMng.h"
 #include "Obj.h"
 #include "ImageMng.h"
+#include "StageMove.h"
 #include "MapControl.h"
 #include "Player.h"
 
@@ -22,7 +23,16 @@ struct DataHeader
 
 void MapControl::Draw(bool TitleFlag)
 {
-	DrawGraph(0 ,0 , lpImageMng.GetID("image/backImage.png")[0],true);
+	if (TitleFlag)
+	{
+		DrawGraph(0, 0, lpImageMng.GetID("image/backImage.png")[0], true);
+	}
+	//else
+	//{
+	//	int pos = 0;
+	//	pos = StageMove::GetInstance().GetPos().x;
+	//	DrawGraph(StageMove::GetInstance().GetPos().x, 0, lpImageMng.GetID("image/back.jpg")[0], true);
+	//}
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -75,45 +85,18 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 	if (!CheckSize()(selpos, mapSize))
 	{
 		//範囲外の場合、下記のIDを固定で返す
-		return MAP_ID_WALL1;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
+		return MAP_ID_YELLOW;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
 
 	return mapData[selpos.y][selpos.x];
 }
 
-bool MapControl::MapSave(sharedListObj objList)
-{
-	DataHeader expData = {
-		BBM_FILE_ID,
-		BBM_VER_ID,
-		{0,0},
-		mapSize.x,
-		mapSize.y,
-		{ 0,0,0 },
-		0xff
-	};
-	//SUMﾁｪｯｸ-------------------------------------------------------------------
-	int sum = 0;
-
-	for (auto data : mapDataBace)
-	{
-		sum += (int)data;
-	}
-	expData.sum = (char)sum;
-
-	FILE *file;
-	fopen_s(&file, "date/mapdate.map", "wb");
-	fwrite(&expData, sizeof(expData), 1, file);
-	fwrite(&mapDataBace[0], sizeof(MAP_ID)*mapDataBace.size(), 1, file);
-	fclose(file);
-	return true;
-}
-
 bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 {
+
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "date/mapdate.map", "rb");
+	fopen_s(&file, "data/mapdata.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
 	mapDataBace.resize(expData.sizeX * expData.sizeY);
@@ -167,42 +150,18 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 		for (int x = 0; x < mapSize.x; x++)
 		{
 			MAP_ID id = mapData[y][x];
-			LIST_INT obj;
-			switch (id)
+
+			if (MakePlayerflag)
 			{
-
-			case MAP_ID_BOMB:
-				if (MakePlayerflag)
-				{
-					break;
-				}
-				{
-					//ﾌﾟﾚｲﾔｰキャラをｲﾝｽﾀﾝｽする
-					ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(x*chipSize.x, y*chipSize.y), drawOffSet + VECTOR2(0, -20)));
-
-					MakePlayerflag = true;
-				}
-				break;
-
-
-				//何もｲﾝｽﾀﾝｽしない
-			case MAP_ID_NON:
-			case MAP_ID_WALL1:
-			case MAP_ID_WALL2:
-			case MAP_ID_BLOCK:
-			case MAP_ID_ITEM_FIRE:
-			case MAP_ID_ITEM_BOMB:
-			case MAP_ID_ITEM_CTL:
-			case MAP_ID_ITEM_SPEED:
-				break;
-			case MAP_ID_CUR:
-			case MAP_ID_FLOOR1:
-			case MAP_ID_FLOOR2:
-				break;
-				//ｴﾗｰ
-			default:
 				break;
 			}
+			{
+				//ﾌﾟﾚｲﾔｰキャラをｲﾝｽﾀﾝｽする
+				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(x*chipSize.x, y*chipSize.y), drawOffSet + VECTOR2(0, -20)));
+
+				MakePlayerflag = true;
+			}
+			break;
 		}
 	}
 	return true;

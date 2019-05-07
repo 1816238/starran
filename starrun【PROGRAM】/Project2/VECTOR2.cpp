@@ -12,6 +12,24 @@ VECTOR2::VECTOR2(int x, int y)
 	this->y = y;
 }
 
+VECTOR2::VECTOR2(float x, int y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+
+VECTOR2::VECTOR2(int x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
+
+VECTOR2::VECTOR2(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
 
 VECTOR2::~VECTOR2()
 {
