@@ -37,7 +37,7 @@ public:
 	EditCursor(VECTOR2 drawOffset);
 	~EditCursor();
 	void Draw(void);
-	VECTOR2 GetChipPos();
+	VECTOR2& GetChipPos();
 	VECTOR2 SetCur(void);
 	bool ifCurShift(void);
 private:
@@ -51,5 +51,6 @@ private:
 	VECTOR2 CurPos;
 	int oldin;
 	int input;
+	VECTOR2 SetChipPos(void);
 };
 

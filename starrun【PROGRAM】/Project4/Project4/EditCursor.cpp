@@ -68,12 +68,12 @@ void EditCursor::Draw(void)
 	
 }
 
-VECTOR2 EditCursor::GetChipPos()
+VECTOR2& EditCursor::GetChipPos()
 {
 
 
 
-	return SetChipPos();
+	return ChipPos;
 }
 
 void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
@@ -136,7 +136,7 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 		lpMapControl.SetMapData(CurPos + ChipPos, id);
 	}
 
-	
+	lpMapControl.SetPos(ChipPos);
 	//SetMove_Mouse();
 }
 

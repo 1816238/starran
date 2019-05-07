@@ -23,16 +23,15 @@ void MapControl::Draw(bool EditFlag)
 {
 	VECTOR2 Mpos;
 	//Mpos = EditCursor::GetInstance().GetChipPos();
-	pos.x -= (GetMouseWheelRotVol() % 2) * 48;
-	if (pos.x < 0)
-	{
-		pos.x = 0;
-	}
-	if (pos.x > (SCREEN_SIZE_X * 3))
-	{
-		pos.x = (SCREEN_SIZE_X * 3);
-	}
-	
+	//pos.x -= (GetMouseWheelRotVol() % 2) * 48;
+	//if (pos.x < 0)
+	//{
+	//	pos.x = 0;
+	//}
+	//if (pos.x > (SCREEN_SIZE_X * 3))
+	//{
+	//	pos.x = (SCREEN_SIZE_X * 3);
+	//}
 
 	for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 	{
@@ -162,7 +161,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 		for (auto &data : mapDataBace)
 		{
 			data = MAP_ID_NON;
-			if (MessageBox(NULL, "ERROR!!",
+			if (MessageBox(NULL, "さてはオメーアンチだな",
 				"確認ダイアログ", MB_OK) == IDOK)
 			{
 				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
@@ -190,6 +189,11 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 const VECTOR2 & MapControl::GetChipSize(void)
 {
 	return chipSize;
+}
+
+void MapControl::SetPos(VECTOR2 pos)
+{
+	MapControl::pos = pos;
 }
 
 MapControl::MapControl()
