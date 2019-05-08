@@ -3,10 +3,10 @@
 #include "GameScene.h"
 #include "SceneMng.h"
 #include "MapControl.h"
-#include "EditCursor.h"
 #include "Obj.h"
 #include "GameCtl.h"
-
+#include "ImageMng.h"
+#include "Player.h"
 
 GameScene::GameScene()
 {
@@ -46,7 +46,7 @@ bool GameScene::GameDraw(void)
 {
 	(*objList).sort([](uniqueObj& obj1, uniqueObj& obj2) {return ((*obj1).GetPos().y < (*obj2).GetPos().y); });
 	ClsDrawScreen();
-	lpMapControl.Draw(false);
+	DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
 
 	for (auto &data : (*objList))
 	{
@@ -70,7 +70,7 @@ int GameScene::Init(void)
 
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-	auto obj = AddObjList()(objList, std::make_unique<EditCursor>(lpSceneMng.GetDrawOffset()));
+	auto obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2{0,0}, lpSceneMng.GetDrawOffset()));
 
 	return 0;
 }

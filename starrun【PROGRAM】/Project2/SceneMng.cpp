@@ -1,7 +1,6 @@
 #include <Dxlib.h>
 #include "VECTOR2.h"
 #include "ImageMng.h"
-#include "EditCursor.h"
 #include "GameScene.h"
 #include "MapControl.h"
 #include "GameCtl.h"
