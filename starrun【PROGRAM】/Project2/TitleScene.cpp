@@ -39,7 +39,7 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 bool TitleScene::TitleDraw(void)
 {
 	ClsDrawScreen();
-	lpMapControl.Draw(true);
+	DrawGraph(0, 0, IMAGE_ID("image/backImage.png")[0], true);
 	ScreenFlip();
 	return false;
 }
