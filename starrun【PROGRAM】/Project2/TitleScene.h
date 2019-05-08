@@ -12,5 +12,12 @@ private:
 	sharedListObj objList;
 	virtual int Init(void);
 	bool TitleDraw(void);
+	void TitleMove(void);
+	int cnt;
+	VECTOR2 pos;
+	VECTOR2 drawChip;
+	bool ClickCheck;
+	bool ClickCheckOld;
+	VECTOR2 start;
 };
 
