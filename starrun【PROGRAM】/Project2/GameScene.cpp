@@ -69,9 +69,10 @@ int GameScene::Init(void)
 	SetWindowText("AGS.exe Game");
 
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
-	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
+	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2{0,0}, lpSceneMng.GetDrawOffset()));
 	lpMapControl.MapLoad(objList, false);
+	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 
 	return 0;
 }
