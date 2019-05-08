@@ -47,7 +47,7 @@ bool GameScene::GameDraw(void)
 	(*objList).sort([](uniqueObj& obj1, uniqueObj& obj2) {return ((*obj1).GetPos().y < (*obj2).GetPos().y); });
 	ClsDrawScreen();
 	DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
-
+	lpMapControl.Draw(false);
 	for (auto &data : (*objList))
 	{
 		(*data).Draw();
@@ -71,6 +71,7 @@ int GameScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2{0,0}, lpSceneMng.GetDrawOffset()));
+	lpMapControl.MapLoad(objList, false);
 
 	return 0;
 }

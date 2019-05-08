@@ -22,18 +22,14 @@ struct DataHeader
 
 void MapControl::Draw(bool TitleFlag)
 {
-	lpImageMng.GetID("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
-
-		DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
-
-
+	
 		for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
-					DrawGraph(x * CHIP_SIZE - pos.x,y*CHIP_SIZE, IMAGE_ID("image/map.png")[mapData[y][x]], true);
+					DrawGraph(x * CHIP_SIZE - pos.x,y*CHIP_SIZE, lpImageMng.GetID("image/map.png",VECTOR2(32,32),VECTOR2(4,2))[mapData[y][x]], true);
 				}
 			}
 		}
