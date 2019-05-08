@@ -10,7 +10,7 @@
 #define GAME_SCREEN_SIZE_X 640
 #define GAME_SCREEN_SIZE_Y 480
 
-#define CHIP_SIZE 20
+#define CHIP_SIZE 32
 
 #define BG_SPEED 1
 

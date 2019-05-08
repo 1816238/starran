@@ -44,5 +44,6 @@ private:
 	VECTOR2 mapSize;			//map‚Ìc‚Æ‰¡‚ð“ü‚ê‚Ä‚¨‚­•Ï”
 	VECTOR2 chipSize;			//•ªŠ„Œã‚Ì1‚Â“–‚½‚è‚Ì‰æ‘œ‚Ì»²½Þ‚ð“ü‚ê‚Ä‚¨‚­•Ï”
 	VECTOR2 drawOffSet;		//‚Ç‚ê‚¾‚¯‚¸‚ç‚·‚©‚Ì”’l‚ð“ü‚ê‚Ä‚¨‚­•Ï”
+	VECTOR2 pos;
 };
 

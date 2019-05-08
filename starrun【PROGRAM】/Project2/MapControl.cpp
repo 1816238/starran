@@ -2,6 +2,7 @@
 #include "SceneMng.h"
 #include "Obj.h"
 #include "ImageMng.h"
+#include "EditCursor.h"
 #include "MapControl.h"
 #include "Player.h"
 
@@ -22,9 +23,21 @@ struct DataHeader
 
 void MapControl::Draw(bool TitleFlag)
 {
-	
+	lpImageMng.GetID("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
+
 		DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
-	
+
+
+		for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
+		{
+			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
+			{
+				if (mapData[y][x] <= MAP_ID_MAX)
+				{
+					DrawGraph(x * CHIP_SIZE - pos.x,y*CHIP_SIZE, IMAGE_ID("image/map.png")[mapData[y][x]], true);
+				}
+			}
+		}
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -96,6 +109,10 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 	fclose(file);
 	bool flag = true;
 	int sum = 0;
+	for (int count = 0; count < mapData.size(); count++)
+	{
+		mapData[count] = &mapDataBace[mapSize.x * count];
+	}
 	for (auto data : mapDataBace)
 	{
 		sum += (int)data;

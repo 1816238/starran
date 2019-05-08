@@ -3,6 +3,8 @@
 #include "Obj.h"
 #include "MapControl.h"
 
+#define lpEditCursor EditCursor::GetInstance();
+
 enum EDIT_KEY
 {
 	KEY_CTL,
@@ -26,16 +28,23 @@ class EditCursor :
 	public Obj
 {
 public:
+	static EditCursor &GetInstance(void)
+	{
+		static EditCursor s_Instance;
+		return s_Instance;
+	}
 	EditCursor();
 	EditCursor(VECTOR2 drawOffset);
 	~EditCursor();
 	void Draw(void);
+	bool ifCurShift(void);
 
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);
 	MAP_ID id;
 	int KeyGetRng;
 	int inputFram;
+	VECTOR2 ChipPos;
 	MAP_EDIT_KEY_ARRAY edit_Key;
 };
 

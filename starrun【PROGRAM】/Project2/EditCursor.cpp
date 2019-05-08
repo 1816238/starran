@@ -98,3 +98,7 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 		}
 	};
 }
+bool EditCursor::ifCurShift(void)
+	{
+		return (ChipPos.x % 32);
+	}

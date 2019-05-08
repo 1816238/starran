@@ -1,7 +1,9 @@
 #include "Dxlib.h"
+#include "classObj.h"
 #include "GameScene.h"
 #include "SceneMng.h"
 #include "MapControl.h"
+#include "EditCursor.h"
 #include "Obj.h"
 #include "GameCtl.h"
 
@@ -35,6 +37,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}*/
+
 	GameDraw();
 	return std::move(own);		//èäóLå†Çà⁄Ç∑
 }
@@ -66,7 +69,8 @@ int GameScene::Init(void)
 	SetWindowText("AGS.exe Game");
 
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
-	lpMapControl.SetUp(VECTOR2(GAME_SCREEN_SIZE_X, GAME_SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-	lpMapControl.MapLoad(objList, false);
+	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
+	auto obj = AddObjList()(objList, std::make_unique<EditCursor>(lpSceneMng.GetDrawOffset()));
+
 	return 0;
 }
