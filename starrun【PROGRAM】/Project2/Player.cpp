@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "MapControl.h"
 #include "GameCtl.h"
-
+#include "ImageMng.h"
 
 Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -22,6 +22,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 	speed = PLAYER_DF_SPEED;
 	initAnim();
+	pos = {64,0};
 }
 
 Player::Player()
@@ -52,6 +53,11 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		jumpFlag = true;
 	}
-
+	
 	auto &chipSize = lpMapControl.GetChipSize().x;
+}
+
+void Player::Draw(void)
+{
+	DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
 }
