@@ -78,8 +78,18 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 		//Žæ“¾‚·‚é
 	case MAP_ID_YELLOW:
+		yellowcnt++;
+		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
+
+		break;
 	case MAP_ID_GREEN:
+		greencnt++;
+		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
+
+		break;
 	case MAP_ID_RED:
+		redcnt++;
+		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
 
 		break;
 
