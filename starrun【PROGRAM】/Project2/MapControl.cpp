@@ -5,7 +5,7 @@
 #include "MapControl.h"
 #include "Enemy.h"
 #include "Player.h"
-
+#include "SpeedMng.h"
 
 #define BBM_VER_ID 0x01		//fail ﬁ∞ºﬁÆ›ID
 #define BBM_FILE_ID "BBM_MAP_DATA"		//failID
@@ -30,13 +30,11 @@ void MapControl::Draw(bool TitleFlag)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
-					DrawGraph(x * CHIP_SIZE - pos.x,y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
 				}
 			}
 		}
 
-
-		//DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
+		DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -100,7 +98,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "data/mapdata.map", "rb");
+	fopen_s(&file, "data/mapdata1.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ÕØ¿ﬁ∞ÇÃª≤ΩﬁèÓïÒÇå≥Ç…mapDataBaceÇÃª≤ΩﬁÇ∑ÇÈ
 	mapDataBace.resize(expData.sizeX * expData.sizeY);
@@ -166,7 +164,7 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 			}
 			{
 				//Ãﬂ⁄≤‘∞ÉLÉÉÉâÇ≤›Ω¿›ΩÇ∑ÇÈ
-				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(x*chipSize.x, y*chipSize.y), drawOffSet + VECTOR2(0, -20)));
+				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
 
 				MakePlayerflag = true;
 			}

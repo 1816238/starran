@@ -7,12 +7,12 @@
 #include "GameCtl.h"
 #include "ImageMng.h"
 #include "GameScene.h"
+#include "SpeedMng.h"
 
 Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
 
-	jumpFlag = false;
 	shotFlag = false;
 
 	/*MAIN*/
@@ -29,10 +29,17 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 		getcnt[i] = 0;
 
 	}
+	pos = setUpPos;
 	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
+	for (int j = 0; j < 2; j++)
+	{
+		
+		jumpFlag[j] = false;
+
+	}
 	SavePos = 0;
-	DirPos = {	VECTOR2{ PLAYER_SIZE_X/2,1},// 上
-				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y-1}, // 下
+	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// 上
+				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y}, // 下
 				VECTOR2{1,PLAYER_SIZE_Y/2}, // 左
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2}, // 右
 			};
@@ -48,7 +55,7 @@ Player::~Player()
 
 bool Player::initAnim(void)
 {
-	AddAnim("通常", 0, 0, 1, 1, true);
+	//AddAnim("通常", 0, 0, 1, 1, true);
 	return true;
 }
 
@@ -58,37 +65,65 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	
+	pos.x = CHIP_SIZE * 2 + Time;
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
 		ClickOld[i] = controller.GetClick(i, OLD);
 
 	}
-	MAP_ID id;
+	MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]);
 
-
+	//ショット
 	if (Click[MOUSE_INPUT_RIGHT]&(~ClickOld[MOUSE_INPUT_RIGHT]))
 	{
 		shotFlag = true;
 	}
+	//ジャンプ
 	if (Click[MOUSE_INPUT_LEFT] & (~ClickOld[MOUSE_INPUT_LEFT]))
 	{
-		if (!jumpFlag)
+		
+		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 		{
-			jumpFlag = true;
-			SavePos = pos.y;
 
+			if (!jumpFlag[0])
+			{
+				jumpFlag[0] = true;
+				SavePos = pos.y;
+
+			}
 		}
-	}
-	if (jumpFlag)
-	{
-		pos.y -= 3;
-		if (SavePos-pos.y  > CHIP_SIZE * 2)
+		else
 		{
-			jumpFlag = false;
+			if (!jumpFlag[1])
+			{
+				jumpFlag[1] = true;
+				SavePos = pos.y;
+			}
+		}
+		
+	}
+	
+	if (jumpFlag[0])
+	{
+		pos.y -= 4;
+		if (SavePos - pos.y > CHIP_SIZE * 2.5)
+		{
+			jumpFlag[0] = false;
 		}
 	}
+	if (jumpFlag[1])
+	{
+		pos.y -= 4;
+		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+		{
+			
+
+			jumpFlag[1] = false;
+		}
+
+	}
+
 	auto &chipSize = lpMapControl.GetChipSize().x;
 
 	CheckMapHit();
@@ -96,12 +131,14 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 }
 
-//void Player::Draw(void)
-//{
-//
-//	//DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
-//	DrawFormatString(0, 0, 0xff00ff, "time:%d", time);
-//}
+
+
+void Player::Draw(void)
+{
+
+	DrawGraph(CHIP_SIZE*2, pos.y, IMAGE_ID("image/player.png")[0], true);
+	DrawFormatString(0, 0, 0xff00ff, "time:%d", Time);
+}
 
 void Player::CheckMapHit(void)
 {
@@ -125,9 +162,9 @@ void Player::CheckMapHit(void)
 		case MAP_ID_CLOUD3:
 			if (i == DIR_DOWN)
 			{
-				if (jumpFlag)
+				if (!jumpFlag[0]&&!jumpFlag[1])
 				{
-					pos.y+=3;
+					pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
 				}
 				
 			}
@@ -143,7 +180,7 @@ void Player::CheckMapHit(void)
 		case MAP_ID_NON2:
 			if (i == DIR_DOWN)
 			{
-				if (!jumpFlag)
+				if (!jumpFlag[0]&&!jumpFlag[1])
 				{
 					pos.y+=3;
 				}

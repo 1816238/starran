@@ -60,6 +60,5 @@ protected:
 	VECTOR2 divSize;				//•ªŠ„»²½Ş
 	VECTOR2 divCnt;					//•ªŠ„”
 	DIR dir;						//is•ûŒü
-	int time;
 };
 

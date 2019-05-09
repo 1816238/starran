@@ -8,7 +8,7 @@
 #include "ImageMng.h"
 #include "Enemy.h"
 #include "Player.h"
-
+#include "SpeedMng.h"
 GameScene::GameScene()
 {
 	Init();
@@ -38,7 +38,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}*/
-
+	lpSpeedMng.GetInstance().move();
 	GameDraw();
 	return std::move(own);		//Š—LŒ ‚ğˆÚ‚·
 }

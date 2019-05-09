@@ -34,20 +34,21 @@ public:
 	bool initAnim(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
+	void Draw(void);
 	//void Draw(void);
 	float speed;											//ˆÚ“®‘¬“x
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
 
-	bool jumpFlag;											//¶¸Ø¯¸‚µ‚½‚çtrue
+	bool jumpFlag[2];											//¶¸Ø¯¸‚µ‚½‚çtrue
 	bool shotFlag;											//‰E¸Ø¯¸‚Åtrue
-
+	int SavePos;
 	DIR_TBL_ARRAY keyID_Tbl;								//ˆÚ“®‚Ég‚¤·°î•ñ‚ÌÃ°ÌŞÙ
 	DIR_TBL_ARRAY speed_Tbl;								//ˆÚ“®—Ê‚ÌÃ°ÌŞÙ
 	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//ˆÚ“®§ŒÀ‚ğ‚©‚¯‚éÌŞÛ¯¸ID‚ğ•ÛŠÇ‚µ‚Ä‚¨‚­
 	int getcnt[3];											//¯‚ğæ“¾‚µ‚½”
 	void CheckMapHit(void);									//map‚Æ‚Ì“–‚½‚è”»’è
-	int SavePos;
+	
 	array<VECTOR2,DIR_MAX>DirPos;
 };
 
