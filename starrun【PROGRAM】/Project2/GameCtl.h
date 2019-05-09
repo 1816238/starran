@@ -19,7 +19,10 @@ public:
 	~GameCtl();
 	bool UpDate(void);
 	const KEY_ARRAY &GetCtl(KEY_TYPE type) const;		//Åwstd::array<char, 256>Åx=>å^   std::array<char, 256> GetCtl(void);
+	const bool GetClick(int mouse_type, KEY_TYPE type) const;
 private:
 	KEY_ARRAY data;
 	KEY_ARRAY dataOld;
+	int Click;
+	int ClickOld;
 };

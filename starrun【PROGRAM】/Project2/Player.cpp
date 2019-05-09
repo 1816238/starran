@@ -6,6 +6,7 @@
 #include "MapControl.h"
 #include "GameCtl.h"
 #include "ImageMng.h"
+#include "GameScene.h"
 
 Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -22,7 +23,19 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 	speed = PLAYER_DF_SPEED;
 	initAnim();
-	pos = {64,0};
+
+	for (int i = 0; i < 3; i++)
+	{
+		getcnt[i] = 0;
+
+	}
+	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
+	SavePos = 0;
+	DirPos = {	VECTOR2{ PLAYER_SIZE_X/2,1},// 上
+				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y-1}, // 下
+				VECTOR2{1,PLAYER_SIZE_Y/2}, // 左
+				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2}, // 右
+			};
 }
 
 Player::Player()
@@ -43,67 +56,102 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	auto &key_Tbl = controller.GetCtl(NOW);
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
+	bool Click[2];
+	bool ClickOld[2];
+	
+	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
+	{
+		Click[i] = controller.GetClick(i, NOW);
+		ClickOld[i] = controller.GetClick(i, OLD);
+
+	}
 	MAP_ID id;
-	if (key_Tbl[MOUSE_INPUT_RIGHT])
+
+
+	if (Click[MOUSE_INPUT_RIGHT]&(~ClickOld[MOUSE_INPUT_RIGHT]))
 	{
 		shotFlag = true;
 	}
-	
-	if (key_Tbl[MOUSE_INPUT_LEFT] & (~key_Old_Tbl[MOUSE_INPUT_LEFT]))
+	if (Click[MOUSE_INPUT_LEFT] & (~ClickOld[MOUSE_INPUT_LEFT]))
 	{
-		jumpFlag = true;
-	}
-	
-	auto &chipSize = lpMapControl.GetChipSize().x;
-	//足元を見る
-	
-	id = lpMapControl.GetMapDate({ pos.x,pos.y + CHIP_SIZE * 2 });
-	switch (id)
-	{
-		//乗る
-	case MAP_ID_CLOUD1:
-	case MAP_ID_CLOUD2:
-	case MAP_ID_CLOUD3:
 		if (!jumpFlag)
 		{
-			pos.y++;
+			jumpFlag = true;
+			SavePos = pos.y;
+
 		}
-		break;
-
-		//落ちる
-	case MAP_ID_NON:
-	case MAP_ID_NON2:
-		pos.y++;
-		break;
-
-		//取得する
-	case MAP_ID_YELLOW:
-		yellowcnt++;
-		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
-
-		break;
-	case MAP_ID_GREEN:
-		greencnt++;
-		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
-
-		break;
-	case MAP_ID_RED:
-		redcnt++;
-		lpMapControl.GetInstance().SetMapData({ pos.x,pos.y + CHIP_SIZE * 2 }, MAP_ID_NON);
-
-		break;
-
-	case MAP_ID_MAX:
-	default:
-		pos.y++;
-		break;
 	}
+	if (jumpFlag)
+	{
+		pos.y -= 3;
+		if (SavePos-pos.y  > CHIP_SIZE * 2)
+		{
+			jumpFlag = false;
+		}
+	}
+	auto &chipSize = lpMapControl.GetChipSize().x;
 
+	CheckMapHit();
 	
 
 }
 
-void Player::Draw(void)
+//void Player::Draw(void)
+//{
+//
+//	//DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
+//	DrawFormatString(0, 0, 0xff00ff, "time:%d", time);
+//}
+
+void Player::CheckMapHit(void)
 {
-	DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
+	MAP_ID id;
+	auto get_star = [&](MAP_ID id,DIR_TBL_ID dir) {
+		getcnt[((int)id) - ((int)MAP_ID_YELLOW)]++;
+		lpMapControl.GetInstance().SetMapData(pos+DirPos[dir], MAP_ID_NON);
+		return true;
+
+	};
+
+
+	for (int i = 0; i < DIR_MAX; i++)
+	{
+		id = lpMapControl.GetMapDate(pos+DirPos[i]);
+		switch (id)
+		{
+			//乗る(ジャンプ中だったら判定を行わない)
+		case MAP_ID_CLOUD1:
+		case MAP_ID_CLOUD2:
+		case MAP_ID_CLOUD3:
+			if (i == DIR_DOWN)
+			{
+				if (jumpFlag)
+				{
+					pos.y+=3;
+				}
+				
+			}
+			
+			break;
+			//落ちる
+
+		case MAP_ID_YELLOW:
+		case MAP_ID_GREEN:
+		case MAP_ID_RED:
+			get_star(id, (DIR_TBL_ID)i);
+		case MAP_ID_NON:
+		case MAP_ID_NON2:
+			if (i == DIR_DOWN)
+			{
+				if (!jumpFlag)
+				{
+					pos.y+=3;
+				}
+			}
+			break;
+		case MAP_ID_MAX:
+		default:
+			break;
+		}
+	}
 }

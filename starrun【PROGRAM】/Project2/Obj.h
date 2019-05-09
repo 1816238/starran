@@ -6,10 +6,10 @@
 
 enum DIR
 {
+	DIR_UP,
 	DIR_DOWN,
 	DIR_LEFT,
 	DIR_RIGHT,
-	DIR_UP,
 	DIR_MAX
 };
 
@@ -60,6 +60,6 @@ protected:
 	VECTOR2 divSize;				//•ªŠ„»²½Þ
 	VECTOR2 divCnt;					//•ªŠ„”
 	DIR dir;						//is•ûŒü
-
+	int time;
 };
 

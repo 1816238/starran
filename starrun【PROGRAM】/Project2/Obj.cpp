@@ -26,6 +26,7 @@ bool Obj::init(string fileName, VECTOR2 divSize, VECTOR2 divCnt)
 	imageName = fileName;
 	this->divSize = divSize;
 	this->divCnt = divCnt;
+	time = 0;
 	return true;
 }
 
@@ -36,6 +37,7 @@ Obj::~Obj()
 void Obj::UpDate(const GameCtl &controller, weekListObj objList)
 {
 	SetMove(controller, objList);
+	time++;
 }
 
 void Obj::Draw(unsigned int id)
@@ -73,9 +75,9 @@ void Obj::Draw(void)
 
 	if (ID < IMAGE_ID(imageName).size())
 	{
-		DrawGraph(drawOffset.x + pos.x, drawOffset.y + pos.y, IMAGE_ID(imageName)[ID], true);
+		DrawGraph( pos.x, pos.y, IMAGE_ID(imageName)[ID], true);
 	}
-	DrawFormatString(0, 0, 0xFFFFFF, "PLAYER‚ÌÀ•W\nX...%d\nY...%d\n", pos.x, pos.y);
+	DrawFormatString(0, 20, 0x00ffff, "PLAYER‚ÌÀ•W\nX...%d\nY...%d\n", pos.x, pos.y);
 
 }
 
@@ -119,3 +121,4 @@ void Obj::SetPos(VECTOR2 pos)
 {
 	Obj::pos = pos;
 }
+
