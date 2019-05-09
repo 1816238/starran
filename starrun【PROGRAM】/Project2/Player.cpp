@@ -13,7 +13,6 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
 
-	jumpFlag = false;
 	shotFlag = false;
 
 	/*MAIN*/
@@ -32,6 +31,12 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	}
 	pos = setUpPos;
 	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
+	for (int j = 0; j < 2; j++)
+	{
+		
+		jumpFlag[j] = false;
+
+	}
 	SavePos = 0;
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// 上
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y}, // 下
@@ -67,30 +72,58 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		ClickOld[i] = controller.GetClick(i, OLD);
 
 	}
-	MAP_ID id;
+	MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]);
 
-
+	//ショット
 	if (Click[MOUSE_INPUT_RIGHT]&(~ClickOld[MOUSE_INPUT_RIGHT]))
 	{
 		shotFlag = true;
 	}
+	//ジャンプ
 	if (Click[MOUSE_INPUT_LEFT] & (~ClickOld[MOUSE_INPUT_LEFT]))
 	{
-		if (!jumpFlag)
+		
+		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 		{
-			jumpFlag = true;
-			SavePos = pos.y;
 
+			if (!jumpFlag[0])
+			{
+				jumpFlag[0] = true;
+				SavePos = pos.y;
+
+			}
 		}
-	}
-	if (jumpFlag)
-	{
-		pos.y -= 3;
-		if (SavePos-pos.y  > CHIP_SIZE * 2.5)
+		else
 		{
-			jumpFlag = false;
+			if (!jumpFlag[1])
+			{
+				jumpFlag[1] = true;
+				SavePos = pos.y;
+			}
+		}
+		
+	}
+	
+	if (jumpFlag[0])
+	{
+		pos.y -= 4;
+		if (SavePos - pos.y > CHIP_SIZE * 2.5)
+		{
+			jumpFlag[0] = false;
 		}
 	}
+	if (jumpFlag[1])
+	{
+		pos.y -= 4;
+		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+		{
+			
+
+			jumpFlag[1] = false;
+		}
+
+	}
+
 	auto &chipSize = lpMapControl.GetChipSize().x;
 
 	CheckMapHit();
@@ -129,7 +162,7 @@ void Player::CheckMapHit(void)
 		case MAP_ID_CLOUD3:
 			if (i == DIR_DOWN)
 			{
-				if (!jumpFlag)
+				if (!jumpFlag[0]&&!jumpFlag[1])
 				{
 					pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
 				}
@@ -147,7 +180,7 @@ void Player::CheckMapHit(void)
 		case MAP_ID_NON2:
 			if (i == DIR_DOWN)
 			{
-				if (!jumpFlag)
+				if (!jumpFlag[0]&&!jumpFlag[1])
 				{
 					pos.y+=3;
 				}
