@@ -6,6 +6,7 @@
 #include "Obj.h"
 #include "GameCtl.h"
 #include "ImageMng.h"
+#include "Enemy.h"
 #include "Player.h"
 
 GameScene::GameScene()
@@ -70,9 +71,12 @@ int GameScene::Init(void)
 
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-	auto obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE*2,CHIP_SIZE*15), lpSceneMng.GetDrawOffset()));
-	lpMapControl.MapLoad(objList, false);
+	auto obj = AddObjList()(objList, std::make_unique<Player>());
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
+	lpMapControl.MapLoad(objList, false);
+
+	
+
 
 	return 0;
 }

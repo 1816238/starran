@@ -40,7 +40,6 @@ public:
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);
-
 	sharedListObj objList;
 	int enemyType;
 	bool shootFlag;

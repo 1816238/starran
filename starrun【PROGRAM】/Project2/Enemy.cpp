@@ -37,11 +37,6 @@ bool Enemy::initAnim(void)
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-}
-
-void Enemy::Draw(void)
-{
-
 	switch (enemyType)
 	{
 	case ARIES:
@@ -50,7 +45,7 @@ void Enemy::Draw(void)
 	case TAURUS:
 		SetAnim("â≤ãçç¿");
 		break;
-	case GEMINI:		
+	case GEMINI:
 		SetAnim("ëoéqç¿");
 		break;
 	case CANCER:
@@ -85,4 +80,9 @@ void Enemy::Draw(void)
 	default:
 		break;
 	}
+}
+
+void Enemy::Draw(void)
+{
+	DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, 0, 0, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 }

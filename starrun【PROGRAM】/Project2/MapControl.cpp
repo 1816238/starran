@@ -3,6 +3,7 @@
 #include "Obj.h"
 #include "ImageMng.h"
 #include "MapControl.h"
+#include "Enemy.h"
 #include "Player.h"
 
 
@@ -33,7 +34,9 @@ void MapControl::Draw(bool TitleFlag)
 				}
 			}
 		}
-		DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
+
+
+		//DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -150,6 +153,7 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 		return false;
 	}
 	bool MakePlayerflag = false;
+	bool MakeEnemyflag = false;
 	for (int y = 0; y < mapSize.y; y++)
 	{
 		for (int x = 0; x < mapSize.x; x++)
@@ -166,9 +170,12 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 
 				MakePlayerflag = true;
 			}
+			ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
+
 			break;
 		}
 	}
+
 	return true;
 }
 
