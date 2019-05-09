@@ -4,7 +4,7 @@
 #include "ImageMng.h"
 #include "MapControl.h"
 #include "Player.h"
-
+#include "SpeedMng.h"
 
 #define BBM_VER_ID 0x01		//fail ﬁ∞ºﬁÆ›ID
 #define BBM_FILE_ID "BBM_MAP_DATA"		//failID
@@ -29,11 +29,11 @@ void MapControl::Draw(bool TitleFlag)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
-					DrawGraph(x * CHIP_SIZE - pos.x,y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
+					DrawGraph(x * CHIP_SIZE - Time,y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
 				}
 			}
 		}
-		pos.x++;
+
 		DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
 }
 

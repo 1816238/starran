@@ -7,6 +7,7 @@
 #include "GameCtl.h"
 #include "ImageMng.h"
 #include "GameScene.h"
+#include "SpeedMng.h"
 
 Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -33,7 +34,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
 	SavePos = 0;
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// è„
-				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y-1}, // â∫
+				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y}, // â∫
 				VECTOR2{1,PLAYER_SIZE_Y/2}, // ç∂
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2}, // âE
 			};
@@ -59,7 +60,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	pos.x++;
+	pos.x = CHIP_SIZE * 2 + Time;
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
@@ -102,8 +103,8 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 void Player::Draw(void)
 {
 
-	DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
-	DrawFormatString(0, 0, 0xff00ff, "time:%d", time);
+	DrawGraph(CHIP_SIZE*2, pos.y, IMAGE_ID("image/player.png")[0], true);
+	DrawFormatString(0, 0, 0xff00ff, "time:%d", Time);
 }
 
 void Player::CheckMapHit(void)
@@ -128,9 +129,9 @@ void Player::CheckMapHit(void)
 		case MAP_ID_CLOUD3:
 			if (i == DIR_DOWN)
 			{
-				if (jumpFlag)
+				if (!jumpFlag)
 				{
-					pos.y+=3;
+					pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
 				}
 				
 			}

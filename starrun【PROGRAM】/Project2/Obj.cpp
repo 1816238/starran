@@ -26,7 +26,6 @@ bool Obj::init(string fileName, VECTOR2 divSize, VECTOR2 divCnt)
 	imageName = fileName;
 	this->divSize = divSize;
 	this->divCnt = divCnt;
-	time = 0;
 	return true;
 }
 
@@ -37,7 +36,6 @@ Obj::~Obj()
 void Obj::UpDate(const GameCtl &controller, weekListObj objList)
 {
 	SetMove(controller, objList);
-	time++;
 }
 
 void Obj::Draw(unsigned int id)

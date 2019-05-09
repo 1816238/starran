@@ -69,6 +69,9 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedMng.cpp">
+      <Filter>ソース ファイル\Mng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VECTOR2.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedMng.h">
+      <Filter>ヘッダー ファイル\Mng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
