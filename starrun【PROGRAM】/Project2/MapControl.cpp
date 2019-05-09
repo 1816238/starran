@@ -33,6 +33,7 @@ void MapControl::Draw(bool TitleFlag)
 				}
 			}
 		}
+		pos.x++;
 		DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
 }
 
@@ -97,7 +98,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "data/mapdata.map", "rb");
+	fopen_s(&file, "data/mapdata1.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ÕØ¿ﬁ∞ÇÃª≤ΩﬁèÓïÒÇå≥Ç…mapDataBaceÇÃª≤ΩﬁÇ∑ÇÈ
 	mapDataBace.resize(expData.sizeX * expData.sizeY);
@@ -162,7 +163,7 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 			}
 			{
 				//Ãﬂ⁄≤‘∞ÉLÉÉÉâÇ≤›Ω¿›ΩÇ∑ÇÈ
-				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(x*chipSize.x, y*chipSize.y), drawOffSet + VECTOR2(0, -20)));
+				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
 
 				MakePlayerflag = true;
 			}

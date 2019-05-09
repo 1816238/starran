@@ -29,9 +29,10 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 		getcnt[i] = 0;
 
 	}
+	pos = setUpPos;
 	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
 	SavePos = 0;
-	DirPos = {	VECTOR2{ PLAYER_SIZE_X/2,1},// è„
+	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// è„
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y-1}, // â∫
 				VECTOR2{1,PLAYER_SIZE_Y/2}, // ç∂
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2}, // âE
@@ -48,7 +49,7 @@ Player::~Player()
 
 bool Player::initAnim(void)
 {
-	AddAnim("í èÌ", 0, 0, 1, 1, true);
+	//AddAnim("í èÌ", 0, 0, 1, 1, true);
 	return true;
 }
 
@@ -58,7 +59,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	
+	pos.x++;
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
@@ -84,7 +85,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	if (jumpFlag)
 	{
 		pos.y -= 3;
-		if (SavePos-pos.y  > CHIP_SIZE * 2)
+		if (SavePos-pos.y  > CHIP_SIZE * 2.5)
 		{
 			jumpFlag = false;
 		}
@@ -96,12 +97,14 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 }
 
-//void Player::Draw(void)
-//{
-//
-//	//DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
-//	DrawFormatString(0, 0, 0xff00ff, "time:%d", time);
-//}
+
+
+void Player::Draw(void)
+{
+
+	DrawGraph(pos.x, pos.y, IMAGE_ID("image/player.png")[0], true);
+	DrawFormatString(0, 0, 0xff00ff, "time:%d", time);
+}
 
 void Player::CheckMapHit(void)
 {

@@ -75,7 +75,11 @@ void Obj::Draw(void)
 
 	if (ID < IMAGE_ID(imageName).size())
 	{
-		DrawGraph( pos.x, pos.y, IMAGE_ID(imageName)[ID], true);
+		if (imageName != "image/player.png")
+		{
+			DrawGraph( pos.x, pos.y, IMAGE_ID(imageName)[ID], true);
+
+		}
 	}
 	DrawFormatString(0, 20, 0x00ffff, "PLAYER‚ÌÀ•W\nX...%d\nY...%d\n", pos.x, pos.y);
 
