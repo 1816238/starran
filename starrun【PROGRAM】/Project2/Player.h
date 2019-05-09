@@ -5,23 +5,17 @@
 
 #define PLAYER_DF_SPEED ( 1)
 #define MOUSE_ROT_VOL (Rot)
-
+#define PLAYER_SIZE_X 40
+#define PLAYER_SIZE_Y CHIP_SIZE*2
 enum DIR_TBL_ID
 {
-	DIR_TBL_MAIN,
-	DIR_TBL_OPP,
-	DIR_TBL_SUB1,
-	DIR_TBL_SUB2,
+	DIR_TBL_UP,
+	DIR_TBL_DOWN,
+	DIR_TBL_LEFT,
+	DIR_TBL_RIGHT,
 	DIR_TBL_MAX
 };
 
-enum BLOCK_ID
-{
-	BLOCK_ID_WALL1,
-	BLOCK_ID_WALL2,
-	BLOCK_ID_BLOCK,
-	BLOCK_ID_MAX
-};
 
 using namespace std;
 
@@ -40,7 +34,7 @@ public:
 	bool initAnim(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
-	void Draw(void);
+	//void Draw(void);
 	float speed;											//ˆÚ“®‘¬“x
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
@@ -51,8 +45,9 @@ private:
 	DIR_TBL_ARRAY keyID_Tbl;								//ˆÚ“®‚Ég‚¤·°î•ñ‚ÌÃ°ÌŞÙ
 	DIR_TBL_ARRAY speed_Tbl;								//ˆÚ“®—Ê‚ÌÃ°ÌŞÙ
 	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//ˆÚ“®§ŒÀ‚ğ‚©‚¯‚éÌŞÛ¯¸ID‚ğ•ÛŠÇ‚µ‚Ä‚¨‚­
-	int greencnt;
-	int yellowcnt;
-	int redcnt;
+	int getcnt[3];											//¯‚ğæ“¾‚µ‚½”
+	void CheckMapHit(void);									//map‚Æ‚Ì“–‚½‚è”»’è
+	int SavePos;
+	array<VECTOR2,DIR_MAX>DirPos;
 };
 
