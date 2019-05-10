@@ -46,6 +46,7 @@ private:
 	void Draw(void);
 	sharedListObj objList;
 	BOSS_ID enemyType;
-	bool shootFlag;
+protected:
+    bool shotFlag;
 };
 

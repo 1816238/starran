@@ -3,11 +3,15 @@
 #include "SceneMng.h"
 #include "ImageMng.h"
 #include "MapControl.h"
+#include "SpeedMng.h"
+#include "EnemyAction.h"
 #include "Enemy.h"
 
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
-	
+	init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
+	enemyType = ARIES;
+	shotFlag = false;
 }
 
 Enemy::Enemy()
@@ -22,11 +26,24 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
+	auto ATCnt = SEASONE_LIM - Time;
+	switch (ATCnt%50)
+	{
+	case 0:
+		shotFlag = true;
+		break;
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+		break;
+	default:
+		break;
+	}
 }
 
 VECTOR2 Enemy::EnemyType(void)
 {
-	enemyType = TAURUS;
 	switch (enemyType)
 	{
 	case ARIES:
@@ -64,6 +81,7 @@ VECTOR2 Enemy::EnemyType(void)
 		break;
 	case PISCES:
 		return VECTOR2(3, 2);
+
 		break;
 	default:
 		break;
@@ -77,6 +95,9 @@ void Enemy::Draw(void)
 		EnemyType();
 		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 	};
-
+	if (Enemy::shotFlag)
+	{
+		DrawRotaGraph(pos.x, pos.y, 1 / 10, 0, IMAGE_ID("image/tama.png")[0], true, false);
+	}
 	Draw(EnemyType());
 }

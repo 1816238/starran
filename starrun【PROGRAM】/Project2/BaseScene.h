@@ -10,6 +10,8 @@
 #define GAME_SCREEN_SIZE_X 640
 #define GAME_SCREEN_SIZE_Y 480
 
+#define SEASONE_LIM	(SCREEN_SIZE_X * 3)
+
 #define CHIP_SIZE 32
 
 #define BG_SPEED 1
