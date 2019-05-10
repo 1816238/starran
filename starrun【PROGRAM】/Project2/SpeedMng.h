@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VECTOR2.h"
-
+class MapControl;
 using namespace std;
 #define lpSpeedMng SpeedMng::GetInstance()
 #define Time SpeedMng::GetInstance().GetTime()
@@ -16,9 +16,12 @@ public:
 	}
 	void move(void);
 	int GetTime(void);
+	void AddStar(void);
+	int GetYellow(void);
 private:
 	SpeedMng();
 	~SpeedMng();
 	int time;
+	int yellowstar;
 };
 

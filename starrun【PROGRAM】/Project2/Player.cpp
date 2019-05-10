@@ -31,18 +31,16 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 	}
 	pos = setUpPos;
-	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
-
-		
-		jumpFlag = false;
-
-	
+	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);		
+	jumpFlag = false;
+	DownCheck = false;
 	SavePos = 0;
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// 上
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y}, // 下
 				VECTOR2{1,PLAYER_SIZE_Y/2}, // 左
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2}, // 右
 			};
+	DeathFlag = false;
 }
 
 Player::Player()
@@ -65,7 +63,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	pos.x = CHIP_SIZE * 2 + Time;
+	pos.x = CHIP_SIZE * 2 + Time+lpSpeedMng.GetInstance().GetYellow();	//playerのX座標を動かす
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
@@ -86,44 +84,59 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 		{
 
-			if (!(jumpFlag&0x01))
+			if (!(jumpFlag&1))//1回目
 			{
-				jumpFlag += 0x01;
+				jumpFlag += 1;
 				SavePos = pos.y;
 				time = 0.00f;
 
 			}
 		}
 		else {
-			if (!(jumpFlag & 0x10))
+			if (!((jumpFlag)&2))//空中ジャンプ
 			{
 				time = 0.0;
-				jumpFlag += 0x10;
+				jumpFlag+=2;
 			}
 			
 		}
 		
 	}
-	if ((jumpFlag & 0x01) || (jumpFlag & 0x10))
+	if ((jumpFlag & 1) || ( (jumpFlag) & 2 ))
 	{
-		
-		pos.y -= 3-time/ADD_SPEED;
-		if(4 - time / ADD_SPEED < 0)
+
+		pos.y -= 3 - time / ADD_SPEED;//ジャンプ処理
+		if (4 - time / ADD_SPEED <= 0)
 		{
 			if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 			{
-				jumpFlag -= (jumpFlag&0x10?0x11: 0x01);
+				jumpFlag -= (jumpFlag &2? 3 : 1);
 				time = 0.0;
 			}
 		}
+
+
 	
 	}
-	
-	time+=1.0;
-	auto &chipSize = lpMapControl.GetChipSize().x;
+	if (controller.WheelCheck(NOW)&~controller.WheelCheck(OLD))
+	{
+		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+		{
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{0,CHIP_SIZE});
+			if (id==MAP_ID_NON||id>=MAP_ID_NON2)
+			{
+				pos.y += CHIP_SIZE * 1.5;
+
+			}
+		}
+	}
+	if (pos.y > SCREEN_SIZE_Y)
+	{
+		DeathFlag = true;
+	}
 
 	CheckMapHit();
-	
+	time += ((id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3) ? 0.0:1.0);
 
 }
 
@@ -133,14 +146,23 @@ void Player::Draw(void)
 {
 
 	DrawGraph(CHIP_SIZE*2, pos.y, IMAGE_ID("image/player.png")[0], true);
+
+	//デバッグ用
 	DrawFormatString(0, 0, 0xff00ff, "time:%d", Time);
+	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
+	DrawFormatString(0, 80, 0xffff, "加算値：%d", Time + lpSpeedMng.GetInstance().GetYellow());
+	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);
+	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]));
+
+
+
 }
 
-void Player::CheckMapHit(void)
+void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 {
 	MAP_ID id;
 	auto get_star = [&](MAP_ID id,DIR_TBL_ID dir) {
-		getcnt[((int)id) - ((int)MAP_ID_YELLOW)]++;
+		lpSpeedMng.GetInstance().AddStar();
 		lpMapControl.GetInstance().SetMapData(pos+DirPos[dir], MAP_ID_NON);
 		return true;
 
@@ -158,7 +180,7 @@ void Player::CheckMapHit(void)
 		case MAP_ID_CLOUD3:
 			if (i == DIR_DOWN)
 			{
-				if (!(jumpFlag&0x01))
+				if (!(jumpFlag&1))
 				{
 					if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
 					{
@@ -166,7 +188,10 @@ void Player::CheckMapHit(void)
 
 					}
 				}
-				
+				if (DownCheck)
+				{
+					
+				}
 			}
 			
 			break;
@@ -178,15 +203,17 @@ void Player::CheckMapHit(void)
 			get_star(id, (DIR_TBL_ID)i);
 		case MAP_ID_NON:
 		case MAP_ID_NON2:
+		case MAP_ID_MAX:
 			if (i == DIR_DOWN)
 			{
-				if (!(jumpFlag & 0x01))
+				if ((!(jumpFlag & 1)))
 				{
-					pos.y+=2+time/ADD_SPEED;
+					pos.y+=1+time/ADD_SPEED;
 				}
 			}
+
 			break;
-		case MAP_ID_MAX:
+	
 		default:
 			break;
 		}

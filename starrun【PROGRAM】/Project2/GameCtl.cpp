@@ -19,6 +19,9 @@ bool GameCtl::UpDate(void)
 	
 	ClickOld = Click;
 	Click = GetMouseInput();
+
+	wheel.old = wheel.now;
+	wheel.now = GetMouseWheelRotVol() % 2;
 	return true;
 }
 
@@ -39,4 +42,14 @@ const bool GameCtl::GetClick(int mouse_type, KEY_TYPE type) const
 		return ClickOld & mouse_type;
 	}
 	return Click & mouse_type;
+}
+
+const bool GameCtl::WheelCheck(KEY_TYPE type) const
+{
+	if (type == OLD)
+	{
+		return wheel.old;
+	}
+	return wheel.now;
+
 }
