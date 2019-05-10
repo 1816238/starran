@@ -30,8 +30,12 @@ void MapControl::Draw(bool TitleFlag)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
-					if (VECTOR2{x * CHIP_SIZE - Time, y*CHIP_SIZE} < VECTOR2{SCREEN_SIZE_X,SCREEN_SIZE_Y}&&VECTOR2{ x * CHIP_SIZE - Time, y*CHIP_SIZE } > VECTOR2{-CHIP_SIZE,0})
-					DrawGraph(x * CHIP_SIZE - Time, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
+					int add = Time + lpSpeedMng.GetInstance().GetYellow();
+					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+					{
+						DrawGraph(x * CHIP_SIZE - add , y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
+
+					}
 				}
 			}
 		}
@@ -87,7 +91,7 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 	if (!CheckSize()(selpos, mapSize))
 	{
 		//範囲外の場合、下記のIDを固定で返す
-		return MAP_ID_YELLOW;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
+		return MAP_ID_MAX;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
 
 	return mapData[selpos.y][selpos.x];
@@ -98,7 +102,7 @@ bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
 
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "data/mapdata1.map", "rb");
+	fopen_s(&file, "data/mapdata2.map", "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
 	mapDataBace.resize(expData.sizeX * expData.sizeY);

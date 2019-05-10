@@ -4,7 +4,6 @@
 #include "ImageMng.h"
 #include "MapControl.h"
 #include "SpeedMng.h"
-#include "EnemyAction.h"
 #include "Enemy.h"
 
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)

@@ -42,7 +42,7 @@ private:
 
 	int Rot;											//ﾎｲｰﾙ回転量
 
-	int jumpFlag;											//左ｸﾘｯｸしたらtrue
+	unsigned int jumpFlag;											//左ｸﾘｯｸしたらtrue
 	bool shotFlag;											//右ｸﾘｯｸでtrue
 	int SavePos;
 	DIR_TBL_ARRAY keyID_Tbl;								//移動に使うｷｰ情報のﾃｰﾌﾞﾙ
@@ -52,5 +52,7 @@ private:
 	void CheckMapHit(void);									//mapとの当たり判定
 	double time;
 	array<VECTOR2,DIR_MAX>DirPos;
+	bool DownCheck;											//当たり判定用フラグ
+	bool DeathFlag;											//死亡判定用フラグ
 };
 
