@@ -30,11 +30,10 @@ void MapControl::Draw(bool TitleFlag)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
+					DrawGraph(x * CHIP_SIZE - pos.x, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
 				}
 			}
 		}
-
-		DrawGraph(0, 0, IMAGE_ID("image/map.png")[0], true);
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
