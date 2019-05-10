@@ -5,11 +5,14 @@
 #include "MapControl.h"
 #include "Enemy.h"
 
+Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
+{
+	
+}
+
 Enemy::Enemy()
 {
-	init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
-	enemyType = ARIES;
-	initAnim();
+	
 }
 
 
@@ -17,65 +20,50 @@ Enemy::~Enemy()
 {
 }
 
-bool Enemy::initAnim(void)
-{
-	AddAnim("â≤órç¿", 0, 0, 1, 1, true);
-	AddAnim("â≤ãçç¿", 1, 0, 1, 1, true);
-	AddAnim("ëoéqç¿", 2, 0, 1, 1, true);
-	AddAnim(" äIç¿ ", 3, 0, 1, 1, true);
-	AddAnim("éÇéqç¿", 0, 1, 1, 1, true);
-	AddAnim("â≥èóç¿", 1, 1, 1, 1, true);
-	AddAnim("ìVîâç¿", 2, 1, 1, 1, true);
-	AddAnim(" Â∂ç¿ ", 3, 1, 1, 1, true);
-	AddAnim("éÀéËç¿", 0, 2, 1, 1, true);
-	AddAnim("éRórç¿", 1, 2, 1, 1, true);
-	AddAnim("êÖïrç¿", 2, 2, 1, 1, true);
-	AddAnim(" ãõç¿ ", 3, 2, 1, 1, true);
-	AddAnim(" ãÛîí ", 0, 3, 1, 1, true);	//BOSSÇ™Ç¢Ç»Ç¢éû
-	return true;
-}
-
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
+}
+
+VECTOR2 Enemy::EnemyType(void)
+{
+	enemyType = TAURUS;
 	switch (enemyType)
 	{
 	case ARIES:
-		SetAnim("â≤órç¿");
+		return VECTOR2( 0, 0);
 		break;
 	case TAURUS:
-		SetAnim("â≤ãçç¿");
+		return VECTOR2( 1, 0);
 		break;
 	case GEMINI:
-		SetAnim("ëoéqç¿");
+		return VECTOR2( 2, 0);
 		break;
 	case CANCER:
-		SetAnim(" äIç¿ ");
+		return VECTOR2( 3, 0);
 		break;
 	case LEO:
-		SetAnim("éÇéqç¿");
+		return VECTOR2( 0, 1);
 		break;
 	case VIRGO:
-		SetAnim("â≥èóç¿");
+		return VECTOR2( 1, 1);
 		break;
 	case LIBRA:
-		SetAnim("ìVîâç¿");
+		return VECTOR2( 2, 1);
 		break;
 	case SCORPIO:
-		SetAnim(" Â∂ç¿ ");
+		return VECTOR2( 3, 1);
 		break;
 	case SAGITTARIUS:
-		SetAnim("éÀéËç¿");
+		return VECTOR2( 0, 2);
 		break;
 	case CAPRICORN:
-		SetAnim("éRórç¿");
+		return VECTOR2( 1, 2);
 		break;
 	case AQUARIUS:
-		SetAnim("êÖïrç¿");
+		return VECTOR2( 2, 2);
 		break;
 	case PISCES:
-		SetAnim(" ãõç¿ ");
-	case NON:
-		SetAnim(" ãÛîí ");
+		return VECTOR2(3, 2);
 		break;
 	default:
 		break;
@@ -84,5 +72,11 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 
 void Enemy::Draw(void)
 {
-	DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, 0, 0, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
+	auto Draw = [&]( VECTOR2 divID )
+	{
+		EnemyType();
+		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
+	};
+
+	Draw(EnemyType());
 }

@@ -14,6 +14,15 @@
 
 #define BG_SPEED 1
 
+enum SEASONE
+{
+	SPRING,
+	SUMMER, 
+	AUTUMN,
+	WINTER,
+	SEASONE_MAX
+};
+
 class BaseScene;
 class GameCtl;
 

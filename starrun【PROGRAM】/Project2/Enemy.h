@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include "BaseScene.h"
 #include "Obj.h"
 #include "classObj.h"
 #include "MapControl.h"
@@ -30,18 +31,21 @@ enum BOSS_ID
 
 };
 
+//using BOSS_ID = array<BOSS_ID[SEASONE::SEASONE_MAX], ENEMY_ID_MAX>;
+
 class Enemy :
 	public Obj
 {
 public:
+	Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset);
 	Enemy();
 	~Enemy();
-	bool initAnim(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
+	VECTOR2 EnemyType(void);
 	void Draw(void);
 	sharedListObj objList;
-	int enemyType;
+	BOSS_ID enemyType;
 	bool shootFlag;
 };
 
