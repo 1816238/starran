@@ -30,7 +30,8 @@ void MapControl::Draw(bool TitleFlag)
 			{
 				if (mapData[y][x] <= MAP_ID_MAX)
 				{
-					DrawGraph(x * CHIP_SIZE - pos.x, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
+					if (VECTOR2{x * CHIP_SIZE - Time, y*CHIP_SIZE} < VECTOR2{SCREEN_SIZE_X,SCREEN_SIZE_Y}&&VECTOR2{ x * CHIP_SIZE - Time, y*CHIP_SIZE } > VECTOR2{-CHIP_SIZE,0})
+					DrawGraph(x * CHIP_SIZE - Time, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
 				}
 			}
 		}

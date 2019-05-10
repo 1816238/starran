@@ -1,5 +1,6 @@
 #include <array>
 #include <functional>
+#include <math.h>
 #include "DxLib.h"
 #include "SceneMng.h"
 #include "Player.h"
@@ -31,12 +32,11 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	}
 	pos = setUpPos;
 	init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);
-	for (int j = 0; j < 2; j++)
-	{
-		
-		jumpFlag[j] = false;
 
-	}
+		
+		jumpFlag = false;
+
+	
 	SavePos = 0;
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},// ã
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y}, // ‰º
@@ -86,44 +86,40 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 		{
 
-			if (!jumpFlag[0])
+			if (!(jumpFlag&0x01))
 			{
-				jumpFlag[0] = true;
+				jumpFlag += 0x01;
 				SavePos = pos.y;
+				time = 0.00f;
 
 			}
 		}
-		else
-		{
-			if (!jumpFlag[1])
+		else {
+			if (!(jumpFlag & 0x10))
 			{
-				jumpFlag[1] = true;
-				SavePos = pos.y;
+				time = 0.0;
+				jumpFlag += 0x10;
 			}
+			
 		}
 		
 	}
+	if ((jumpFlag & 0x01) || (jumpFlag & 0x10))
+	{
+		
+		pos.y -= 3-time/ADD_SPEED;
+		if(4 - time / ADD_SPEED < 0)
+		{
+			if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+			{
+				jumpFlag -= (jumpFlag&0x10?0x11: 0x01);
+				time = 0.0;
+			}
+		}
 	
-	if (jumpFlag[0])
-	{
-		pos.y -= 4;
-		if (SavePos - pos.y > CHIP_SIZE * 2.5)
-		{
-			jumpFlag[0] = false;
-		}
 	}
-	if (jumpFlag[1])
-	{
-		pos.y -= 4;
-		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
-		{
-			
-
-			jumpFlag[1] = false;
-		}
-
-	}
-
+	
+	time+=1.0;
 	auto &chipSize = lpMapControl.GetChipSize().x;
 
 	CheckMapHit();
@@ -162,9 +158,13 @@ void Player::CheckMapHit(void)
 		case MAP_ID_CLOUD3:
 			if (i == DIR_DOWN)
 			{
-				if (!jumpFlag[0]&&!jumpFlag[1])
+				if (!(jumpFlag&0x01))
 				{
-					pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
+					if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
+					{
+						pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
+
+					}
 				}
 				
 			}
@@ -180,9 +180,9 @@ void Player::CheckMapHit(void)
 		case MAP_ID_NON2:
 			if (i == DIR_DOWN)
 			{
-				if (!jumpFlag[0]&&!jumpFlag[1])
+				if (!(jumpFlag & 0x01))
 				{
-					pos.y+=3;
+					pos.y+=2+time/ADD_SPEED;
 				}
 			}
 			break;

@@ -7,6 +7,8 @@
 #define MOUSE_ROT_VOL (Rot)
 #define PLAYER_SIZE_X 40
 #define PLAYER_SIZE_Y CHIP_SIZE*2
+#define ADD_SPEED 10
+
 enum DIR_TBL_ID
 {
 	DIR_TBL_UP,
@@ -40,7 +42,7 @@ private:
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
 
-	bool jumpFlag[2];											//¶¸Ø¯¸‚µ‚½‚çtrue
+	int jumpFlag;											//¶¸Ø¯¸‚µ‚½‚çtrue
 	bool shotFlag;											//‰E¸Ø¯¸‚Åtrue
 	int SavePos;
 	DIR_TBL_ARRAY keyID_Tbl;								//ˆÚ“®‚Ég‚¤·°î•ñ‚ÌÃ°ÌŞÙ
@@ -48,7 +50,7 @@ private:
 	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//ˆÚ“®§ŒÀ‚ğ‚©‚¯‚éÌŞÛ¯¸ID‚ğ•ÛŠÇ‚µ‚Ä‚¨‚­
 	int getcnt[3];											//¯‚ğæ“¾‚µ‚½”
 	void CheckMapHit(void);									//map‚Æ‚Ì“–‚½‚è”»’è
-	
+	double time;
 	array<VECTOR2,DIR_MAX>DirPos;
 };
 
