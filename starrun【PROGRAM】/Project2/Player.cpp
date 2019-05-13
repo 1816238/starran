@@ -1,7 +1,7 @@
 #include <array>
 #include <functional>
 #include <math.h>
-#include "DxLib.h"
+#include <DxLib.h>
 #include "SceneMng.h"
 #include "Player.h"
 #include "MapControl.h"
@@ -71,7 +71,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		ClickOld[i] = controller.GetClick(i, OLD);
 
 	}
-	MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]);
+	MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],true);
 
 	//ショット
 	if (Click[MOUSE_INPUT_RIGHT]&(~ClickOld[MOUSE_INPUT_RIGHT]))
@@ -123,7 +123,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 		{
-			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{0,CHIP_SIZE});
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{0,CHIP_SIZE},true);
 			if (id==MAP_ID_NON||id>=MAP_ID_NON2)
 			{
 				pos.y += CHIP_SIZE * 1.5;
@@ -153,7 +153,7 @@ void Player::Draw(void)
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Time + lpSpeedMng.GetInstance().GetYellow());
 	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);
-	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]));
+	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],true));
 	DrawFormatString(0, 160, 0xffff, "YellowStar：%d",lpSpeedMng.GetInstance().GetYellow());
 	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", getcnt[0]);
 
@@ -182,7 +182,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 
 	for (int i = 0; i < DIR_MAX; i++)
 	{
-		id = lpMapControl.GetMapDate(pos+DirPos[i]);
+		id = lpMapControl.GetMapDate(pos+DirPos[i],true);
 		switch (id)
 		{
 			//乗る(ジャンプ中だったら判定を行わない)
@@ -228,5 +228,58 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		default:
 			break;
 		}
+	//subﾏｯﾌﾟの時
+		if ((Time / (SCREEN_SIZE_X * 3)) % 2)
+		{
+			id = lpMapControl.GetMapDate(pos + DirPos[i] - VECTOR2{ SCREEN_SIZE_X * (Time / (SCREEN_SIZE_X * 2)),0}, false);
+			switch (id)
+			{
+				//乗る(ジャンプ中だったら判定を行わない)
+			case MAP_ID_CLOUD1:
+			case MAP_ID_CLOUD2:
+			case MAP_ID_CLOUD3:
+				if (i == DIR_DOWN)
+				{
+					if (!(jumpFlag & 1))
+					{
+						if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
+						{
+							pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
+
+						}
+					}
+					if (DownCheck)
+					{
+
+					}
+				}
+
+				break;
+				//落ちる
+
+			case MAP_ID_YELLOW:
+			case MAP_ID_GREEN:
+			case MAP_ID_RED:
+				get_star(id, (DIR_TBL_ID)i);
+			case MAP_ID_NON:
+			case MAP_ID_NON2:
+				if (i == DIR_DOWN)
+				{
+					if ((!(jumpFlag & 1)))
+					{
+						pos.y += 1 + time / ADD_SPEED;
+					}
+				}
+				break;
+			case MAP_ID_MAX:
+
+				break;
+
+			default:
+				break;
+			}
+
+		}
+
 	}
 }

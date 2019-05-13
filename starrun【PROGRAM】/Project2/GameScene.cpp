@@ -39,10 +39,10 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		}
 	}*/
 	lpSpeedMng.GetInstance().move();
-	if (Time >= SCREEN_SIZE_X * 3)
-	{
-		lpMapControl.MapLoad("data/mapdata1.map", objList, false);
-	}
+	//if (Time >= SCREEN_SIZE_X * 3)
+	//{
+	//	lpMapControl.MapLoad("data/submap.map", objList, false,false);
+	//}
 	GameDraw();
 	return std::move(own);		//èäóLå†Çà⁄Ç∑
 }
@@ -77,8 +77,8 @@ int GameScene::Init(void)
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>());
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
-	lpMapControl.MapLoad("data/mapdata2.map",objList, false);
-
+	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
+	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	
 
 

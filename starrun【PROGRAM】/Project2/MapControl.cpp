@@ -28,13 +28,25 @@ void MapControl::Draw(bool TitleFlag)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 			{
-				if (mapData[y][x] <= MAP_ID_MAX)
+				if (mapData.main[y][x] <= MAP_ID_MAX)
 				{
 					int add = Time + lpSpeedMng.GetInstance().GetYellow();
 					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
 					{
-						DrawGraph(x * CHIP_SIZE - add , y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData[y][x]], true);
+						DrawGraph(x * CHIP_SIZE - add , y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
 
+					}
+				}
+				if ((Time / (SCREEN_SIZE_X * 3)) % 2)
+				{
+					if (mapData.sub[y][x] <= MAP_ID_MAX)
+					{
+						int add = Time + lpSpeedMng.GetInstance().GetYellow() - SCREEN_SIZE_X * (Time / (SCREEN_SIZE_X * 2));
+						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+						{
+							DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
+
+						}
 					}
 				}
 			}
@@ -47,15 +59,26 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	MapControl::chipSize = chipSize;
 	MapControl::drawOffSet = drawOffSet;
 
-	mapDataBace.resize(mapSize.x * mapSize.y);
-	mapData.resize(mapSize.y);
-	for (int count = 0; count < mapData.size(); count++)
+	mapDataBace.main.resize(mapSize.x * mapSize.y);
+	mapData.main.resize(mapSize.y);
+	for (int count = 0; count < mapData.main.size(); count++)
 	{
-		mapData[count] = &mapDataBace[mapSize.x * count];
+		mapData.main[count] = &mapDataBace.main[mapSize.x * count];
 	}
-	for (int j = 0; j < mapDataBace.size(); j++)
+	for (int j = 0; j < mapDataBace.main.size(); j++)
 	{
-		mapDataBace[j] = MAP_ID_NON;
+		mapDataBace.main[j] = MAP_ID_NON;
+	}
+
+	mapDataBace.sub.resize(mapSize.x * mapSize.y);
+	mapData.sub.resize(mapSize.y);
+	for (int count = 0; count < mapData.sub.size(); count++)
+	{
+		mapData.sub[count] = &mapDataBace.sub[mapSize.x * count];
+	}
+	for (int j = 0; j < mapDataBace.sub.size(); j++)
+	{
+		mapDataBace.sub[j] = MAP_ID_NON;
 	}
 	return false;
 }
@@ -81,11 +104,11 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id)
 	{
 		return false;
 	}
-	mapData[selPos.y][selPos.x] = id;
+	mapData.main[selPos.y][selPos.x] = id;
 	return true;
 }
 
-MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
+MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,bool type)
 {
 	VECTOR2 selpos(pos / chipSize);
 	if (!CheckSize()(selpos, mapSize))
@@ -93,59 +116,112 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 		//範囲外の場合、下記のIDを固定で返す
 		return MAP_ID_MAX;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
+	if (type)
+	{
+		return mapData.main[selpos.y][selpos.x];
 
-	return mapData[selpos.y][selpos.x];
+	}
+	else {
+		return mapData.sub[selpos.y][selpos.x];
+	}
 }
 
-bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag)
+bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type)
 {
 
 	FILE *file;
 	DataHeader expData;
 	fopen_s(&file, FileName.c_str(), "rb");
 	fread(&expData, sizeof(expData), 1, file);
-	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
-	mapDataBace.resize(expData.sizeX * expData.sizeY);
-	fread(&mapDataBace[0], sizeof(MAP_ID), mapDataBace.size(), file);
-	fclose(file);
-	bool flag = true;
-	int sum = 0;
-	for (int count = 0; count < mapData.size(); count++)
+	if (type)
 	{
-		mapData[count] = &mapDataBace[mapSize.x * count];
-	}
-	for (auto data : mapDataBace)
-	{
-		sum += (int)data;
-	}
-
-	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
-	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
-	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
-	//if(strcmp(expData.fileID, BBM_FILE_ID))
-	if ((std::string)expData.fileID != BBM_FILE_ID
-		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
-	{
-		flag = false;
-	}
-	//ﾃﾞｰﾀをｸﾘｱする
-	if (!flag)
-	{
-		for (auto &data : mapDataBace)
+		//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+		mapDataBace.main.resize(expData.sizeX * expData.sizeY);
+		fread(&mapDataBace.main[0], sizeof(MAP_ID), mapDataBace.main.size(), file);
+		fclose(file);
+		bool flag = true;
+		int sum = 0;
+		for (int count = 0; count < mapData.main.size(); count++)
 		{
-			data = MAP_ID_NON;
-			if (MessageBox(NULL, "ERROR!!",
-				"確認ダイアログ", MB_OK) == IDOK)
+			mapData.main[count] = &mapDataBace.main[mapSize.x * count];
+		}
+		for (auto data : mapDataBace.main)
+		{
+			sum += (int)data;
+		}
+
+		//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+		//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+		//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+		//if(strcmp(expData.fileID, BBM_FILE_ID))
+		if ((std::string)expData.fileID != BBM_FILE_ID
+			|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+		{
+			flag = false;
+		}
+		//ﾃﾞｰﾀをｸﾘｱする
+		if (!flag)
+		{
+			for (auto &data : mapDataBace.main)
 			{
-				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+				data = MAP_ID_NON;
+				if (MessageBox(NULL, "ERROR!!",
+					"確認ダイアログ", MB_OK) == IDOK)
+				{
+					DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+				}
 			}
 		}
+		if (flag)
+		{
+			SetUpGameObj(objList, objFlag);
+		}
+		return flag;
 	}
-	if (flag)
-	{
-		SetUpGameObj(objList, objFlag);
+	else {
+		//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+		mapDataBace.sub.resize(expData.sizeX * expData.sizeY);
+		fread(&mapDataBace.sub[0], sizeof(MAP_ID), mapDataBace.sub.size(), file);
+		fclose(file);
+		bool flag = true;
+		int sum = 0;
+		for (int count = 0; count < mapData.sub.size(); count++)
+		{
+			mapData.sub[count] = &mapDataBace.sub[mapSize.x * count];
+		}
+		for (auto data : mapDataBace.sub)
+		{
+			sum += (int)data;
+		}
+
+		//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+		//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+		//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+		//if(strcmp(expData.fileID, BBM_FILE_ID))
+		if ((std::string)expData.fileID != BBM_FILE_ID
+			|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+		{
+			flag = false;
+		}
+		//ﾃﾞｰﾀをｸﾘｱする
+		if (!flag)
+		{
+			for (auto &data : mapDataBace.sub)
+			{
+				data = MAP_ID_NON;
+				if (MessageBox(NULL, "ERROR!!",
+					"確認ダイアログ", MB_OK) == IDOK)
+				{
+					DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+				}
+			}
+		}
+		if (flag)
+		{
+			SetUpGameObj(objList, objFlag);
+		}
+		return flag;
 	}
-	return flag;
 }
 
 bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
@@ -160,7 +236,6 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 	{
 		for (int x = 0; x < mapSize.x; x++)
 		{
-			MAP_ID id = mapData[y][x];
 
 			if (MakePlayerflag)
 			{
