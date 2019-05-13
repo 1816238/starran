@@ -38,7 +38,7 @@ private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);
 	//void Draw(void);
-	float speed;											//ˆÚ“®‘¬“x
+	float JSpeed;											//ˆÚ“®‘¬“x
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
 

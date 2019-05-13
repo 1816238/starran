@@ -33,7 +33,7 @@ public:
 	bool SetUp(const VECTOR2& size, const VECTOR2& chipsize, const VECTOR2 drawOffSet);
 	bool SetMapData(const VECTOR2& pos, MAP_ID id);			//夋憸傪攝抲偟傛偆偲偟偰偄傞応強偑map偺斖埻撪偐偺敾掕
 	MAP_ID GetMapDate(const VECTOR2& pos/*嵗昗*/);					//巜掕偟偨嵗昗偺忣曬偺庢摼
-	bool MapLoad(sharedListObj objList, bool objFlag);		//曐懚偝傟偨席踢忣曬偺撉傒崬傒媦傃SUM联
+	bool MapLoad(string FileName,sharedListObj objList, bool objFlag);		//曐懚偝傟偨席踢忣曬偺撉傒崬傒媦傃SUM联
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
 	const VECTOR2 & GetChipSize(void);
 private:

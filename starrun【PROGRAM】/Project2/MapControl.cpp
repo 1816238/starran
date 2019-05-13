@@ -97,12 +97,12 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos)
 	return mapData[selpos.y][selpos.x];
 }
 
-bool MapControl::MapLoad(sharedListObj objList, bool objFlag)
+bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag)
 {
 
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "data/mapdata2.map", "rb");
+	fopen_s(&file, FileName.c_str(), "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	//ÕØ¿ﬁ∞ÇÃª≤ΩﬁèÓïÒÇå≥Ç…mapDataBaceÇÃª≤ΩﬁÇ∑ÇÈ
 	mapDataBace.resize(expData.sizeX * expData.sizeY);

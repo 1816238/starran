@@ -22,7 +22,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 				  MOUSE_ROT_VOL		//ﾎｲｰﾙ回転量
 				  };
 
-	speed = PLAYER_DF_SPEED;
+	JSpeed = 3;
 	initAnim();
 
 	for (int i = 0; i < 3; i++)
@@ -64,6 +64,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	bool Click[2];
 	bool ClickOld[2];
 	pos.x = CHIP_SIZE * 2 + Time+lpSpeedMng.GetInstance().GetYellow();	//playerのX座標を動かす
+	getcnt[0] = lpSpeedMng.GetInstance().GetYellow();
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
@@ -105,12 +106,12 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	if ((jumpFlag & 1) || ( (jumpFlag) & 2 ))
 	{
 
-		pos.y -= 3 - time / ADD_SPEED;//ジャンプ処理
-		if (4 - time / ADD_SPEED <= 0)
+		pos.y -= JSpeed - time / ADD_SPEED;//ジャンプ処理
+		if (JSpeed - time / ADD_SPEED <= 0)
 		{
 			if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
 			{
-				jumpFlag -= (jumpFlag &2? 3 : 1);
+				jumpFlag = 0;
 				time = 0.0;
 			}
 		}
@@ -153,6 +154,9 @@ void Player::Draw(void)
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Time + lpSpeedMng.GetInstance().GetYellow());
 	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);
 	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN]));
+	DrawFormatString(0, 160, 0xffff, "YellowStar：%d",lpSpeedMng.GetInstance().GetYellow());
+	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", getcnt[0]);
+
 
 
 
@@ -162,7 +166,14 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 {
 	MAP_ID id;
 	auto get_star = [&](MAP_ID id,DIR_TBL_ID dir) {
-		lpSpeedMng.GetInstance().AddStar();
+	
+		if (id == MAP_ID_YELLOW)
+		{
+			lpSpeedMng.GetInstance().AddStar();
+		}
+		else {
+			getcnt[id - 5]++;
+		}
 		lpMapControl.GetInstance().SetMapData(pos+DirPos[dir], MAP_ID_NON);
 		return true;
 
