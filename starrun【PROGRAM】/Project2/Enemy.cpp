@@ -3,7 +3,8 @@
 #include "SceneMng.h"
 #include "ImageMng.h"
 #include "MapControl.h"
-#include "SpeedMng.h"
+#include "classObj.h"
+#include "EnemyAct.h"
 #include "Enemy.h"
 
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
@@ -15,9 +16,7 @@ Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 Enemy::Enemy()
 {
-	
 }
-
 
 Enemy::~Enemy()
 {
@@ -25,19 +24,10 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	auto ATCnt = SEASONE_LIM - Time;
-	switch (ATCnt%50)
+	lpEnemyAct.SelectAct(pos);
+	if (!lpEnemyAct.GetshotFlag())
 	{
-	case 0:
-		shotFlag = true;
-		break;
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-		break;
-	default:
-		break;
+		pos.x = 0;
 	}
 }
 
@@ -89,14 +79,16 @@ VECTOR2 Enemy::EnemyType(void)
 
 void Enemy::Draw(void)
 {
-	auto Draw = [&]( VECTOR2 divID )
+	auto Draw = [&](VECTOR2 divID)
 	{
-		EnemyType();
 		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 	};
-	if (Enemy::shotFlag)
+	if (lpEnemyAct.GetshotFlag())
 	{
-		DrawRotaGraph(pos.x, pos.y, 1 / 10, 0, IMAGE_ID("image/tama.png")[0], true, false);
+		DrawRotaGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x++, SCREEN_SIZE_Y / 4 - SCREEN_SIZE_Y / 6, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
 	}
+
+	DrawFormatString(0, 175, 0xffff00, "íeÇÃFlag...%d", lpEnemyAct.GetshotFlag());
+	DrawFormatString(0, 200, 0xffff00, "íeÇÃç¿ïW...%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
 	Draw(EnemyType());
 }
