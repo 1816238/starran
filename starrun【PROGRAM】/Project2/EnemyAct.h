@@ -17,7 +17,13 @@ public:
 	~EnemyAct();
 	void SelectAct(VECTOR2 pos);
 	const bool GetshotFlag();
+	const bool GetmeteoriteFlag();
+	const int SetPos();
+	const int SetAngle();
 private:
 	void ShotCtl(VECTOR2 pos);
+	void MeteoCtl(VECTOR2 pos);
+	int randPos;
+	int randAngle;
 };
 

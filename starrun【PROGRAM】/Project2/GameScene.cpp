@@ -1,3 +1,4 @@
+#include "time.h"
 #include "Dxlib.h"
 #include "classObj.h"
 #include "GameScene.h"
@@ -73,13 +74,14 @@ int GameScene::Init(void)
 	objList->clear();
 	SetWindowText("AGS.exe Game");
 
+	srand(time(NULL));
+
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>());
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
-	
 
 
 	return 0;

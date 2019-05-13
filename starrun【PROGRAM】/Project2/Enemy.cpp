@@ -16,6 +16,8 @@ Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 Enemy::Enemy()
 {
+	maxHp = ENEMY_DEF_HP;
+	enemyHp = ENEMY_DEF_HP;
 }
 
 Enemy::~Enemy()
@@ -28,6 +30,11 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	if (!lpEnemyAct.GetshotFlag())
 	{
 		pos.x = 0;
+	}
+	
+	if (!lpEnemyAct.GetmeteoriteFlag())
+	{
+		pos.y = 0;
 	}
 }
 
@@ -83,12 +90,29 @@ void Enemy::Draw(void)
 	{
 		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 	};
+	int Pos = (SCREEN_SIZE_X - 80)*(enemyHp / maxHp);
+		DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+		DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
+		DrawBox( 99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
+
+
 	if (lpEnemyAct.GetshotFlag())
 	{
 		DrawRotaGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x++, SCREEN_SIZE_Y / 4 - SCREEN_SIZE_Y / 6, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
 	}
 
-	DrawFormatString(0, 175, 0xffff00, "íeÇÃFlag...%d", lpEnemyAct.GetshotFlag());
-	DrawFormatString(0, 200, 0xffff00, "íeÇÃç¿ïW...%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
+	if (lpEnemyAct.GetmeteoriteFlag())
+	{
+		DrawRotaGraph(GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), pos.y++, 1, -(PI/ lpEnemyAct.SetAngle()), IMAGE_ID("image/tama.png")[0], true, true);
+	}
+
+	DrawFormatString(1100, 0, 0xffff00, "ìGÇÃç≈ëÂHP", maxHp);
+	DrawFormatString(1100, 25, 0xffff00, "ìGÇÃécÇËHP", enemyHp);
+	DrawFormatString(1100, 50, 0xffff00, "íeÇÃFlag...%d", lpEnemyAct.GetshotFlag());
+	DrawFormatString(1100, 75, 0xffff00, "Ë¶êŒÇÃFlag...%d", lpEnemyAct.GetmeteoriteFlag());
+	DrawFormatString(1100,100, 0xffff00, "íeÇÃç¿ïW...%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
+	DrawFormatString(1100,125, 0xffff00, "Ë¶êŒÇÃç¿ïW...%d", pos.y);
+	DrawFormatString(1100,150, 0xffff00, "Ë¶êŒÇÃäpìx...%d", lpEnemyAct.SetAngle());
+	
 	Draw(EnemyType());
 }

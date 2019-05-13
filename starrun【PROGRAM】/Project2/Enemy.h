@@ -46,7 +46,10 @@ private:
 	void Draw(void);
 	sharedListObj objList;
 	BOSS_ID enemyType;
+	float enemyHp;
+	float maxHp;
 protected:
     bool shotFlag;
+	bool meteoriteFlag;
 };
 
