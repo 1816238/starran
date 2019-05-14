@@ -39,11 +39,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}*/
-	lpSpeedMng.GetInstance().move();
-	//if (Time >= SCREEN_SIZE_X * 3)
-	//{
-	//	lpMapControl.MapLoad("data/submap.map", objList, false,false);
-	//}
+	lpSpeedMng.move();
+
 	GameDraw();
 	return std::move(own);		//Š—LŒ ‚ğˆÚ‚·
 }

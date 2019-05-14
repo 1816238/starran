@@ -23,7 +23,7 @@ struct DataHeader
 
 void MapControl::Draw(bool TitleFlag)
 {
-	SubFlag = (Time(Main) > SCREEN_SIZE_X * 4 - CHIP_SIZE * 4 ? true : false);
+	SubFlag = (Speed(Main) > SCREEN_SIZE_X * 4 - CHIP_SIZE * 4 ? true : false);
 		for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
