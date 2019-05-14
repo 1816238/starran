@@ -4,6 +4,7 @@
 #include "ImageMng.h"
 #include "MapControl.h"
 #include "classObj.h"
+#include "SpeedMng.h"
 #include "EnemyAct.h"
 #include "Enemy.h"
 
@@ -18,6 +19,8 @@ Enemy::Enemy()
 {
 	maxHp = ENEMY_DEF_HP;
 	enemyHp = ENEMY_DEF_HP;
+	meteoPos = VECTOR2(0, 0);
+	speed = VECTOR2(0, 0);
 }
 
 Enemy::~Enemy()
@@ -26,7 +29,7 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos);
+	lpEnemyAct.SelectAct(pos , meteoPos);
 	if (!lpEnemyAct.GetshotFlag())
 	{
 		pos.x = 0;
@@ -34,7 +37,32 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	
 	if (!lpEnemyAct.GetmeteoriteFlag())
 	{
+		meteoPos.x = 0;
 		pos.y = 0;
+	}
+
+	switch (lpEnemyAct.SetAngle())
+	{
+	case 3:
+		speed = VECTOR2(1, 1);
+		break;
+	case 4:
+		speed = VECTOR2(2, 1);
+		break;
+	case 5:
+		speed = VECTOR2(SPEED, 1);
+		break;
+	case 6:
+		speed = VECTOR2(SPEED, 1);
+		break;
+	case 7:
+		speed = VECTOR2(SPEED, 1);
+		break;
+	case 8:
+		speed = VECTOR2(SPEED, 1);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -103,7 +131,9 @@ void Enemy::Draw(void)
 
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
-		DrawRotaGraph(GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), pos.y++, 1, -(PI/ lpEnemyAct.SetAngle()), IMAGE_ID("image/tama.png")[0], true, true);
+		meteoPos.x += speed.x;
+		pos.y += speed.y;
+		DrawRotaGraph(GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos() - meteoPos.x, pos.y, 1, -(PI/ lpEnemyAct.SetAngle()), IMAGE_ID("image/tama.png")[0], true, true);
 	}
 
 	DrawFormatString(1100, 0, 0xffff00, "ìGÇÃç≈ëÂHP", maxHp);

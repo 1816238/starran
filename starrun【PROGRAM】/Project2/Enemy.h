@@ -48,6 +48,8 @@ private:
 	BOSS_ID enemyType;
 	float enemyHp;
 	float maxHp;
+	VECTOR2 meteoPos;
+	VECTOR2 speed;
 protected:
     bool shotFlag;
 	bool meteoriteFlag;

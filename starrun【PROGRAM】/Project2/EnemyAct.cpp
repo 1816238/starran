@@ -13,7 +13,7 @@ EnemyAct::~EnemyAct()
 {
 }
 
-void EnemyAct::SelectAct(VECTOR2 pos)
+void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2)
 {
 	auto ATCnt = SEASONE_LIM - Time;
 	switch (ATCnt %10)
@@ -41,8 +41,8 @@ void EnemyAct::SelectAct(VECTOR2 pos)
 	default:
 		break;
 	}
-	ShotCtl(pos);
-	MeteoCtl(pos);
+	ShotCtl(pos , pos2);
+	MeteoCtl(pos , pos2);
 }
 
 const bool EnemyAct::GetshotFlag()
@@ -68,12 +68,35 @@ const int EnemyAct::SetAngle()
 {
 	if (!meteoriteFlag)
 	{
-		randAngle = ((rand() % 8)+1);
+		
+		switch ((rand() % 8) +1)
+		{
+		case 3:
+			randAngle = 3;
+			break;
+		case 4:
+			randAngle = 4;
+			break;
+		case 5: 
+			randAngle = 5;
+			break;
+		case 6:
+			randAngle = 6;
+			break;
+		case 7:
+			randAngle = 7;
+			break;
+		case 8:
+			randAngle = 8;
+			break;
+		default:
+			break;
+		}
 	}
 	return randAngle;
 }
 
-void EnemyAct::ShotCtl(VECTOR2 pos)
+void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2)
 {
 	if (shotFlag == true && SCREEN_SIZE_X - SCREEN_SIZE_X / 4 -pos.x <  - 118  )
 	{
@@ -81,9 +104,10 @@ void EnemyAct::ShotCtl(VECTOR2 pos)
 	}
 }
 
-void EnemyAct::MeteoCtl(VECTOR2 pos)
+void EnemyAct::MeteoCtl(VECTOR2 pos, VECTOR2 pos2)
 {
-	if (meteoriteFlag == true && pos.y > SCREEN_SIZE_Y + 235)
+	if (meteoriteFlag == true && pos.y > SCREEN_SIZE_Y + 235 
+		|| SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos2.x < -460)
 	{
 		meteoriteFlag = false;
 	}
