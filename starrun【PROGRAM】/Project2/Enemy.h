@@ -44,10 +44,13 @@ private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	VECTOR2 EnemyType(void);
 	void Draw(void);
+	void HitCheck(void);
+
 	sharedListObj objList;
 	BOSS_ID enemyType;
 	float enemyHp;
 	float maxHp;
+	bool enemyBossFlag;
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
 protected:
