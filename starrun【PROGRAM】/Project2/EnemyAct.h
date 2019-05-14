@@ -15,14 +15,14 @@ public:
 	}
 	EnemyAct();
 	~EnemyAct();
-	void SelectAct(VECTOR2 pos);
+	void SelectAct(VECTOR2 pos, VECTOR2 pos2);
 	const bool GetshotFlag();
 	const bool GetmeteoriteFlag();
 	const int SetPos();
 	const int SetAngle();
 private:
-	void ShotCtl(VECTOR2 pos);
-	void MeteoCtl(VECTOR2 pos);
+	void ShotCtl(VECTOR2 pos, VECTOR2 pos2);
+	void MeteoCtl(VECTOR2 pos, VECTOR2 pos2);
 	int randPos;
 	int randAngle;
 };
