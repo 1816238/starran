@@ -63,7 +63,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	pos.x = CHIP_SIZE * 2 + Time+lpSpeedMng.GetInstance().GetYellow();	//playerのX座標を動かす
+	pos.x = CHIP_SIZE * 2 + Speed(MapType(lpMapControl.GetInstance().GetSubFlag()));	//playerのX座標を動かす
 	getcnt[0] = lpSpeedMng.GetInstance().GetYellow();
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
@@ -149,13 +149,14 @@ void Player::Draw(void)
 	DrawGraph(CHIP_SIZE*2, pos.y, IMAGE_ID("image/player.png")[0], true);
 
 	//デバッグ用
-	DrawFormatString(0, 0, 0xff00ff, "time:%d", Time);
+	DrawFormatString(0, 0, 0xff00ff, "time:%d", Time(Main));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
-	DrawFormatString(0, 80, 0xffff, "加算値：%d", Time + lpSpeedMng.GetInstance().GetYellow());
+	DrawFormatString(0, 80, 0xffff, "加算値：%d", Time(Main) + lpSpeedMng.GetInstance().GetYellow());
 	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);
-	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],true));
+	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d　MAP_ID(sub):%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],true), lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], false));
 	DrawFormatString(0, 160, 0xffff, "YellowStar：%d",lpSpeedMng.GetInstance().GetYellow());
 	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", getcnt[0]);
+	DrawFormatString(0, 200, 0xffff, "subFlag：%d", lpMapControl.GetInstance().GetSubFlag());
 
 
 
@@ -165,6 +166,7 @@ void Player::Draw(void)
 void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 {
 	MAP_ID id;
+	bool subflag = lpMapControl.GetInstance().GetSubFlag();
 	auto get_star = [&](MAP_ID id,DIR_TBL_ID dir) {
 	
 		if (id == MAP_ID_YELLOW)
@@ -174,7 +176,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		else {
 			getcnt[id - 5]++;
 		}
-		lpMapControl.GetInstance().SetMapData(pos+DirPos[dir], MAP_ID_NON);
+		lpMapControl.GetInstance().SetMapData(pos+DirPos[dir], MAP_ID_NON,!subflag);
 		return true;
 
 	};
@@ -182,56 +184,61 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 
 	for (int i = 0; i < DIR_MAX; i++)
 	{
-		id = lpMapControl.GetMapDate(pos+DirPos[i],true);
-		switch (id)
+
+		id = (subflag? lpMapControl.GetMapDate(pos + DirPos[i], false ):lpMapControl.GetMapDate(pos+DirPos[i],true));
+		if (!subflag)
 		{
-			//乗る(ジャンプ中だったら判定を行わない)
-		case MAP_ID_CLOUD1:
-		case MAP_ID_CLOUD2:
-		case MAP_ID_CLOUD3:
-			if (i == DIR_DOWN)
+			switch (id)
 			{
-				if (!(jumpFlag&1))
+				//乗る(ジャンプ中だったら判定を行わない)
+			case MAP_ID_CLOUD1:
+			case MAP_ID_CLOUD2:
+			case MAP_ID_CLOUD3:
+				if (i == DIR_DOWN)
 				{
-					if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
+					if (!(jumpFlag & 1))
 					{
-						pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
+						if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
+						{
+							pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
+
+						}
+					}
+					if (DownCheck)
+					{
 
 					}
 				}
-				if (DownCheck)
-				{
-					
-				}
-			}
-			
-			break;
-			//落ちる
 
-		case MAP_ID_YELLOW:
-		case MAP_ID_GREEN:
-		case MAP_ID_RED:
-			get_star(id, (DIR_TBL_ID)i);
-		case MAP_ID_NON:
-		case MAP_ID_NON2:
-		case MAP_ID_MAX:
-			if (i == DIR_DOWN)
-			{
-				if ((!(jumpFlag & 1)))
-				{
-					pos.y+=1+time/ADD_SPEED;
-				}
-			}
+				break;
+				//落ちる
 
-			break;
-	
-		default:
-			break;
+			case MAP_ID_YELLOW:
+			case MAP_ID_GREEN:
+			case MAP_ID_RED:
+				get_star(id, (DIR_TBL_ID)i);
+			case MAP_ID_NON:
+			case MAP_ID_NON2:
+		
+				if (i == DIR_DOWN)
+				{
+					if ((!(jumpFlag & 1)))
+					{
+						pos.y += 1 + time / ADD_SPEED;
+					}
+				}
+
+				break;
+	case MAP_ID_MAX:
+			default:
+				DeathFlag = true;
+				break;
+			}
 		}
 	//subﾏｯﾌﾟの時
-		if ((Time / (SCREEN_SIZE_X * 3)) % 2)
+		if (subflag)
 		{
-			id = lpMapControl.GetMapDate(pos + DirPos[i] - VECTOR2{ SCREEN_SIZE_X * (Time / (SCREEN_SIZE_X * 2)),0}, false);
+			id = lpMapControl.GetMapDate(pos + DirPos[i]/* - VECTOR2{ SCREEN_SIZE_X * (Time / (SCREEN_SIZE_X * 2)),0}*/, false);
 			switch (id)
 			{
 				//乗る(ジャンプ中だったら判定を行わない)
@@ -272,7 +279,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 				}
 				break;
 			case MAP_ID_MAX:
-
+				DeathFlag = true;
 				break;
 
 			default:

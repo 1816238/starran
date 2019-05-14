@@ -15,7 +15,7 @@ EnemyAct::~EnemyAct()
 
 void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2)
 {
-	auto ATCnt = SEASONE_LIM - Time;
+	auto ATCnt = SEASONE_LIM - Time(Main);
 	switch (ATCnt %10)
 	{
 	case 1:

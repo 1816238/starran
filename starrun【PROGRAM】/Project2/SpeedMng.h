@@ -4,8 +4,17 @@
 class MapControl;
 using namespace std;
 #define lpSpeedMng SpeedMng::GetInstance()
-#define Time SpeedMng::GetInstance().GetTime()
+#define Time(x) SpeedMng::GetInstance().GetTime(x)		//Mainでﾒｲﾝのﾀｲﾑ、Subでｻﾌﾞのﾀｲﾑが取得できる
+#define Speed(x) SpeedMng::GetInstance().GetSpeed(x)	//Mainでﾒｲﾝのﾀｲﾑ+黄色い星の取得量/10*30、Subでｻﾌﾞのﾀｲﾑ+黄色い星の取得量/10*30が取得できる
 #define SPEED 3
+
+enum MapType {
+	Main,
+	Sub,
+	Max
+};
+
+
 class SpeedMng
 {
 public:
@@ -15,13 +24,17 @@ public:
 		return s_Instance;
 	}
 	void move(void);
-	int GetTime(void);
+	int GetTime(MapType type );
 	void AddStar(void);
 	int GetYellow(void);
+	int GetSpeed(MapType type);
 private:
 	SpeedMng();
 	~SpeedMng();
-	int time;
+	int time[Max];
 	int yellowstar;
+	int SpeedCnt;
+	int speed;
+	bool speedFlag[Max];
 };
 

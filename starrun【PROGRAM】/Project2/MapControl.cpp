@@ -23,32 +23,31 @@ struct DataHeader
 
 void MapControl::Draw(bool TitleFlag)
 {
-	
+	SubFlag = (Time(Main) > SCREEN_SIZE_X * 4 - CHIP_SIZE * 4 ? true : false);
 		for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 			{
 				if (mapData.main[y][x] <= MAP_ID_MAX)
 				{
-					int add = Time + lpSpeedMng.GetInstance().GetYellow();
+					int add = Speed(Main);
 					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
 					{
-						DrawGraph(x * CHIP_SIZE - add , y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
+						DrawGraph(x * CHIP_SIZE - add + offset[int(SEASON_ID::SPRING)], y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
 
 					}
 				}
-				if ((Time / (SCREEN_SIZE_X * 3)) % 2)
+
+				if (mapData.sub[y][x] <= MAP_ID_MAX)
 				{
-					if (mapData.sub[y][x] <= MAP_ID_MAX)
+					int add = Speed(Sub);
+					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
 					{
-						int add = Time + lpSpeedMng.GetInstance().GetYellow() - SCREEN_SIZE_X * (Time / (SCREEN_SIZE_X * 2));
-						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
-						{
-							DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
+						DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
 
-						}
 					}
 				}
+
 			}
 		}
 }
@@ -80,6 +79,7 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	{
 		mapDataBace.sub[j] = MAP_ID_NON;
 	}
+	
 	return false;
 }
 struct CheckSize
@@ -94,7 +94,7 @@ struct CheckSize
 		return true;
 	}
 };
-bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id)
+bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,bool type)
 {
 	//VECTOR2 selPos;
 	//selPos.x = pos.x / chipSize.x;
@@ -104,7 +104,13 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id)
 	{
 		return false;
 	}
-	mapData.main[selPos.y][selPos.x] = id;
+	if (type)
+	{
+		mapData.main[selPos.y][selPos.x] = id;
+	}
+	else {
+		mapData.sub[selPos.y][selPos.x] = id;
+	}
 	return true;
 }
 
@@ -261,8 +267,20 @@ const VECTOR2 & MapControl::GetChipSize(void)
 	return chipSize;
 }
 
+bool MapControl::GetSubFlag(void)
+{
+	return SubFlag;
+}
+
 MapControl::MapControl()
 {
+	offset = {
+	0,								//SPRING,
+	SCREEN_SIZE_X * 8,				//SUMMER,
+	SCREEN_SIZE_X * 16,				//AUTUMN,
+	SCREEN_SIZE_X * 24,				//WINTER,
+	0								//EX,
+	};
 }
 
 
