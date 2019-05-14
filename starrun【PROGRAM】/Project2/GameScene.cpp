@@ -9,6 +9,8 @@
 #include "ImageMng.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "ResultCtl.h"
+#include "ResultScene.h"
 #include "SpeedMng.h"
 GameScene::GameScene()
 {
@@ -22,6 +24,11 @@ GameScene::~GameScene()
 
 unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 {
+	if(CheckHitKey(KEY_INPUT_P)==1)
+	{ 
+		lpResultCtl.ResultSave(objList);
+		return std::make_unique<ResultScene>();
+	}
 	for (auto itr = objList->begin(); itr != objList->end(); itr++)
 	{
 		(*itr)->UpDate(controller, objList);
