@@ -86,7 +86,6 @@ int GameScene::Init(void)
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
-
-
+	lpSpeedMng.Init();
 	return 0;
 }

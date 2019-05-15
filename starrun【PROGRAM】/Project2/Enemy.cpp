@@ -128,7 +128,8 @@ void Enemy::Draw(void)
 
 	if (lpEnemyAct.GetshotFlag())
 	{
-		DrawRotaGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x++, SCREEN_SIZE_Y / 4 - SCREEN_SIZE_Y / 6, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
+		pos.x += 2;
+		DrawRotaGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x, SCREEN_SIZE_Y - SCREEN_SIZE_Y / 5 - SCREEN_SIZE_Y /10, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
 	}
 
 	if (lpEnemyAct.GetmeteoriteFlag())

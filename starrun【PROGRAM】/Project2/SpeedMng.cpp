@@ -65,7 +65,7 @@ bool SpeedMng::GetFlag(MapType type)
 	return speedFlag[type];
 }
 
-bool SpeedMng::init(void)
+bool SpeedMng::Init(void)
 {
 	speedTime[Main] = 0;
 	speedTime[Sub] = -1280;
@@ -79,7 +79,7 @@ bool SpeedMng::init(void)
 
 SpeedMng::SpeedMng()
 {
-	init();
+	Init();
 }
 
 
