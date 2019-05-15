@@ -1,19 +1,9 @@
 #include "DxLib.h"
+#include "ResultScene.h"
 #include "ResultCtl.h"
 
 #define BBM_VER_ID 0x01		//failﾊﾞｰｼﾞｮﾝID
 #define BBM_FILE_ID "RESULT_DATA"		//failID
-
-struct DataHeader
-{
-	char fileID[12];		//ﾌｧｲﾙのID情報
-	char verID;			//ﾊﾞｰｼﾞｮﾝID
-	char reserve1[3];	//予約領域
-	int score;
-	int time;
-	char reserve2[3];	//予約領域
-	char sum;
-};
 
 ResultCtl::ResultCtl()
 {
@@ -59,7 +49,11 @@ bool ResultCtl::ResultLoad(sharedListObj objList, bool objFlag)
 	DataHeader expData;
 	fopen_s(&file, "data/Resultdata.data", "rb");
 	fread(&expData, sizeof(expData), 1, file);
+	DrawFormatString(0, 20, 0x00ff00, "F1でコンテニュー", expData.score);
+	DrawFormatString(0, 40, 0x00ff00, "F1でコンテニュー", expData.time);
+
 	fclose(file);
+	ResultCtl::SetLoadData(expData.score,expData.time);
 	bool flag = true;
 	int sum = 0;
 
@@ -97,4 +91,20 @@ bool ResultCtl::SetUpGameObj(sharedListObj objList, bool objFlag)
 
 
 	return true;
+}
+
+void ResultCtl::SetLoadData(int score, int time)
+{
+	score2 = score;
+	time2 = time;
+}
+
+const int ResultCtl::GetLoadScoreData()
+{
+	return ResultCtl::score2;
+}
+
+const int ResultCtl::GetLoadTimeData()
+{
+	return ResultCtl::time2;
 }
