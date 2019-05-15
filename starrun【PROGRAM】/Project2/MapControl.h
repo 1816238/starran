@@ -59,6 +59,7 @@ public:
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
 	const VECTOR2 & GetChipSize(void);
 	bool GetSubFlag(void);
+	bool init(void);
 private:
 	MapControl();
 	~MapControl();

@@ -272,7 +272,7 @@ bool MapControl::GetSubFlag(void)
 	return SubFlag;
 }
 
-MapControl::MapControl()
+bool MapControl::init(void)
 {
 	offset = {
 	0,								//SPRING,
@@ -281,6 +281,12 @@ MapControl::MapControl()
 	SCREEN_SIZE_X * 24,				//WINTER,
 	0								//EX,
 	};
+	return false;
+}
+
+MapControl::MapControl()
+{
+	init();
 }
 
 

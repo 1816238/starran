@@ -11,13 +11,13 @@ void SpeedMng::move(void)
 			speedTime[s] += speed;
 		}
 	}
-if (speedTime[Main] > 1280 * 2&&speedFlag[Main])
+if (speedTime[Main] > 1280 * 3&&speedFlag[Main])
 	{
 		//time[Sub] = -1280;
 		speedFlag[Sub] = true;
 		SpeedCnt++;
 	}
-	if (speedTime[Sub] > 1280 * 2&speedFlag[Sub])
+	if (speedTime[Sub] > 1280 * 3&speedFlag[Sub])
 	{
 		//time[Main] = -1280;
 		speedFlag[Main] = true;
@@ -46,7 +46,7 @@ int SpeedMng::GetTime(void)
 void SpeedMng::AddStar(void)
 {
 	yellowstar++;
-	speed += (yellowstar % 30==29?1:0);
+	speed += (yellowstar % 20==19?1:0);
 
 }
 
@@ -65,7 +65,7 @@ bool SpeedMng::GetFlag(MapType type)
 	return speedFlag[type];
 }
 
-SpeedMng::SpeedMng()
+bool SpeedMng::init(void)
 {
 	speedTime[Main] = 0;
 	speedTime[Sub] = -1280;
@@ -74,6 +74,12 @@ SpeedMng::SpeedMng()
 	speed = SPEED;
 	speedFlag[Main] = true;
 	speedFlag[Sub] = false;
+	return false;
+}
+
+SpeedMng::SpeedMng()
+{
+	init();
 }
 
 

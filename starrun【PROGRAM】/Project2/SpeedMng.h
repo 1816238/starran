@@ -28,6 +28,7 @@ public:
 	int GetYellow(void);
 	int GetSpeed(MapType type);
 	bool GetFlag(MapType type);
+	bool Init(void);
 private:
 	SpeedMng();
 	~SpeedMng();
