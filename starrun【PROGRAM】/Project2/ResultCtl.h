@@ -5,6 +5,17 @@
 
 class Obj;
 
+struct DataHeader
+{
+	char fileID[12];		//抬操偺ID忣曬
+	char verID;			//兽凹蕻軮D
+	char reserve1[3];	//梊栺椞堟
+	int score;
+	int time;
+	char reserve2[3];	//梊栺椞堟
+	char sum;
+};
+
 class ResultCtl
 {
 public:
@@ -19,9 +30,12 @@ public:
 	bool ResultSave(sharedListObj objList);					//怴偟偔惂嶌偟偨席踢忣曬偺景剔媦傃SUM联
 	bool ResultLoad(sharedListObj objList, bool objFlag);		//曐懚偝傟偨席踢忣曬偺撉傒崬傒媦傃SUM联
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
-
+	void SetLoadData(int score, int time);
+	const int GetLoadScoreData();
+	const int GetLoadTimeData();
 private:
 	int score;
 	int time;
+	int score2;
+	int time2;
 };
-

@@ -12,5 +12,7 @@ private:
 	sharedListObj objList;
 	virtual int Init(void);
 	bool ResultDraw(void);
+	int score;
+	int time;
 };
 

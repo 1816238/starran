@@ -26,6 +26,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 {
 	if(CheckHitKey(KEY_INPUT_P)==1)
 	{ 
+		lpResultCtl.SetUp(1000, 10);
 		lpResultCtl.ResultSave(objList);
 		return std::make_unique<ResultScene>();
 	}
