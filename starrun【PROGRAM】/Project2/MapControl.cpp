@@ -2,10 +2,11 @@
 #include "SceneMng.h"
 #include "Obj.h"
 #include "ImageMng.h"
+#include "SpeedMng.h"
 #include "MapControl.h"
 #include "Enemy.h"
 #include "Player.h"
-#include "SpeedMng.h"
+
 
 #define BBM_VER_ID 0x01		//fail ﬁ∞ºﬁÆ›ID
 #define BBM_FILE_ID "BBM_MAP_DATA"		//failID
@@ -31,9 +32,9 @@ void MapControl::Draw(bool TitleFlag)
 				if (mapData.main[y][x] <= MAP_ID_MAX)
 				{
 					int add = Speed(Main);
-					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X-CHIP_SIZE*2,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE + add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
 					{
-						DrawGraph(x * CHIP_SIZE - add + offset[int(SEASON_ID::SPRING)], y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
+						DrawGraph(x * CHIP_SIZE - add + offset[int(SEASON_ID::SPRING)]+CHIP_SIZE*2, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
 
 					}
 				}
@@ -94,7 +95,7 @@ struct CheckSize
 		return true;
 	}
 };
-bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,bool type)
+bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,bool type)	//true:main,false:Sub
 {
 	//VECTOR2 selPos;
 	//selPos.x = pos.x / chipSize.x;

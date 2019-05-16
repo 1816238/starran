@@ -1,39 +1,32 @@
 #include "SpeedMng.h"
 
-
+#define SCREEN_SIZE 1280
+#define MAP_SIZE SCREEN_SIZE*4
 
 void SpeedMng::move(void)
 {
-	for (int s = 0; s < Max; s++)
+	if (time)
 	{
-		if (speedFlag[s])
-		{
-			speedTime[s] += speed;
-		}
-	}
-if (speedTime[Main] > 1280 * 3&&speedFlag[Main])
-	{
-		//time[Sub] = -1280;
-		speedFlag[Sub] = true;
-		SpeedCnt++;
-	}
-	if (speedTime[Sub] > 1280 * 3&speedFlag[Sub])
-	{
-		//time[Main] = -1280;
 		speedFlag[Main] = true;
-		SpeedCnt++;
 	}
+	if (time)
+	{
+		speedFlag[Sub] = true;
+	}
+	speedTime[Main] += (speedFlag[Main] ? speed : 0);
+	speedTime[Sub] += (speedFlag[Sub] ? speed : 0);
 
-	if(speedTime[Main]>1280*4)
+
+	//ŠeêŠ‚ÌãŒÀ
+	if (speedTime[Sub] > MAP_SIZE)
 	{
-		speedTime[Main] = -1280;
-		speedFlag[Main] = false;
-	}
-	
-	if (speedTime[Sub] > 1280 * 4)
-	{
-		speedTime[Sub] = -1280;
+		speedTime[Sub] = -SCREEN_SIZE;
 		speedFlag[Sub] = false;
+	}
+	if (speedTime[Main] > MAP_SIZE)
+	{
+		speedTime[Main] = -SCREEN_SIZE;
+		speedFlag[Main] = false;
 	}
 	time++;
 }
@@ -46,7 +39,7 @@ int SpeedMng::GetTime(void)
 void SpeedMng::AddStar(void)
 {
 	yellowstar++;
-	speed += (yellowstar % 20==19?1:0);
+	speed += (yellowstar % 30==19?1:0);
 
 }
 
@@ -68,7 +61,7 @@ bool SpeedMng::GetFlag(MapType type)
 bool SpeedMng::Init(void)
 {
 	speedTime[Main] = 0;
-	speedTime[Sub] = -1280;
+	speedTime[Sub] = -SCREEN_SIZE;
 	yellowstar = 0;
 	SpeedCnt = 0;
 	speed = SPEED;
