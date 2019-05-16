@@ -159,7 +159,7 @@ void Player::Draw(void)
 	DrawGraph(CHIP_SIZE*2, pos.y, IMAGE_ID("image/player.png")[0], true);
 
 	//デバッグ用
-	DrawFormatString(0, 0, 0xff00ff, "time(main,sub):%d,%d", Speed(Main),Speed(Sub));
+	DrawFormatString(0, 0, 0xff00ff, "time(main,sub,std):%d,%d,%d", Speed(Main),Speed(Sub),Speed(Std));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Speed(Main) + lpSpeedMng.GetYellow());
 	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);

@@ -29,24 +29,31 @@ void MapControl::Draw(bool TitleFlag)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 			{
-				if (mapData.main[y][x] <= MAP_ID_MAX)
+				if (lpSpeedMng.GetFlag(Main))
 				{
-					int add = Speed(Main);
-					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X-CHIP_SIZE*2,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE + add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+					if (mapData.main[y][x] <= MAP_ID_MAX)
 					{
-						DrawGraph(x * CHIP_SIZE - add + offset[int(SEASON_ID::SPRING)]+CHIP_SIZE*2, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
+						int add = Speed(Main);
+						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X - CHIP_SIZE * 2,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE + add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+						{
+							DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 2, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
 
+						}
 					}
+
 				}
-
-				if (mapData.sub[y][x] <= MAP_ID_MAX)
+				if (lpSpeedMng.GetFlag(Sub))
 				{
-					int add = Speed(Sub);
-					if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+					if (mapData.sub[y][x] <= MAP_ID_MAX)
 					{
-						DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
+						int add = Speed(Sub);
+						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+						{
+							DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
 
+						}
 					}
+
 				}
 
 			}

@@ -10,6 +10,7 @@ using namespace std;
 enum MapType {
 	Main,
 	Sub,
+	Std,
 	Max
 };
 
@@ -36,7 +37,9 @@ private:
 	int yellowstar;
 	int SpeedCnt;
 	int speed;
-	bool speedFlag[Max];
-	int time;
+	bool speedFlag[Max];	
+	int time;				//経過時間
+	int standardTime;		//speedflagの判定に使用する基本となるｶｳﾝﾄ
+	int Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
 };
 
