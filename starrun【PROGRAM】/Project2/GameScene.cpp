@@ -1,7 +1,6 @@
 #include "time.h"
 #include "Dxlib.h"
 #include "classObj.h"
-#include "GameScene.h"
 #include "SceneMng.h"
 #include "MapControl.h"
 #include "Obj.h"
@@ -12,6 +11,8 @@
 #include "ResultCtl.h"
 #include "ResultScene.h"
 #include "SpeedMng.h"
+#include "GameScene.h"
+
 GameScene::GameScene()
 {
 	Init();
@@ -24,7 +25,7 @@ GameScene::~GameScene()
 
 unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 {
-	if(CheckHitKey(KEY_INPUT_P)==1)
+	if(SetDeathFlag())
 	{ 
 		lpResultCtl.SetUp(1000, 10);
 		lpResultCtl.ResultSave(objList);
@@ -48,9 +49,14 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		}
 	}*/
 	lpSpeedMng.move();
-
 	GameDraw();
 	return std::move(own);		//所有権を移す
+}
+
+bool GameScene::SetDeathFlag(void)
+{
+	DeathPlayerFlag = lpPlayer.GetDeathFlag();
+		return DeathPlayerFlag;
 }
 
 bool GameScene::GameDraw(void)
@@ -63,6 +69,7 @@ bool GameScene::GameDraw(void)
 	{
 		(*data).Draw();
 	}
+	DrawFormatString(0, 260, 0xffff, "DeathPlayerFlag:%d", DeathPlayerFlag);
 
 	//[]() {};		←ラムダ式の一つ→[]{};引数を省略した形
 	//std::for_each((*objList).begin(), (*objList).end(), [](std::unique_ptr<Obj>&itr) {itr->Draw(); }/*ラムダ式*/);
@@ -88,5 +95,8 @@ int GameScene::Init(void)
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
+	lpPlayer.Init();
+
+	DeathPlayerFlag = false;
 	return 0;
 }

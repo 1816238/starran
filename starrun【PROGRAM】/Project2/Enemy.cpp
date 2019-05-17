@@ -11,17 +11,22 @@
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 	init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
-	enemyType = ARIES;
-	shotFlag = false;
-	enemyBossFlag = true;
+	
+
 }
 
 Enemy::Enemy()
 {
+	enemyType = GEMINI;
+	shotFlag = false;
+	enemyBossFlag = true;
 	maxHp = ENEMY_DEF_HP;
-	enemyHp = ENEMY_DEF_HP;
+	enemyHp = maxHp;
 	meteoPos = VECTOR2(0, 0);
 	speed = VECTOR2(0, 0);
+	frequency = ENEMY_DEF_FREQUENCY;
+	AttackType[SHOT] = false;
+	AttackType[METEORITE] = false;
 }
 
 Enemy::~Enemy()
@@ -30,7 +35,7 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos , meteoPos);
+	lpEnemyAct.SelectAct(pos , meteoPos, frequency, AttackType[SHOT], AttackType[METEORITE]);
 	if (!lpEnemyAct.GetshotFlag())
 	{
 		pos.x = 0;
@@ -72,42 +77,105 @@ VECTOR2 Enemy::EnemyType(void)
 {
 	switch (enemyType)
 	{
+		//ètÇÃêØç¿
+	case CANCER:
+		maxHp = 100;
+		enemyHp = 100;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = false;
+		frequency = 20;
+		return VECTOR2(3, 0);
+		break;
+	case LEO:
+		maxHp = 200;
+		enemyHp = 200;
+		AttackType[SHOT] = false;
+		AttackType[METEORITE] = true;
+		frequency = 20;
+		return VECTOR2(0, 1);
+		break;
+	case VIRGO:
+		maxHp = 250;
+		enemyHp = 250;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = true;
+		frequency = 20;
+		return VECTOR2(1, 1);
+		break;
+		//âƒÇÃêØç¿
+	case LIBRA:
+		maxHp = 350;
+		enemyHp = 350;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = false;
+		frequency = 15;
+		return VECTOR2(2, 1);
+		break;
+	case SCORPIO:
+		maxHp = 500;
+		enemyHp = 500;
+		AttackType[SHOT] = false;
+		AttackType[METEORITE] = true;
+		frequency = 15;
+		return VECTOR2(3, 1);
+		break;
+	case SAGITTARIUS:
+		maxHp = 650;
+		enemyHp = 650;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = true;
+		frequency = 15;
+		return VECTOR2(0, 2);
+		break;
+		//èHÇÃêØç¿
 	case ARIES:
+		maxHp = 800;
+		enemyHp = 800;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = false;
+		frequency = 10;
 		return VECTOR2( 0, 0);
 		break;
 	case TAURUS:
+		maxHp = 950;
+		enemyHp = 950;
+		AttackType[SHOT] = false;
+		AttackType[METEORITE] = true;
+		frequency = 10;
 		return VECTOR2( 1, 0);
 		break;
 	case GEMINI:
+		maxHp = 1050;
+		enemyHp = 1050;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = true;
+		frequency = 10;
 		return VECTOR2( 2, 0);
 		break;
-	case CANCER:
-		return VECTOR2( 3, 0);
-		break;
-	case LEO:
-		return VECTOR2( 0, 1);
-		break;
-	case VIRGO:
-		return VECTOR2( 1, 1);
-		break;
-	case LIBRA:
-		return VECTOR2( 2, 1);
-		break;
-	case SCORPIO:
-		return VECTOR2( 3, 1);
-		break;
-	case SAGITTARIUS:
-		return VECTOR2( 0, 2);
-		break;
+		//ì~ÇÃêØç¿
 	case CAPRICORN:
-		return VECTOR2( 1, 2);
+		maxHp = 1250;
+		enemyHp = 1250;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = false;
+		frequency = 5;
+		return VECTOR2(1, 2);
 		break;
 	case AQUARIUS:
-		return VECTOR2( 2, 2);
+		maxHp = 1450;
+		enemyHp = 1450;
+		AttackType[SHOT] = false;
+		AttackType[METEORITE] = true;
+		frequency = 5;
+		return VECTOR2(2, 2);
 		break;
 	case PISCES:
+		maxHp = 1650;
+		enemyHp = 1650;
+		AttackType[SHOT] = true;
+		AttackType[METEORITE] = true;
+		frequency = 5;
 		return VECTOR2(3, 2);
-
 		break;
 	default:
 		break;
@@ -139,21 +207,34 @@ void Enemy::Draw(void)
 		DrawRotaGraph(GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos() - meteoPos.x, pos.y, 1, -(PI/ lpEnemyAct.SetAngle()), IMAGE_ID("image/tama.png")[0], true, true);
 	}
 
-	DrawFormatString(1100, 0, 0xffff00, "ìGÇÃç≈ëÂHP...%d", enemyBossFlag);
-	DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP", maxHp);
-	DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP", enemyHp);
-	DrawFormatString(1100, 75, 0xffff00, "íeÇÃFlag...%d", lpEnemyAct.GetshotFlag());
-	DrawFormatString(1100, 100, 0xffff00, "Ë¶êŒÇÃFlag...%d", lpEnemyAct.GetmeteoriteFlag());
-	DrawFormatString(1100,125, 0xffff00, "íeÇÃç¿ïW...%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
-	DrawFormatString(1100,150, 0xffff00, "Ë¶êŒÇÃç¿ïW...%d", pos.y);
-	DrawFormatString(1100,175, 0xffff00, "Ë¶êŒÇÃäpìx...%d", lpEnemyAct.SetAngle());
-	
-	Draw(EnemyType());
+	DrawFormatString(1100, 0, 0xffff00,  "ìGÇÃéÌóﬁ......%d", static_cast<int>(enemyBossFlag));
+	DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP....%d", maxHp);
+	DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%d", enemyHp);
+	DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", AttackType[SHOT]);
+	DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", AttackType[METEORITE]);
+	DrawFormatString(1100, 125, 0xffff00, "ìGÇÃçUåÇïpìx..%d", frequency);
+	if (AttackType[SHOT])
+	{
+		DrawFormatString(1100, 150, 0xffff00, "íeÇÃFlag......%d", lpEnemyAct.GetshotFlag());
+		DrawFormatString(1100, 200, 0xffff00, "íeÇÃç¿ïW......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
+	}
+
+	if (AttackType[METEORITE])
+	{
+		DrawFormatString(1100, 175, 0xffff00, "Ë¶êŒÇÃFlag....%d", lpEnemyAct.GetmeteoriteFlag());
+		DrawFormatString(1100, 225, 0xffff00, "Ë¶êŒÇÃç¿ïW....%d", pos.y);
+		DrawFormatString(1100, 250, 0xffff00, "Ë¶êŒÇÃäpìx....%d", lpEnemyAct.SetAngle());
+	}
+
+	if (enemyType < ENEMY_ID_MAX)
+	{
+		Draw(EnemyType());
+	}
 }
 
 void Enemy::HitCheck(void)
 {
-	if (CheckHitKey(KEY_INPUT_P)==1)
+	if (CheckHitKey(KEY_INPUT_P)==1 && enemyType < ENEMY_ID_MAX - 1)
 	{
 		enemyType = static_cast<BOSS_ID>(enemyType + 1);
 		bool enemyBossFlag = false;

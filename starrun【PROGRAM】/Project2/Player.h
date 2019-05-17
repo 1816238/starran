@@ -9,6 +9,9 @@
 #define PLAYER_SIZE_Y CHIP_SIZE*2
 #define ADD_SPEED 10
 
+#define lpPlayer Player::GetInstance()
+
+
 enum DIR_TBL_ID
 {
 	DIR_TBL_UP,
@@ -26,14 +29,23 @@ using DIR_TBL_PTR_ARRAY = array<int*, DIR_MAX>;
 using DIR_TBL_ARRAY_DIR = array<DIR[DIR_TBL_MAX], DIR_MAX>;
 using MAP_MOVE_TBL_ARRAY = array<bool, MAP_ID_MAX>;
 
+class GameScene;
+
 class Player :
 	public Obj
 {
 public:
+	static Player &GetInstance(void)
+	{
+		static Player s_Instance;
+		return s_Instance;
+	}
 	Player(VECTOR2 setUpPos, VECTOR2 drawOffset);
 	Player();
 	virtual ~Player();
 	bool initAnim(void);
+	const bool GetDeathFlag(void);											//€–S‚Éƒtƒ‰ƒO‚ğ“n‚·
+	bool Init(void);													//‰Šú‰»—p
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);
