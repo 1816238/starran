@@ -64,24 +64,43 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
+	MAP_ID id;
 	//playerのX座標を動かす
-	if (lpSpeedMng.GetFlag(Main))
+	if (lpSpeedMng.GetFlag(Main)&lpSpeedMng.GetFlag(Sub) == 1)
 	{
-		pos.x = Speed(Main);
+		if (Speed(Main) < 0)
+		{
+			pos.x = Speed(Sub)-CHIP_SIZE;
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
+		}
+		else if(Speed(Sub)<0)
+		{
+			pos.x = Speed(Main) - CHIP_SIZE;
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
+		}
+		else{
+			pos.x = Speed(Main) - CHIP_SIZE;
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
+		}
 	}
 	else if (lpSpeedMng.GetFlag(Sub))
 	{
-		pos.x = Speed(Sub);
-
+		pos.x = Speed(Sub) - CHIP_SIZE;
+		id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
 	}
-	else {}
-	getcnt[0] = lpSpeedMng.GetYellow();
+	else if (lpSpeedMng.GetFlag(Main))
+	{
+		pos.x = Speed(Main) - CHIP_SIZE;
+		id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
+
+	}else{}
+
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i, NOW);
 		ClickOld[i] = controller.GetClick(i, OLD);
 	}
-	MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main);
+	//MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main);
 
 	//ショット
 	if (Click[MOUSE_INPUT_RIGHT]&(~ClickOld[MOUSE_INPUT_RIGHT]))
@@ -113,7 +132,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		}
 		
 	}
-	if ((jumpFlag & 1) || ( (jumpFlag) & 2 ))
+	if ((jumpFlag & 0b01) || ( (jumpFlag) & 0b10))
 	{
 
 		pos.y -= JSpeed - time / ADD_SPEED;//ジャンプ処理
@@ -163,8 +182,8 @@ void Player::Draw(void)
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Speed(Main) + lpSpeedMng.GetYellow());
 	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d",jumpFlag&1,jumpFlag>>1);
-	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d　MAP_ID(sub):%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],true), lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], false));
-	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", getcnt[0]);
+	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d　\nMAP_ID(sub):%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main), lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub));
+	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d",lpSpeedMng.GetYellow());
 	DrawFormatString(0, 200, 0xffff, "subFlag：%d", lpMapControl.GetSubFlag());
 	DrawFormatString(0, 220, 0xffff, "SpeedFlag(main,sub):%d,%d", lpSpeedMng.GetFlag(Main), lpSpeedMng.GetFlag(Sub));
 
@@ -178,8 +197,9 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 	bool mainflag= lpSpeedMng.GetFlag(Main);
 	bool subflag = lpSpeedMng.GetFlag(Sub);
 	MapType type = Main;
-	MAP_ID tmpIdM = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], true);
-	MAP_ID tmpIdS = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], false);
+
+	MAP_ID tmpIdM = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
+	MAP_ID tmpIdS = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
 
 
 
@@ -192,7 +212,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		else {
 			getcnt[id - 5]++;
 		}
-		lpMapControl.SetMapData(pos+DirPos[dir], MAP_ID_NON,!subflag);
+		lpMapControl.SetMapData(pos+DirPos[dir], MAP_ID_NON,type);
 		return true;
 
 	};
@@ -207,7 +227,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 			case MAP_ID_CLOUD3:
 				if (dir == DIR_TBL_DOWN)
 				{
-					if (!(jumpFlag & 1))
+					if (!(jumpFlag & 0b11))
 					{
 						if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
 						{
@@ -228,9 +248,6 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 			case MAP_ID_GREEN:
 			case MAP_ID_RED:
 				get_star(id, (DIR_TBL_ID)dir);
-			case MAP_ID_NON:
-			case MAP_ID_NON2:
-
 				if (dir == DIR_DOWN)
 				{
 					if ((!(jumpFlag & 1)))
@@ -238,9 +255,21 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 						pos.y += 1 + time / ADD_SPEED;
 					}
 				}
+				break;
 
+			case MAP_ID_NON:
+			case MAP_ID_NON2:
+				if (dir == DIR_DOWN)
+				{
+					if ((!(jumpFlag & 1)))
+					{
+						pos.y += 1 + time / ADD_SPEED;
+					}
+				}
+				
 				break;
 			case MAP_ID_MAX:
+				break;
 			default:
 				DeathFlag = true;
 				break;
@@ -249,44 +278,70 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 	};
 
 
-	for (int i = 0; i < DIR_TBL_MAX; i++)
-	{
-		if (mainflag)
+		if (mainflag&&subflag)
 		{
-			type = Main;
-		}
-		else if (subflag)
-		{
-			type = Sub;
-		}
-		if (i == DIR_TBL_DOWN)
-		{
-
-
-			if (tmpIdM&&tmpIdS)
+			if (Speed(Main)<0)
 			{
-				id = lpMapControl.GetMapDate(pos + DirPos[i], type == Main);
-
-
+				type = Sub;
 			}
-			else if ((tmpIdM >= MAP_ID_CLOUD1 && tmpIdM <= MAP_ID_CLOUD3)&&mainflag)
+			else if(Speed(Sub)<0)
 			{
-				id = lpMapControl.GetMapDate(pos + DirPos[i], true);
+				type = Main;
 
-			}
-			else if ((tmpIdS >= MAP_ID_CLOUD1 && tmpIdS <= MAP_ID_CLOUD3)&&subflag)
-			{
-				id = lpMapControl.GetMapDate(pos + DirPos[i], false);
 			}
 			else {
-				id = lpMapControl.GetMapDate(pos + DirPos[i], type == Main);
+
 			}
-
+		
 		}
-		else {
-			id = lpMapControl.GetMapDate(pos + DirPos[i], type == Main);
+	
+	for (int i = 0; i < DIR_TBL_MAX; i++)
+	{
 
-		}
+
+		//if (i == DIR_TBL_DOWN)
+		//{
+
+
+		//	if (tmpIdM&&tmpIdS)
+		//	{
+		//		id = lpMapControl.GetMapDate(pos + DirPos[i], type == Main);
+
+
+		//	}
+		//	else if ((tmpIdM >= MAP_ID_CLOUD1 && tmpIdM <= MAP_ID_CLOUD3)&&mainflag)
+		//	{
+		//		id = lpMapControl.GetMapDate(pos + DirPos[i], true);
+
+		//	}
+		//	else if ((tmpIdS >= MAP_ID_CLOUD1 && tmpIdS <= MAP_ID_CLOUD3)&&subflag)
+		//	{
+		//		id = lpMapControl.GetMapDate(pos + DirPos[i], false);
+		//	}
+		//	else {
+		//		id = lpMapControl.GetMapDate(pos + DirPos[i], type == Main);
+		//	}
+
+		//}
+		//else {
+		//
+			id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+
+			if (id == MAP_ID_YELLOW)
+			{
+				id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+			}
+			if (id == MAP_ID_MAX)
+			{
+				id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+				if (id == MAP_ID_MAX)
+				{
+					id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+
+				}
+
+			}
+		//}
 
 		CheckHit(id, type, DIR_TBL_ID(i));
 	}

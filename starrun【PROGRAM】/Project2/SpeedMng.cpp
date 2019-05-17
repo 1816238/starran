@@ -142,8 +142,8 @@ int SpeedMng::GetSpeed(MapType type)
 	}
 	else {
 		return speedTime[type];
-
 	}
+
 }
 
 bool SpeedMng::GetFlag(MapType type)
@@ -154,7 +154,7 @@ bool SpeedMng::GetFlag(MapType type)
 bool SpeedMng::Init(void)
 {
 	speedTime[Main] = -1280;
-	speedTime[Sub] =0;
+	speedTime[Sub] =MAP_SIZE-SCREEN_SIZE;
 	yellowstar = 0;
 	SpeedCnt = 0;
 	speed = SPEED;

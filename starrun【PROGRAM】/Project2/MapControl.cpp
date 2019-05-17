@@ -2,7 +2,6 @@
 #include "SceneMng.h"
 #include "Obj.h"
 #include "ImageMng.h"
-#include "SpeedMng.h"
 #include "MapControl.h"
 #include "Enemy.h"
 #include "Player.h"
@@ -34,9 +33,9 @@ void MapControl::Draw(bool TitleFlag)
 					if (mapData.main[y][x] <= MAP_ID_MAX)
 					{
 						int add = Speed(Main);
-						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X - CHIP_SIZE * 2,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE + add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+						if (x*CHIP_SIZE-add> -CHIP_SIZE*4&& x*CHIP_SIZE - add<SCREEN_SIZE_X)
 						{
-							DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 2, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
+							DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
 
 						}
 					}
@@ -47,9 +46,10 @@ void MapControl::Draw(bool TitleFlag)
 					if (mapData.sub[y][x] <= MAP_ID_MAX)
 					{
 						int add = Speed(Sub);
-						if (VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } < VECTOR2{ SCREEN_SIZE_X,SCREEN_SIZE_Y }&&VECTOR2{ x * CHIP_SIZE - add, y*CHIP_SIZE } > VECTOR2{ -CHIP_SIZE,0 })
+						if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
 						{
-							DrawGraph(x * CHIP_SIZE - add, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
+
+							DrawGraph(x * CHIP_SIZE - add+ CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.sub[y][x]], true);
 
 						}
 					}
@@ -102,7 +102,7 @@ struct CheckSize
 		return true;
 	}
 };
-bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,bool type)	//true:main,false:Sub
+bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type)	//true:main,false:Sub
 {
 	//VECTOR2 selPos;
 	//selPos.x = pos.x / chipSize.x;
@@ -112,17 +112,17 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,bool type)	//true:mai
 	{
 		return false;
 	}
-	if (type)
+	if (type==Main)
 	{
 		mapData.main[selPos.y][selPos.x] = id;
 	}
-	else {
+	else if(type==Sub){
 		mapData.sub[selPos.y][selPos.x] = id;
-	}
+	}else{}
 	return true;
 }
 
-MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,bool type)
+MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type)
 {
 	VECTOR2 selpos(pos / chipSize);
 	if (!CheckSize()(selpos, mapSize))
@@ -130,14 +130,16 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,bool type)
 		//範囲外の場合、下記のIDを固定で返す
 		return MAP_ID_MAX;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
-	if (type)
+	if (type==Main)
 	{
 		return mapData.main[selpos.y][selpos.x];
 
 	}
-	else {
+	else if(type==Sub)
+	{
 		return mapData.sub[selpos.y][selpos.x];
 	}
+	else { return MAP_ID_NON; }
 }
 
 bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type)

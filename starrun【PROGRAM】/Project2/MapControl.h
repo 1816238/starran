@@ -3,6 +3,7 @@
 #include <array>
 #include "VECTOR2.h"
 #include "classObj.h"
+#include "SpeedMng.h"
 
 enum MAP_ID
 {
@@ -41,6 +42,7 @@ typedef struct {
 #define lpMapControl MapControl::GetInstance()
 
 class Obj;
+//class SpeedMng;
 using namespace std;
 
 class MapControl
@@ -53,8 +55,8 @@ public:
 	}
 	void Draw(bool TitleFlag);		//map画像の描画
 	bool SetUp(const VECTOR2& size, const VECTOR2& chipsize, const VECTOR2 drawOffSet);
-	bool SetMapData(const VECTOR2& pos, MAP_ID id, bool type);			//画像を配置しようとしている場所がmapの範囲内かの判定
-	MAP_ID GetMapDate(const VECTOR2& pos,bool type);					//指定した座標の情報の取得,typeがtrueならmainのﾏｯﾌﾟﾃﾞｰﾀをfalseならsubのﾏｯﾌﾟﾃﾞｰﾀを返す
+	bool SetMapData(const VECTOR2& pos, MAP_ID id, MapType type);			//画像を配置しようとしている場所がmapの範囲内かの判定
+	MAP_ID GetMapDate(const VECTOR2& pos,MapType type);					//指定した座標の情報の取得,typeがtrueならmainのﾏｯﾌﾟﾃﾞｰﾀをfalseならsubのﾏｯﾌﾟﾃﾞｰﾀを返す
 	bool MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type);		//保存されたﾏｯﾌﾟ情報の読み込み及びSUMﾁｪｯｸ
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
 	const VECTOR2 & GetChipSize(void);
