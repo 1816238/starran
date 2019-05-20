@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "SceneMng.h"
 #include "ImageMng.h"
+#include "SoundMng.h"
 #include "MapControl.h"
 #include "classObj.h"
 #include "SpeedMng.h"
@@ -18,15 +19,17 @@ Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 Enemy::Enemy()
 {
 	enemyType = GEMINI;
-	shotFlag = false;
-	enemyBossFlag = true;
 	maxHp = ENEMY_DEF_HP;
+	frequency = ENEMY_DEF_FREQUENCY;
 	enemyHp = maxHp;
+	at_Cnt = 3;
+
 	meteoPos = VECTOR2(0, 0);
 	speed = VECTOR2(0, 0);
-	frequency = ENEMY_DEF_FREQUENCY;
 	AttackType[SHOT] = false;
 	AttackType[METEORITE] = false;
+	shotFlag = false;
+	enemyBossFlag = true;
 }
 
 Enemy::~Enemy()
@@ -50,22 +53,22 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	switch (lpEnemyAct.SetAngle())
 	{
 	case 3:
-		speed = VECTOR2(1, 1);
+		speed = VECTOR2(4, 4);
 		break;
 	case 4:
-		speed = VECTOR2(2, 1);
+		speed = VECTOR2(5, 4);
 		break;
 	case 5:
-		speed = VECTOR2(SPEED, 1);
+		speed = VECTOR2(SPEED, 4);
 		break;
 	case 6:
-		speed = VECTOR2(SPEED, 1);
+		speed = VECTOR2(SPEED, 4);
 		break;
 	case 7:
-		speed = VECTOR2(SPEED, 1);
+		speed = VECTOR2(SPEED, 3);
 		break;
 	case 8:
-		speed = VECTOR2(SPEED, 1);
+		speed = VECTOR2(SPEED, 3);
 		break;
 	default:
 		break;
@@ -84,6 +87,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = false;
 		frequency = 20;
+		at_Cnt = 3;
 		return VECTOR2(3, 0);
 		break;
 	case LEO:
@@ -92,6 +96,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = false;
 		AttackType[METEORITE] = true;
 		frequency = 20;
+		at_Cnt = 3;
 		return VECTOR2(0, 1);
 		break;
 	case VIRGO:
@@ -100,6 +105,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = true;
 		frequency = 20;
+		at_Cnt = 3;
 		return VECTOR2(1, 1);
 		break;
 		//âƒÇÃêØç¿
@@ -109,6 +115,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = false;
 		frequency = 15;
+		at_Cnt = 3;
 		return VECTOR2(2, 1);
 		break;
 	case SCORPIO:
@@ -117,6 +124,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = false;
 		AttackType[METEORITE] = true;
 		frequency = 15;
+		at_Cnt = 3;
 		return VECTOR2(3, 1);
 		break;
 	case SAGITTARIUS:
@@ -125,6 +133,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = true;
 		frequency = 15;
+		at_Cnt = 3;
 		return VECTOR2(0, 2);
 		break;
 		//èHÇÃêØç¿
@@ -134,6 +143,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = false;
 		frequency = 10;
+		at_Cnt = 3;
 		return VECTOR2( 0, 0);
 		break;
 	case TAURUS:
@@ -142,6 +152,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = false;
 		AttackType[METEORITE] = true;
 		frequency = 10;
+		at_Cnt = 3;
 		return VECTOR2( 1, 0);
 		break;
 	case GEMINI:
@@ -150,6 +161,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = true;
 		frequency = 10;
+		at_Cnt = 3;
 		return VECTOR2( 2, 0);
 		break;
 		//ì~ÇÃêØç¿
@@ -159,6 +171,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = false;
 		frequency = 5;
+		at_Cnt = 3;
 		return VECTOR2(1, 2);
 		break;
 	case AQUARIUS:
@@ -167,6 +180,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = false;
 		AttackType[METEORITE] = true;
 		frequency = 5;
+		at_Cnt = 3;
 		return VECTOR2(2, 2);
 		break;
 	case PISCES:
@@ -175,6 +189,7 @@ VECTOR2 Enemy::EnemyType(void)
 		AttackType[SHOT] = true;
 		AttackType[METEORITE] = true;
 		frequency = 5;
+		at_Cnt = 3;
 		return VECTOR2(3, 2);
 		break;
 	default:
@@ -197,9 +212,12 @@ void Enemy::Draw(void)
 	if (lpEnemyAct.GetshotFlag())
 	{
 		pos.x += 2;
+		if (!lpSoundMng.CheckSound("Sound/Sound effect/earth-tremor1.mp3"))
+		{
+			lpSoundMng.PlaySound("Sound/Sound effect/earth-tremor1.mp3", DX_PLAYTYPE_LOOP);
+		}
 		DrawRotaGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x, SCREEN_SIZE_Y - SCREEN_SIZE_Y / 5 - SCREEN_SIZE_Y /10, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
 	}
-
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
 		meteoPos.x += speed.x;

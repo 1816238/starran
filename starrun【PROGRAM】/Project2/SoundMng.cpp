@@ -24,6 +24,16 @@ const int & SoundMng::PlaySound(std::string f_name, int soundType)
 	return PlaySoundMem(GetID(f_name)[0], soundType);
 }
 
+const int & SoundMng::StopSound(std::string f_name)
+{
+	return StopSoundMem(GetID(f_name)[0]);
+}
+
+const int & SoundMng::CheckSound(std::string f_name)
+{
+	return CheckSoundMem(GetID(f_name)[0]);
+}
+
 SoundMng::SoundMng()
 {
 }

@@ -65,5 +65,6 @@ protected:
 	bool meteoriteFlag;
 	bool AttackType[AT_TYPE_MAX];
 	unsigned int frequency;
+	unsigned int at_Cnt;
 };
 

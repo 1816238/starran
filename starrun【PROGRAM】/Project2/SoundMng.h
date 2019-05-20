@@ -26,9 +26,13 @@ public:
 	}
 	const VEC_INT& GetID(std::string f_name);		// SEÊÝÄÞÙ‚Ì“üŽè
 	const int& PlaySound(std::string f_name, int soundType);
+	const int& StopSound(std::string f_name);
+	const int& CheckSound(std::string f_name);
 private:
 	SoundMng();
 	~SoundMng();
+	SoundMng(SoundMng&);
+	void operator = (SoundMng &) {};
 	std::map<std::string, VEC_INT> sndMap;
 
 };

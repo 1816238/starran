@@ -31,14 +31,14 @@
     <Filter Include="ヘッダー ファイル\Ctl">
       <UniqueIdentifier>{e2996291-d3b7-4f43-92cb-1eec17493f7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Obj\Scene">
-      <UniqueIdentifier>{35371298-f562-4d6e-94f6-8f76156ba1e3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{394b986d-34a2-46aa-b8c3-c846838851c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Enemy">
       <UniqueIdentifier>{d890e77f-5b1f-43eb-bf4b-8dbfa7514090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Scene">
+      <UniqueIdentifier>{35371298-f562-4d6e-94f6-8f76156ba1e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,10 +102,10 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="BaseScene.h">
-      <Filter>ヘッダー ファイル\Obj\Scene</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル\Obj\Scene</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="ImageMng.h">
       <Filter>ヘッダー ファイル\Mng</Filter>
@@ -126,7 +126,7 @@
       <Filter>ヘッダー ファイル\Ctl</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル\Obj\Scene</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SpeedMng.h">
       <Filter>ヘッダー ファイル\Mng</Filter>
@@ -141,7 +141,7 @@
       <Filter>ヘッダー ファイル\Ctl</Filter>
     </ClInclude>
     <ClInclude Include="ResultScene.h">
-      <Filter>ヘッダー ファイル\Obj\Scene</Filter>
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SoundMng.h">
       <Filter>ヘッダー ファイル\Mng</Filter>

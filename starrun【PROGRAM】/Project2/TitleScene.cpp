@@ -2,6 +2,7 @@
 #include "ImageMng.h"
 #include "GameScene.h"
 #include "SceneMng.h"
+#include "SoundMng.h"
 #include "MapControl.h"
 #include "GameCtl.h"
 #include "TitleScene.h"
@@ -27,7 +28,6 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > start&&Mpos < start + VECTOR2{ 320,160 }))
 	{
 		return std::make_unique<GameScene>();
-
 	}
 
 	if (controller.GetCtl(KEY_TYPE::NOW)[KEY_INPUT_SPACE]
@@ -89,6 +89,7 @@ int TitleScene::Init(void)
 	}
 	objList->clear();
 	SetWindowText("AGS.exe Title");
+	lpSoundMng.PlaySound("Sound/BGM/milkyway.mp3", DX_PLAYTYPE_LOOP);
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X,SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	cnt = 255;

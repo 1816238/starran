@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "BaseScene.h"
 #include "SpeedMng.h"
+#include "SoundMng.h"
 #include "ImageMng.h"
 #include "Enemy.h"
 #include "EnemyAct.h"
@@ -123,6 +124,7 @@ void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2)
 {
 	if (shotFlag == true && SCREEN_SIZE_X - SCREEN_SIZE_X / 4 -pos.x <  - 118  )
 	{
+		lpSoundMng.StopSound("Sound/Sound effect/earth-tremor1.mp3");
 		shotFlag = false;
 	}
 }

@@ -11,6 +11,7 @@
 #include "ResultCtl.h"
 #include "ResultScene.h"
 #include "SpeedMng.h"
+#include "SoundMng.h"
 #include "GameScene.h"
 
 GameScene::GameScene()
@@ -87,7 +88,7 @@ int GameScene::Init(void)
 	SetWindowText("AGS.exe Game");
 
 	srand(time(NULL));
-
+	lpSoundMng.StopSound("Sound/BGM/milkyway.mp3");
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	obj = AddObjList()(objList, std::make_unique<Enemy>());
