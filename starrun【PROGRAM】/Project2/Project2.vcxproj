@@ -145,6 +145,7 @@
     <ClCompile Include="ResultCtl.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneMng.cpp" />
+    <ClCompile Include="SoundMng.cpp" />
     <ClCompile Include="SpeedMng.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="VECTOR2.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="ResultCtl.h" />
     <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SceneMng.h" />
+    <ClInclude Include="SoundMng.h" />
     <ClInclude Include="SpeedMng.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="VECTOR2.h" />

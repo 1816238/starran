@@ -181,7 +181,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//~‚è‚é
 	if (controller.WheelCheck(NOW)&~controller.WheelCheck(OLD))
 	{
-		if (id >= MAP_ID_CLOUD_DOWN1 && id <= MAP_ID_CLOUD_DOWN3)
+		if (DownCheckFlag[id])
 		{
 			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{ 0,CHIP_SIZE }, Main);
 			if (id == MAP_ID_NON || id >= MAP_ID_BLUE)

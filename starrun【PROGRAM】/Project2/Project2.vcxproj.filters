@@ -90,6 +90,9 @@
     <ClCompile Include="ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="SoundMng.cpp">
+      <Filter>ソース ファイル\Mng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VECTOR2.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="ResultScene.h">
       <Filter>ヘッダー ファイル\Obj\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundMng.h">
+      <Filter>ヘッダー ファイル\Mng</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
