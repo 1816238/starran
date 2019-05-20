@@ -238,9 +238,6 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 
 	MapType type;
 
-	MAP_ID tmpIdM = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
-	MAP_ID tmpIdS = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
-
 
 
 	auto get_star = [&](MAP_ID id, DIR_TBL_ID dir) {
@@ -249,19 +246,19 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		switch (id)
 		{
 
-		case MAP_ID_BLUE:
+		case MAP_ID_BLUE:			//’e‚Ì½Ëß°ÄÞ±¯Ìß
 			getcnt[0]++;
 			break;
-		case MAP_ID_YELLOW:
+		case MAP_ID_YELLOW:			//½Ëß°ÄÞ±¯Ìß
 			lpSpeedMng.AddStar();
 			break;
-		case MAP_ID_GREEN:
+		case MAP_ID_GREEN:			//
 			getcnt[1]++;
 			break;
-		case MAP_ID_RED:
+		case MAP_ID_RED:			//UŒ‚—Í±¯Ìß
 			getcnt[2]++;
 			break;
-		case MAP_ID_PURPLE:
+		case MAP_ID_PURPLE:			//ÀÞÒ°¼Þ
 			if (!damageFlag)
 			{
 				damageFlag = true;
@@ -297,23 +294,6 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_CLOUD1:
 		case MAP_ID_CLOUD2:
 		case MAP_ID_CLOUD3:
-			if (dir == DIR_TBL_DOWN)
-			{
-				if (!(jumpFlag & 0b11))
-				{
-					if (pos.y%CHIP_SIZE > CHIP_SIZE / 2)
-					{
-						pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
-
-					}
-				}
-				if (DownCheck)
-				{
-
-				}
-			}
-
-			break;
 		case MAP_ID_CLOUD_DOWN1:
 		case MAP_ID_CLOUD_DOWN2:
 		case MAP_ID_CLOUD_DOWN3:
@@ -326,10 +306,6 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 						pos.y = pos.y / CHIP_SIZE * CHIP_SIZE;
 
 					}
-				}
-				if (DownCheck)
-				{
-
 				}
 			}
 			break;

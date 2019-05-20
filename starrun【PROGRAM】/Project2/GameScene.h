@@ -19,5 +19,7 @@ private:
 	virtual int Init(void);
 	bool GameDraw(void);
 	 bool DeathPlayerFlag;
+	 ListObj_itr obj;
+
 };
 
