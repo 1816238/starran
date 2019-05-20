@@ -13,34 +13,57 @@ EnemyAct::~EnemyAct()
 {
 }
 
-void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2)
+void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, bool at_meteorite)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
-	switch (ATCnt %10)
+	
+	if ((ATCnt %frequency) == 1)
 	{
-	case 1:
-		shotFlag = true;
-		if (!shotFlag)
+		if (at_shot)
 		{
-			SetPos();
+			shotFlag = true;
+			if (!shotFlag)
+			{
+				SetPos();
+			}
 		}
-		break;
-	case 2:
-		meteoriteFlag = true;
-		if (!meteoriteFlag)
+
+		if (at_meteorite)
 		{
-			
-			SetPos();
-			SetAngle();
+			meteoriteFlag = true;
+			if (!meteoriteFlag)
+			{
+				SetPos();
+				SetAngle();
+			}
 		}
-		break;
-	case 3:
-	case 4:
-	case 5:
-		break;
-	default:
-		break;
 	}
+
+	if (AttackType[SHOT] && AttackType[METEORITE])
+	{
+		switch (ATCnt %frequency)
+		{
+		case 1:
+			shotFlag = true;
+			if (!shotFlag)
+			{
+				SetPos();
+			}
+			break;
+		case 2:
+			meteoriteFlag = true;
+			if (!meteoriteFlag)
+			{
+
+				SetPos();
+				SetAngle();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	
 	ShotCtl(pos , pos2);
 	MeteoCtl(pos , pos2);
 }

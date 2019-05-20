@@ -14,21 +14,28 @@ enum ENEMY_TYPE
 
 enum BOSS_ID
 {
-	ARIES,
-	TAURUS,
-	GEMINI,
 	CANCER,
 	LEO,
 	VIRGO,
 	LIBRA,
 	SCORPIO,
 	SAGITTARIUS,
+	ARIES,
+	TAURUS,
+	GEMINI,
 	CAPRICORN,
 	AQUARIUS,
 	PISCES,
 	NON,
 	ENEMY_ID_MAX,
 
+};
+
+enum ENEMY_AT_TYPE
+{
+	SHOT,
+	METEORITE,
+	AT_TYPE_MAX
 };
 
 //using BOSS_ID = array<BOSS_ID[SEASONE::SEASONE_MAX], ENEMY_ID_MAX>;
@@ -48,13 +55,15 @@ private:
 
 	sharedListObj objList;
 	BOSS_ID enemyType;
-	float enemyHp;
-	float maxHp;
+	unsigned int enemyHp;
+	unsigned int maxHp;
 	bool enemyBossFlag;
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
 protected:
     bool shotFlag;
 	bool meteoriteFlag;
+	bool AttackType[AT_TYPE_MAX];
+	unsigned int frequency;
 };
 

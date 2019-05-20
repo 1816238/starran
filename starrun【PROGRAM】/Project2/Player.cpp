@@ -14,7 +14,6 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
 
-	shotFlag = false;
 
 	/*MAIN*/
 	keyID_Tbl = { MOUSE_INPUT_LEFT,//ç∂
@@ -31,16 +30,13 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 
 	}
 	pos = setUpPos;
-	Obj::init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);		
-	jumpFlag = false;
-	DownCheck = false;
+	Obj::init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
 	SavePos = 0;
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},				// è„
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y},		// â∫
 				VECTOR2{1,PLAYER_SIZE_Y/2},					// ç∂
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2},	// âE
 			};
-	DeathFlag = false;
 }
 
 Player::Player()
@@ -55,6 +51,20 @@ bool Player::initAnim(void)
 {
 	//AddAnim("í èÌ", 0, 0, 1, 1, true);
 	return true;
+}
+
+const bool Player::GetDeathFlag(void)
+{
+	return DeathFlag;
+}
+
+bool Player::Init(void)
+{
+	shotFlag = false;
+	jumpFlag = false;
+	DownCheck = false;
+	DeathFlag = false;
+	return false;
 }
 
 

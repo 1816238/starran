@@ -15,7 +15,7 @@ public:
 	}
 	EnemyAct();
 	~EnemyAct();
-	void SelectAct(VECTOR2 pos, VECTOR2 pos2);
+	void SelectAct(VECTOR2 pos, VECTOR2 pos2, int frequency , bool at_shot, bool at_meteorite);
 	const bool GetshotFlag();
 	const bool GetmeteoriteFlag();
 	const int SetPos();
