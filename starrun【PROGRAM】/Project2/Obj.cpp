@@ -73,7 +73,7 @@ void Obj::Draw(void)
 
 	if (ID < IMAGE_ID(imageName).size())
 	{
-		if (imageName != "image/player.png")
+		if (imageName != "image/player_W.png")
 		{
 			DrawGraph( pos.x, pos.y, IMAGE_ID(imageName)[ID], true);
 

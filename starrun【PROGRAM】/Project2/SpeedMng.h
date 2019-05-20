@@ -30,6 +30,9 @@ public:
 	int GetSpeed(MapType type);
 	bool GetFlag(MapType type);
 	bool Init(void);
+	SpeedMng(SpeedMng& in) {};
+	void operator=(SpeedMng& in) {};
+	unsigned int GetSeasoonFlag(MapType type);
 private:
 	SpeedMng();
 	~SpeedMng();
@@ -44,5 +47,6 @@ private:
 	int standardTime;		//speedflagの判定に使用する基本となるｶｳﾝﾄ
 	unsigned int Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
 	unsigned int subseasonFlag;
+	
 };
 

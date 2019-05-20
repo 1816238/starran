@@ -66,6 +66,8 @@ public:
 	const VECTOR2 & GetChipSize(void);
 	bool GetSubFlag(void);
 	bool init(void);
+	MapControl(MapControl& in) {};
+	void operator=(MapControl&in) {};
 private:
 	MapControl();
 	~MapControl();

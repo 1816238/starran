@@ -20,7 +20,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	initAnim();
 
 	pos = setUpPos;
-	Obj::init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
+	Obj::init("image/player_W.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
 
 	Init();
 }
@@ -213,7 +213,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 void Player::Draw(void)
 {
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, !(time["ﾀﾞﾒｰｼﾞ"] / 10 % 2) * 255);
-	DrawGraph(CHIP_SIZE * 2, pos.y, IMAGE_ID("image/player.png")[0], true);
+	DrawGraph(CHIP_SIZE * 2, pos.y, IMAGE_ID("image/player_W.png")[0], true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//デバッグ用

@@ -263,7 +263,7 @@ bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 
 				MakePlayerflag = true;
 			}
-			ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
+			//ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
 
 			break;
 		}
@@ -284,13 +284,7 @@ bool MapControl::GetSubFlag(void)
 
 bool MapControl::init(void)
 {
-	offset = {
-	0,								//SPRING,
-	SCREEN_SIZE_X * 8,				//SUMMER,
-	SCREEN_SIZE_X * 16,				//AUTUMN,
-	SCREEN_SIZE_X * 24,				//WINTER,
-	0								//EX,
-	};
+
 	return false;
 }
 
