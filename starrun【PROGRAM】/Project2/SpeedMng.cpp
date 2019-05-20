@@ -8,7 +8,7 @@ void SpeedMng::move(void)
 {
 	int start;
 	int end ;
-
+	//‹Gß‚Ì•Ï‚í‚è–Ú
 	if (standardTime >= -1280 || standardTime >= 39680)
 	{
 		Seasonflag = 0;
@@ -25,21 +25,38 @@ void SpeedMng::move(void)
 	{
 		Seasonflag = 3;
 	}
-	
+	//ƒTƒuÏ¯Ìß‚Ì‹Gß‚Ì•Ï‚í‚è–Ú
+	if (standardTime >= -1280 || standardTime >= 40960)
+	{
+		subseasonFlag = 0;
+	}
+	if (standardTime >= 10240)
+	{
+		subseasonFlag = 1;
+	}
+	if (standardTime >= 20480)
+	{
+		subseasonFlag = 2;
+	}
+	if (standardTime >= 30720)
+	{
+		subseasonFlag = 3;
+	}
+
 	//Seasonflag += (standardTime % 10240 == 10239 ? 1 : 0);
 
-	start = -1280;
-	end = 5120;
-	speedFlag[Main] = (standardTime >= start + Seasonflag * MAP_SIZE * 2 && standardTime <= end + Seasonflag * MAP_SIZE * 2 ? true : false);
+	start = -1280 + Seasonflag * MAP_SIZE * 2;
+	end = 5120 + Seasonflag * MAP_SIZE * 2;
+	speedFlag[Main] = (standardTime >= start && standardTime <= end  ? true : false);
 
-	start = 3840;
-	end = 10240;
-	speedFlag[Sub] = (standardTime >= start + Seasonflag * MAP_SIZE * 2 && standardTime <= end + Seasonflag * MAP_SIZE * 2 ? true : false);
+	start = 3840 + subseasonFlag * MAP_SIZE * 2;
+	end = 10240 + subseasonFlag * MAP_SIZE * 2;
+	speedFlag[Sub] = (standardTime >= start && standardTime <= end  ? true : false);
 	if (standardTime <= 0)
 	{
-		start = 0-1280;
-		end = 0;
-		speedFlag[Sub] = (standardTime >= start + Seasonflag * MAP_SIZE * 2 && standardTime <= end + Seasonflag * MAP_SIZE * 2 ? true : false);
+		start = 0-1280 + subseasonFlag * MAP_SIZE * 2;
+		end = 0 + subseasonFlag * MAP_SIZE * 2;
+		speedFlag[Sub] = (standardTime >= start && standardTime <= end ? true : false);
 
 
 	}
@@ -108,10 +125,9 @@ void SpeedMng::move(void)
 		speedTime[Main] = -SCREEN_SIZE;
 		//speedFlag[Main] = false;
 	}
-	if (standardTime > MAP_SIZE * 8)
+	if (standardTime > MAP_SIZE * 8-SCREEN_SIZE)
 	{
-		standardTime = -1280;
-		Seasonflag = 0;
+		reset();
 	}
 	standardTime += speed;
 	time++;
@@ -153,16 +169,13 @@ bool SpeedMng::GetFlag(MapType type)
 
 bool SpeedMng::Init(void)
 {
-	speedTime[Main] = -1280;
-	speedTime[Sub] =MAP_SIZE-SCREEN_SIZE;
+	
 	yellowstar = 0;
-	SpeedCnt = 0;
 	speed = SPEED;
-	speedFlag[Main] = true;
-	speedFlag[Sub] = false;
-	standardTime = -1280;
+	time = 0;
+	reset();
 	return false;
-	Seasonflag = 0;
+	
 }
 
 SpeedMng::SpeedMng()
@@ -173,4 +186,15 @@ SpeedMng::SpeedMng()
 
 SpeedMng::~SpeedMng()
 {
+}
+
+void SpeedMng::reset(void)
+{
+	speedTime[Main] = -1280;
+	speedTime[Sub] =MAP_SIZE-SCREEN_SIZE;
+	speedFlag[Main] = true;
+	speedFlag[Sub] = false;
+	standardTime = -1280;
+	Seasonflag = 0;
+	subseasonFlag=0;
 }

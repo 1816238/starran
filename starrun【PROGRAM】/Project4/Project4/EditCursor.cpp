@@ -135,6 +135,16 @@ void EditCursor::SetMove(const GameCtl &controller, weekListObj objList)
 	{
 		lpMapControl.SetMapData(CurPos + ChipPos, id);
 	}
+	if (cnt[KEY_INPUT_DELETE] & (~cntOld[KEY_INPUT_DELETE]))
+	{
+		for (int y = 0; y < 21; y++)
+		{
+			for (int x = 0; x < 160; x++)
+			{
+				lpMapControl.SetMapData(VECTOR2{ x*CHIP_SIZE,y*CHIP_SIZE }, MAP_ID_NON);
+			}
+		}
+	}
 
 	lpMapControl.SetPos(ChipPos);
 	//SetMove_Mouse();

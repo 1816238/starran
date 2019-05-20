@@ -91,6 +91,6 @@ int EditScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(GAME_SCREEN_SIZE_X, GAME_SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<EditCursor>(lpSceneMng.GetDrawOffset()));
-	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
+	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 3));
 	return 0;
 }

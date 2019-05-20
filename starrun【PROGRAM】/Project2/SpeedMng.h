@@ -33,6 +33,8 @@ public:
 private:
 	SpeedMng();
 	~SpeedMng();
+	void reset(void);
+
 	int speedTime[Max];
 	int yellowstar;
 	int SpeedCnt;
@@ -40,6 +42,7 @@ private:
 	bool speedFlag[Max];	
 	int time;				//経過時間
 	int standardTime;		//speedflagの判定に使用する基本となるｶｳﾝﾄ
-	int Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
+	unsigned int Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
+	unsigned int subseasonFlag;
 };
 
