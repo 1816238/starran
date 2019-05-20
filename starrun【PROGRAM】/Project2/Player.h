@@ -49,22 +49,27 @@ public:
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Playerの移動
 	void Draw(void);
-	//void Draw(void);
+	void CheckMapHit(void);									//mapとの当たり判定
+\
 	float JSpeed;											//移動速度
+	unsigned int jumpFlag;											//左ｸﾘｯｸしたらtrue
 
 	int Rot;											//ﾎｲｰﾙ回転量
+	array<bool, MAP_ID_MAX> DownCheckFlag;
 
-	unsigned int jumpFlag;											//左ｸﾘｯｸしたらtrue
 	bool shotFlag;											//右ｸﾘｯｸでtrue
-	int SavePos;
+	int shotSpeed;
+	int shotPos;
+
 	DIR_TBL_ARRAY keyID_Tbl;								//移動に使うｷｰ情報のﾃｰﾌﾞﾙ
 	DIR_TBL_ARRAY speed_Tbl;								//移動量のﾃｰﾌﾞﾙ
 	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//移動制限をかけるﾌﾞﾛｯｸIDを保管しておく
-	int getcnt[3];											//星を取得した数
-	void CheckMapHit(void);									//mapとの当たり判定
-	double time;
+	int getcnt[4];											//星を取得した数
+	map<string, int> time;
+
 	array<VECTOR2,DIR_MAX>DirPos;
 	bool DownCheck;											//当たり判定用フラグ
 	bool DeathFlag;											//死亡判定用フラグ
+	bool damageFlag;										//ﾀﾞﾒｰｼﾞを受けるとtrueその状態で一定時間内にもう一度ﾀﾞﾒｰｼﾞを受けると死亡
 };
 
