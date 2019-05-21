@@ -5,6 +5,8 @@
 #include "classObj.h"
 
 #define lpGameScene GameScene::GetInstance()
+class Enemy;
+class Player;
 
 class GameScene :
 	public BaseScene
@@ -19,7 +21,10 @@ private:
 	virtual int Init(void);
 	bool GameDraw(void);
 	 bool DeathPlayerFlag;
-	 ListObj_itr obj;
-
+	 std::unique_ptr<Enemy> enemy;
+	// std::unique_ptr<Player> player;
+	 ListObj_itr player;
+	int SeasonSwitchFlag;
+	void SeasonSwitch(void);
 };
 

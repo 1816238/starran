@@ -79,5 +79,6 @@ private:
 	VECTOR2 pos;
 	bool SubFlag;
 	array< int, int(SEASON_ID::MAX)> offset;
+
 };
 

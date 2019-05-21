@@ -20,7 +20,12 @@ enum DIR_TBL_ID
 	DIR_TBL_RIGHT,
 	DIR_TBL_MAX
 };
-
+enum class MAP_FLAG_TYPE
+{
+	DOWN,
+	JUMP,
+	MAX,
+};
 
 using namespace std;
 
@@ -35,27 +40,31 @@ class Player :
 	public Obj
 {
 public:
-	static Player &GetInstance(void)
+	/*static Player &GetInstance(void)
 	{
 		static Player s_Instance;
 		return s_Instance;
-	}
+	}*/
 	Player(VECTOR2 setUpPos, VECTOR2 drawOffset);
 	Player();
-	virtual ~Player();
+	 ~Player();
+	 Player(Player& in) {};
+	 void operator=(Player& in) {};
 	bool initAnim(void);
 	const bool GetDeathFlag(void);											//€–S‚Éƒtƒ‰ƒO‚ğ“n‚·
 	bool Init(void);													//‰Šú‰»—p
+	Obj *shot;					// ©•ª‚ªŒ‚‚Á‚½’e‚Ì±ÄŞÚ½‚ğŠi”[
+
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);
 	void CheckMapHit(void);									//map‚Æ‚Ì“–‚½‚è”»’è
-\
+
 	float JSpeed;											//ˆÚ“®‘¬“x
 	unsigned int jumpFlag;											//¶¸Ø¯¸‚µ‚½‚çtrue
 
 	int Rot;											//Î²°Ù‰ñ“]—Ê
-	array<bool, MAP_ID_MAX> DownCheckFlag;
+	array<int, MAP_ID_MAX> CheckFlag;
 
 	bool shotFlag;											//‰E¸Ø¯¸‚Åtrue
 	int shotSpeed;

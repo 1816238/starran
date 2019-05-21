@@ -89,11 +89,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\DxLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\desktop\program\DxLibNoneModel_NoneSoftDrawCode_VC</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\DxLib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\desktop\program\DxLibNoneModel_NoneSoftDrawCode_VC</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

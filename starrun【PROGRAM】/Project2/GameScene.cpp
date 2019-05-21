@@ -49,6 +49,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}*/
+	SeasonSwitch();
 	lpSpeedMng.move();
 	GameDraw();
 	return std::move(own);		//èäóLå†Çà⁄Ç∑
@@ -56,7 +57,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 bool GameScene::SetDeathFlag(void)
 {
-	DeathPlayerFlag = lpPlayer.GetDeathFlag();
+	//DeathPlayerFlag = GetDeathFlag();
 		return DeathPlayerFlag;
 }
 
@@ -91,13 +92,43 @@ int GameScene::Init(void)
 	lpSoundMng.StopSound("Sound/BGM/milkyway.mp3");
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-	obj = AddObjList()(objList, std::make_unique<Enemy>());
+	enemy = std::make_unique<Enemy>();
+	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
+	//player = std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),lpSceneMng.GetDrawOffset());
+	auto obj = AddObjList()(objList, std::make_unique<Enemy>());
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
-	lpSpeedMng.Init();
-	lpPlayer.Init();
+	//lpSpeedMng.Init();
+	//player->Init();
+	SeasonSwitchFlag = 0;
 
 	DeathPlayerFlag = false;
 	return 0;
+}
+void GameScene::SeasonSwitch(void)
+{
+	if (lpSpeedMng.GetSeasoonFlag(Main) == SeasonSwitchFlag)
+	{
+		switch (SeasonSwitchFlag)
+		{
+		case 0:
+			lpMapControl.MapLoad("data/mapdata1.map", objList, false, true);
+			SeasonSwitchFlag++;
+				break;
+		case 1:
+			lpMapControl.MapLoad("data/mapdata2.map", objList, false, true);
+			SeasonSwitchFlag++;
+			break;
+		case 2:
+			break;
+		case 3:
+
+			break;
+		case 4:
+			break;
+		default:
+			break;
+		}
+	}
 }

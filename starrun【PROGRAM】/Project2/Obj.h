@@ -60,5 +60,7 @@ protected:
 	VECTOR2 divSize;				//•ªŠ„»²½Þ
 	VECTOR2 divCnt;					//•ªŠ„”
 	DIR dir;						//is•ûŒü
+	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
+
 };
 

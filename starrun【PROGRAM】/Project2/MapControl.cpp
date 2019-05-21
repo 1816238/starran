@@ -24,6 +24,8 @@ struct DataHeader
 void MapControl::Draw(bool TitleFlag)
 {
 	SubFlag = (Speed(Main) > SCREEN_SIZE_X * 4 - CHIP_SIZE * 4 ? true : false);
+	
+
 		for (int y = 0; y < SCREEN_SIZE_Y / CHIP_SIZE; y++)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
@@ -128,7 +130,7 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type)
 	if (!CheckSize()(selpos, mapSize))
 	{
 		//範囲外の場合、下記のIDを固定で返す
-		return MAP_ID_MAX;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
+		return MAP_ID_NON;//無効な値として返す(システム上一番問題が起きないだろう物を使用する)
 	}
 	if (type==Main)
 	{
@@ -242,32 +244,32 @@ bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,boo
 
 bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 {
-	if (objFlag)
-	{
-		return false;
-	}
-	bool MakePlayerflag = false;
-	bool MakeEnemyflag = false;
-	for (int y = 0; y < mapSize.y; y++)
-	{
-		for (int x = 0; x < mapSize.x; x++)
-		{
+	//if (objFlag)
+	//{
+	//	return false;
+	//}
+	//bool MakePlayerflag = false;
+	//bool MakeEnemyflag = false;
+	//for (int y = 0; y < mapSize.y; y++)
+	//{
+	//	for (int x = 0; x < mapSize.x; x++)
+	//	{
 
-			if (MakePlayerflag)
-			{
-				break;
-			}
-			{
-				//ﾌﾟﾚｲﾔｰキャラをｲﾝｽﾀﾝｽする
-				ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
+	//		if (MakePlayerflag)
+	//		{
+	//			break;
+	//		}
+	//		{
+	//			//ﾌﾟﾚｲﾔｰキャラをｲﾝｽﾀﾝｽする
+	//			//ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
 
-				MakePlayerflag = true;
-			}
-			//ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
+	//			MakePlayerflag = true;
+	//		}
+	//		//ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
 
-			break;
-		}
-	}
+	//		break;
+	//	}
+	//}
 
 	return true;
 }
@@ -297,3 +299,4 @@ MapControl::MapControl()
 MapControl::~MapControl()
 {
 }
+

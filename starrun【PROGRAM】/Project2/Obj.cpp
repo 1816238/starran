@@ -124,3 +124,15 @@ void Obj::SetPos(VECTOR2 pos)
 	Obj::pos = pos;
 }
 
+
+bool Obj::CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2)
+{
+	if (pos1.x < pos2.x + objSize2.x
+		&&  pos2.x < pos1.x + objSize1.x
+		&&  pos1.y < pos2.y + objSize2.y
+		&&  pos2.y < pos1.y + objSize1.y)
+	{
+		return true;
+	}
+	return false;
+}

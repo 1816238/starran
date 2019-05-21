@@ -9,6 +9,7 @@
 #include "ImageMng.h"
 #include "GameScene.h"
 #include "SpeedMng.h"
+#include "Shot.h"
 
 Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -29,9 +30,7 @@ Player::Player()
 {
 }
 
-Player::~Player()
-{
-}
+Player::~Player() = default;
 
 bool Player::initAnim(void)
 {
@@ -46,7 +45,7 @@ const bool Player::GetDeathFlag(void)
 
 bool Player::Init(void)
 {
-	shotFlag = false;
+	shotFlag = true;
 	jumpFlag = false;
 	DownCheck = false;
 	DeathFlag = false;
@@ -68,19 +67,20 @@ bool Player::Init(void)
 				VECTOR2{PLAYER_SIZE_X-1,PLAYER_SIZE_Y/2},	// 右
 			};
 
-	DownCheckFlag = {
-	true,			//MAP_ID_NON,
-	false,			//MAP_ID_CLOUD1,
-	false,			//MAP_ID_CLOUD2,
-	false,			//MAP_ID_CLOUD3,
-	true,			//MAP_ID_BLUE,
-	true,			//MAP_ID_YELLOW,
-	true,			//MAP_ID_GREEN,
-	true,			//MAP_ID_RED,
-	true,			//MAP_ID_PURPLE,
-	true,			//MAP_ID_CLOUD_DOWN1,
-	true,			//MAP_ID_CLOUD_DOWN2,
-	true,			//MAP_ID_CLOUD_DOWN3,
+	CheckFlag = {
+	//Jump,Down,
+	0b01,			//MAP_ID_NON,
+	0b10,			//MAP_ID_CLOUD1,
+	0b10,			//MAP_ID_CLOUD2,
+	0b10,			//MAP_ID_CLOUD3,
+	0b01,			//MAP_ID_BLUE,
+	0b01,			//MAP_ID_YELLOW,
+	0b01,			//MAP_ID_GREEN,
+	0b01,			//MAP_ID_RED,
+	0b01,			//MAP_ID_PURPLE,
+	0b11,			//MAP_ID_CLOUD_DOWN1,
+	0b11,			//MAP_ID_CLOUD_DOWN2,
+	0b11			//MAP_ID_CLOUD_DOWN3,
 	};
 	
 	return false;
@@ -133,15 +133,16 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main);
 
 	//ショット
-	if (Click[MOUSE_INPUT_RIGHT] & (~ClickOld[MOUSE_INPUT_RIGHT]))
-	{
-		shotFlag = true;
-	}
+	//if (Click[MOUSE_INPUT_RIGHT]/* & (~ClickOld[MOUSE_INPUT_RIGHT])*/)
+	//{
+	//	shotFlag = false;
+	//	auto shot=&AddObjList()(objList, std::make_unique<Shot>(pos, VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),true));
+	//}
 	//ジャンプ
 	if (Click[MOUSE_INPUT_LEFT] & (~ClickOld[MOUSE_INPUT_LEFT]))
 	{
 
-		if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+		if (CheckFlag[id] >> static_cast<int>(MAP_FLAG_TYPE::JUMP))
 		{
 
 			if (!(jumpFlag & 1))//1回目
@@ -166,9 +167,10 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 
 		pos.y -= JSpeed - time["ｼﾞｬﾝﾌﾟ"] / ADD_SPEED;//ジャンプ処理
-		if (JSpeed - time["ｼﾞｬﾝﾌﾟ"] / ADD_SPEED <= 0)
+		//pos.y -= time["ｼﾞｬﾝﾌﾟ"] / 2 * CHIP_SIZE;
+		if ((JSpeed - time["ｼﾞｬﾝﾌﾟ"] / ADD_SPEED)<=0)
 		{
-			if (id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3)
+			if ((CheckFlag[id] >> static_cast<int> (MAP_FLAG_TYPE::JUMP)))
 			{
 				jumpFlag = 0;
 				time["ｼﾞｬﾝﾌﾟ"] = 0.0;
@@ -181,7 +183,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//降りる
 	if (controller.WheelCheck(NOW)&~controller.WheelCheck(OLD))
 	{
-		if (DownCheckFlag[id])
+		if (!(CheckFlag[id]>>static_cast<int> (MAP_FLAG_TYPE::DOWN)))
 		{
 			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{ 0,CHIP_SIZE }, Main);
 			if (id == MAP_ID_NON || id >= MAP_ID_BLUE)
@@ -203,7 +205,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		}
 	}
 	CheckMapHit();
-	time["ｼﾞｬﾝﾌﾟ"] += ((id >= MAP_ID_CLOUD1 && id <= MAP_ID_CLOUD3) ? 0.0 : 1.0);
+	time["ｼﾞｬﾝﾌﾟ"] += (CheckFlag[id]>>static_cast<int>(MAP_FLAG_TYPE::JUMP) ? 0.0 : 1.0);
 	time["ﾀﾞﾒｰｼﾞ"] += (damageFlag ? 1 : 0);
 }
 
@@ -220,7 +222,7 @@ void Player::Draw(void)
 	DrawFormatString(0, 0, 0xff00ff, "time(main,sub,std):%d,%d,%d", Speed(Main), Speed(Sub), Speed(Std));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Speed(Main) + lpSpeedMng.GetYellow());
-	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d", jumpFlag & 1, jumpFlag >> 1);
+	DrawFormatString(0, 100, 0xffff, "ジャンプ：%d\n2段目:%d,time%d", jumpFlag & 1, jumpFlag >> 1,time["ｼﾞｬﾝﾌﾟ"]);
 	DrawFormatString(0, 140, 0xffff, "MAP_ID：%d　\nMAP_ID(sub):%d", lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main), lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub));
 	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", lpSpeedMng.GetYellow());
 	DrawFormatString(0, 200, 0xffff, "subFlag：%d", lpMapControl.GetSubFlag());
