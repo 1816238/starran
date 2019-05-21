@@ -14,7 +14,7 @@ EnemyAct::~EnemyAct()
 {
 }
 
-void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, bool at_meteorite)
+void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, bool at_meteorite,int at_wait,int waitcnt,int waitcnt2,int waitcnt3)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
 	
@@ -22,6 +22,7 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, 
 	{
 		if (at_shot)
 		{
+			
 			shotFlag = true;
 			if (!shotFlag)
 			{
@@ -65,7 +66,7 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, 
 		}
 	}
 	
-	ShotCtl(pos , pos2);
+	ShotCtl(pos , pos2,waitcnt,waitcnt2,waitcnt3);
 	MeteoCtl(pos , pos2);
 }
 
@@ -78,6 +79,12 @@ const bool EnemyAct::GetmeteoriteFlag()
 {
 	return meteoriteFlag;
 }
+
+const bool EnemyAct::GetAtDrawFlag(int num)
+{
+	return At_DrawFlag[num];
+}
+
 
 const int EnemyAct::SetPos()
 {
@@ -120,12 +127,69 @@ const int EnemyAct::SetAngle()
 	return randAngle;
 }
 
-void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2)
+void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3)
 {
-	if (shotFlag == true && SCREEN_SIZE_X - SCREEN_SIZE_X / 4 -pos.x <  - 118  )
+	auto ATCnt = SEASONE_LIM - Speed(Main);
+
+
+	if (shotFlag == true)
 	{
-		lpSoundMng.StopSound("Sound/Sound effect/earth-tremor1.mp3");
-		shotFlag = false;
+		switch ((ATCnt / at_wait)% at_Cnt)
+		{
+		case 1:
+			At_DrawFlag[0] = true;
+			break;
+		case 5:
+			At_DrawFlag[1] = true;
+			break;
+		case 19:
+			At_DrawFlag[2] = true;
+			break;
+		default:
+			break;
+		}
+		if (waitcnt < waitcnt2 < waitcnt3)
+		{
+			max_waitCnt = waitcnt3;
+		}
+		else if (waitcnt < waitcnt3 < waitcnt2)
+		{
+			max_waitCnt = waitcnt2;
+
+		}
+		else if (waitcnt2 < waitcnt < waitcnt3)
+		{
+			max_waitCnt = waitcnt3;
+
+		}
+		else if (waitcnt2 < waitcnt3 < waitcnt)
+		{
+			max_waitCnt = waitcnt;
+
+		}
+		else if (waitcnt3 < waitcnt2 < waitcnt)
+		{
+			max_waitCnt = waitcnt;
+
+		}
+		else if (waitcnt3 < waitcnt < waitcnt2)
+		{
+			max_waitCnt = waitcnt2;
+
+		}
+		else {}
+		if (SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 2* max_waitCnt - pos.x < -118)
+		{
+			lpSoundMng.StopSound(SOUND_METEO);
+			shotFlag = false;
+		}
+	}
+	else
+	{
+		for (int num = 0; num < AT_DRAW_MAX; num++)
+		{
+			At_DrawFlag[num] = false;
+		}
 	}
 }
 
@@ -134,6 +198,7 @@ void EnemyAct::MeteoCtl(VECTOR2 pos, VECTOR2 pos2)
 	if (meteoriteFlag == true && pos.y > SCREEN_SIZE_Y + 235 
 		|| SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos2.x < -460)
 	{
+		lpSoundMng.StopSound(SOUND_METEO);
 		meteoriteFlag = false;
 	}
 }
