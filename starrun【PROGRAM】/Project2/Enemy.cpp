@@ -25,7 +25,7 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos , meteoPos, frequency, AttackType[SHOT], AttackType[METEORITE],at_wait,waitCnt[0],waitCnt[1],waitCnt[2]);
+	lpEnemyAct.SelectAct(pos , meteoPos, frequency[enemyType], AttackType[SHOT], AttackType[METEORITE],at_wait,waitCnt[0],waitCnt[1],waitCnt[2]);
 	if (!lpEnemyAct.GetshotFlag())
 	{
 		pos.x = 0;
@@ -40,22 +40,22 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	switch (lpEnemyAct.SetAngle())
 	{
 	case 3:
-		speed = VECTOR2(4, 4);
+		speed = VECTOR2(SHOT_SPEED , 7);
 		break;
 	case 4:
-		speed = VECTOR2(5, 4);
+		speed = VECTOR2(SHOT_SPEED , 5);
 		break;
 	case 5:
-		speed = VECTOR2(SPEED, 4);
+		speed = VECTOR2(SHOT_SPEED , 4);
 		break;
 	case 6:
-		speed = VECTOR2(SPEED, 4);
+		speed = VECTOR2(SHOT_SPEED , 3);
 		break;
 	case 7:
-		speed = VECTOR2(SPEED, 3);
+		speed = VECTOR2(SHOT_SPEED + 2, 3);
 		break;
 	case 8:
-		speed = VECTOR2(SPEED, 3);
+		speed = VECTOR2(SHOT_SPEED , 2);
 		break;
 	default:
 		break;
@@ -162,111 +162,120 @@ void Enemy::Draw(void)
 
 VECTOR2 Enemy::EnemyType(void)
 {
-	switch (enemyType)
-	{
-		//ètÇÃêØç¿
-	case CANCER:
-		maxHp = 100;
-		enemyHp = 100;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = false;
-		frequency = 20;
-		return VECTOR2(3, 0);
-		break;
-	case LEO:
-		maxHp = 200;
-		enemyHp = 200;
-		AttackType[SHOT] = false;
-		AttackType[METEORITE] = true;
-		frequency = 20;
-		return VECTOR2(0, 1);
-		break;
-	case VIRGO:
-		maxHp = 250;
-		enemyHp = 250;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = true;
-		frequency = 20;
-		return VECTOR2(1, 1);
-		break;
-		//âƒÇÃêØç¿
-	case LIBRA:
-		maxHp = 350;
-		enemyHp = 350;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = false;
-		frequency = 15;
-		return VECTOR2(2, 1);
-		break;
-	case SCORPIO:
-		maxHp = 500;
-		enemyHp = 500;
-		AttackType[SHOT] = false;
-		AttackType[METEORITE] = true;
-		frequency = 15;
-		return VECTOR2(3, 1);
-		break;
-	case SAGITTARIUS:
-		maxHp = 650;
-		enemyHp = 650;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = true;
-		frequency = 15;
-		return VECTOR2(0, 2);
-		break;
-		//èHÇÃêØç¿
-	case ARIES:
-		maxHp = 800;
-		enemyHp = 800;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = false;
-		frequency = 10;
-		return VECTOR2( 0, 0);
-		break;
-	case TAURUS:
-		maxHp = 950;
-		enemyHp = 950;
-		AttackType[SHOT] = false;
-		AttackType[METEORITE] = true;
-		frequency = 10;
-		return VECTOR2( 1, 0);
-		break;
-	case GEMINI:
-		maxHp = 1050;
-		enemyHp = 1050;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = true;
-		frequency = 10;
-		return VECTOR2( 2, 0);
-		break;
-		//ì~ÇÃêØç¿
-	case CAPRICORN:
-		maxHp = 1250;
-		enemyHp = 1250;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = false;
-		frequency = 5;
-		return VECTOR2(1, 2);
-		break;
-	case AQUARIUS:
-		maxHp = 1450;
-		enemyHp = 1450;
-		AttackType[SHOT] = false;
-		AttackType[METEORITE] = true;
-		frequency = 5;
-		return VECTOR2(2, 2);
-		break;
-	case PISCES:
-		maxHp = 1650;
-		enemyHp = 1650;
-		AttackType[SHOT] = true;
-		AttackType[METEORITE] = true;
-		frequency = 5;
-		return VECTOR2(3, 2);
-		break;
-	default:
-		break;
-	}
+
+	enemy_name[enemyType];
+	seasone[enemyType];
+	At_Type[enemyType];
+	max_hp[enemyType];
+	enemy_hp[enemyType];
+	frequency[enemyType];
+
+	return boss_ID[enemyType];
+	//switch (enemyType)
+	//{
+	//	//ètÇÃêØç¿
+	//case CANCER:
+	//	maxHp = 100;
+	//	enemyHp = 100;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = false;
+	//	//frequency = 20;
+	//	return VECTOR2(3, 0);
+	//	break;
+	//case LEO:
+	//	maxHp = 200;
+	//	enemyHp = 200;
+	//	AttackType[SHOT] = false;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 20;
+	//	return VECTOR2(0, 1);
+	//	break;
+	//case VIRGO:
+	//	maxHp = 250;
+	//	enemyHp = 250;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 20;
+	//	return VECTOR2(1, 1);
+	//	break;
+	//	//âƒÇÃêØç¿
+	//case LIBRA:
+	//	maxHp = 350;
+	//	enemyHp = 350;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = false;
+	//	//frequency = 15;
+	//	return VECTOR2(2, 1);
+	//	break;
+	//case SCORPIO:
+	//	maxHp = 500;
+	//	enemyHp = 500;
+	//	AttackType[SHOT] = false;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 15;
+	//	return VECTOR2(3, 1);
+	//	break;
+	//case SAGITTARIUS:
+	//	maxHp = 650;
+	//	enemyHp = 650;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 15;
+	//	return VECTOR2(3, 10, 2);
+	//	break;
+	//	//èHÇÃêØç¿
+	//case ARIES:
+	//	maxHp = 800;
+	//	enemyHp = 800;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = false;
+	//	//frequency = 10;
+	//	return VECTOR2( 0, 0);
+	//	break;
+	//case TAURUS:
+	//	maxHp = 950;
+	//	enemyHp = 950;
+	//	AttackType[SHOT] = false;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 10;
+	//	return VECTOR2( 1, 0);
+	//	break;
+	//case GEMINI:
+	//	maxHp = 1050;
+	//	enemyHp = 1050;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 10;
+	//	return VECTOR2( 2, 0);
+	//	break;
+	//	//ì~ÇÃêØç¿
+	//case CAPRICORN:
+	//	maxHp = 1250;
+	//	enemyHp = 1250;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = false;
+	//	//frequency = 5;
+	//	return VECTOR2(1, 2);
+	//	break;
+	//case AQUARIUS:
+	//	maxHp = 1450;
+	//	enemyHp = 1450;
+	//	AttackType[SHOT] = false;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 5;
+	//	return VECTOR2(2, 2);
+	//	break;
+	//case PISCES:
+	//	maxHp = 1650;
+	//	enemyHp = 1650;
+	//	AttackType[SHOT] = true;
+	//	AttackType[METEORITE] = true;
+	//	//frequency = 5;
+	//	return VECTOR2(3, 2);
+	//	break;
+	//default:
+	//	break;
+	//}
 }
 void Enemy::HitCheck(void)
 {
@@ -279,9 +288,44 @@ void Enemy::HitCheck(void)
 
 bool Enemy::init(void)
 {
+	enemy_name = { CANCER	,LEO	 ,VIRGO,
+				   LIBRA	,SCORPIO ,SAGITTARIUS,
+				   ARIES	,TAURUS	 ,GEMINI,
+				   CAPRICORN,AQUARIUS,PISCES };
+	
+	boss_ID = { VECTOR2(3,0), VECTOR2(0,1), VECTOR2(1,1),
+				VECTOR2(2,1), VECTOR2(3,1), VECTOR2(0,2),
+				VECTOR2(0,0), VECTOR2(1,0), VECTOR2(2,0),
+				VECTOR2(1,2), VECTOR2(2,2), VECTOR2(3,2), };
+
+	seasone = { SPRING ,SPRING ,SPRING,
+				SUMMER ,SUMMER ,SUMMER,
+				AUTUMN ,AUTUMN ,AUTUMN,
+				WINTER ,WINTER ,WINTER };
+
+	At_Type = { (true,false),(false,true),(true,true),
+				(true,false),(false,true),(true,true),
+				(true,false),(false,true),(true,true),
+				(true,false),(false,true),(true,true)};
+
+	max_hp = { 100, 200, 250,
+			   350, 500, 650,
+			   800, 950,1050,
+			  1250,1450,1650};
+
+	enemy_hp = { 100, 200, 250,
+				 350, 500, 650,
+				 800, 950,1050,
+				1250,1450,1650};
+
+	frequency = { 20,20,20,
+				  15,15,15,
+				  10,10,10,
+				   5, 5, 5 };
+
 	enemyType = PISCES;
 	maxHp = ENEMY_DEF_HP;
-	frequency = ENEMY_DEF_FREQUENCY;
+	//frequency = ENEMY_DEF_FREQUENCY;
 	enemyHp = maxHp;
 	at_Cnt = 36;
 	at_wait = 60;
