@@ -49,12 +49,12 @@ public:
 	Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset);
 	Enemy();
 	~Enemy();
+	bool init(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	VECTOR2 EnemyType(void);
 	void Draw(void);
 	void HitCheck(void);
-
 	sharedListObj objList;
 	BOSS_ID enemyType;
 	unsigned int enemyHp;

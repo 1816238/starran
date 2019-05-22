@@ -26,6 +26,7 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 
 	if (CheckHitKey(KEY_INPUT_F1) == 1)
 	{
+		
 		return std::make_unique<GameScene>();
 	}
 

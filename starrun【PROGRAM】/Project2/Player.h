@@ -52,7 +52,7 @@ public:
 	 void operator=(Player& in) {};
 	bool initAnim(void);
 	const bool GetDeathFlag(void);											//€–S‚Éƒtƒ‰ƒO‚ğ“n‚·
-	bool Init(void);													//‰Šú‰»—p
+	bool init(void);													//‰Šú‰»—p
 	Obj *shot;					// ©•ª‚ªŒ‚‚Á‚½’e‚Ì±ÄŞÚ½‚ğŠi”[
 
 private:

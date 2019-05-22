@@ -104,14 +104,16 @@ int GameScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	enemy = std::make_unique<Enemy>();
+	PLAYER = std::make_unique<Player>();
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
 	//player = std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>());
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
-	//lpSpeedMng.Init();
-	//player->Init();
+	lpSpeedMng.Init();
+	PLAYER->init();
+	enemy->init();
 	SeasonSwitchFlag = 0;
 
 	DeathPlayerFlag = false;

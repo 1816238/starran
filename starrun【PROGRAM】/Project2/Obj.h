@@ -46,6 +46,7 @@ public:
 	string GetAnim(void);			//表示画像ﾌｧｲﾙ名の取得
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//画像移動のｷｰ制御		純粋仮想関数
+	virtual bool init(void) = 0;		//純粋仮想関数
 
 	map<string, int[ANIM_TBL_MAX]> animTbl;
 	string animName;				//表示画像ﾌｧｲﾙ名

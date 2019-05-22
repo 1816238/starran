@@ -11,30 +11,12 @@
 
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
-	init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
-	
-
+	Obj::init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
 }
 
 Enemy::Enemy()
 {
-	enemyType = PISCES;
-	maxHp = ENEMY_DEF_HP;
-	frequency = ENEMY_DEF_FREQUENCY;
-	enemyHp = maxHp;
-	at_Cnt = 36;
-	at_wait = 60;
-
-	meteoPos = VECTOR2(0, 0);
-	speed = VECTOR2(0, 0);
-	AttackType[SHOT] = false;
-	AttackType[METEORITE] = false;
-	for (int num = 0; num < AT_DRAW_MAX; num++)
-	{
-		At_DrawFlag[num] = false;
-	}
-	shotFlag = false;
-	enemyBossFlag = true;
+	init();
 }
 
 Enemy::~Enemy()
@@ -293,4 +275,26 @@ void Enemy::HitCheck(void)
 		enemyType = static_cast<BOSS_ID>(enemyType + 1);
 		bool enemyBossFlag = false;
 	}
+}
+
+bool Enemy::init(void)
+{
+	enemyType = PISCES;
+	maxHp = ENEMY_DEF_HP;
+	frequency = ENEMY_DEF_FREQUENCY;
+	enemyHp = maxHp;
+	at_Cnt = 36;
+	at_wait = 60;
+
+	meteoPos = VECTOR2(0, 0);
+	speed = VECTOR2(0, 0);
+	AttackType[SHOT] = false;
+	AttackType[METEORITE] = false;
+	for (int num = 0; num < AT_DRAW_MAX; num++)
+	{
+		At_DrawFlag[num] = false;
+	}
+	shotFlag = false;
+	enemyBossFlag = true;
+	return false;
 }

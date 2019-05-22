@@ -22,6 +22,7 @@ private:
 	bool GameDraw(void);
 	 bool DeathPlayerFlag;
 	 std::unique_ptr<Enemy> enemy;
+	 std::unique_ptr<Player> PLAYER;
 	// std::unique_ptr<Player> player;
 	 ListObj_itr player;
 	int SeasonSwitchFlag;

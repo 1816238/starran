@@ -23,7 +23,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	pos = setUpPos;
 	Obj::init("image/player_W.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
 
-	Init();
+	init();
 }
 
 Player::Player()
@@ -43,7 +43,7 @@ const bool Player::GetDeathFlag(void)
 	return DeathFlag;
 }
 
-bool Player::Init(void)
+bool Player::init(void)
 {
 	shotFlag = true;
 	jumpFlag = false;
