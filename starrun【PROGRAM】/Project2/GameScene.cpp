@@ -26,32 +26,43 @@ GameScene::~GameScene()
 
 unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 {
-	if(SetDeathFlag())
+	/*if(SetDeathFlag())
 	{ 
 		lpResultCtl.SetUp(1000, 10);
 		lpResultCtl.ResultSave(objList);
 		return std::make_unique<ResultScene>();
 	}
+
+	auto resultMove = [&]() {	lpResultCtl.SetUp(1000, 10);
+	lpResultCtl.ResultSave(objList);
+	return std::make_unique<ResultScene>(); };
+*/
+
 	for (auto itr = objList->begin(); itr != objList->end(); itr++)
 	{
 		(*itr)->UpDate(controller, objList);
 	}
 	//èñèqÅyÃﬂ⁄√ﬁ®π∞ƒÅz
-	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
-	/*for (auto itr = objList->begin(); itr != objList->end(); )
+	//(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
+	for (auto itr = objList->begin(); itr != objList->end(); )
 	{
 		if ((*itr)->CheckDeth())
 		{
 			objList->erase(itr);
+			lpResultCtl.SetUp(1000, 10);
+			lpResultCtl.ResultSave(objList);
+			return std::make_unique<ResultScene>();
+		
 		}
 		else
 		{
 			itr++;
 		}
-	}*/
+	}
 	SeasonSwitch();
 	lpSpeedMng.move();
 	GameDraw();
+
 	return std::move(own);		//èäóLå†Çà⁄Ç∑
 }
 

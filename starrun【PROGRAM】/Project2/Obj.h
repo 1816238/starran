@@ -37,7 +37,7 @@ public:
 	virtual bool initAnim(void) { return true; };
 	virtual ~Obj();
 	void UpDate(const GameCtl &controller, weekListObj objList);
-	virtual bool CheckDeth(void) { return false; };
+	virtual bool CheckDeth(void);
 	void Draw(unsigned int id);				//固定IDでの生成
 	virtual void Draw(void);						//map画像の描画関係
 	const VECTOR2 & GetPos(void);			//posの取得
@@ -49,6 +49,7 @@ private:
 
 	map<string, int[ANIM_TBL_MAX]> animTbl;
 	string animName;				//表示画像ﾌｧｲﾙ名
+	bool deathFlag;
 protected:
 	bool animEndFlag;				//ｱﾆﾒｰｼｮﾝ最終ｺﾏ到達ﾌﾗｸﾞ
 	unsigned int animCnt;			//ｱﾆﾒｰｼｮﾝｶｳﾝﾀｰ
@@ -61,6 +62,6 @@ protected:
 	VECTOR2 divCnt;					//分割数
 	DIR dir;						//進行方向
 	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
-
+	void Setdeath(bool flag);
 };
 

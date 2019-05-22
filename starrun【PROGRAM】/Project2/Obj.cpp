@@ -38,6 +38,11 @@ void Obj::UpDate(const GameCtl &controller, weekListObj objList)
 	SetMove(controller, objList);
 }
 
+bool Obj::CheckDeth(void)
+{
+	return deathFlag;
+}
+
 void Obj::Draw(unsigned int id)
 {
 	if (id < IMAGE_ID(imageName).size())
@@ -135,4 +140,9 @@ bool Obj::CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize
 		return true;
 	}
 	return false;
+}
+
+void Obj::Setdeath(bool flag)
+{
+	deathFlag = flag;
 }

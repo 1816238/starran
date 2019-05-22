@@ -195,7 +195,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 	if (pos.y > SCREEN_SIZE_Y)
 	{
-		DeathFlag = true;
+		Obj::Setdeath(true);
 	}
 	if (damageFlag)
 	{
