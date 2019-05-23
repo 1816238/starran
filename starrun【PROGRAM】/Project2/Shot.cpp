@@ -1,5 +1,6 @@
 #include <DxLib.h>
 #include "ImageMng.h"
+#include "EnemyAct.h"
 #include "Shot.h"
 #include "GameScene.h"
 
@@ -45,6 +46,12 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 		time = 0;
 	}
 	pos.x += speed;
+
+
+	if (!lpEnemyAct.GetshotFlag())
+	{
+		pos.x = 0;		//shot‚Ìpos.x
+	}
 	SetPos(pos);
 	//Draw(time);
 }

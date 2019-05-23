@@ -1,3 +1,4 @@
+#include <math.h>
 #include "DxLib.h"
 #include "BaseScene.h"
 #include "SceneMng.h"
@@ -6,12 +7,20 @@
 #include "MapControl.h"
 #include "classObj.h"
 #include "SpeedMng.h"
+#include "Shot.h"
 #include "EnemyAct.h"
 #include "Enemy.h"
+
+#define PI  3.1415926535897932384626433832795f
+#define CIRCLE_PI ( PI*2 )
+#define CENTER_POS_X ( SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125) 
+#define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 )
+#define CIRCLE_RANGE ( 250 -(60+43))
 
 Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 	Obj::init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
+	Obj::init("image/boss_body.png", VECTOR2(215, 45), VECTOR2(5, 1));
 }
 
 Enemy::Enemy()
@@ -21,66 +30,21 @@ Enemy::Enemy()
 
 Enemy::~Enemy()
 {
+
 }
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	lpEnemyAct.SelectAct(pos , meteoPos, frequency[enemyType], At_Type[enemyType][SHOT], At_Type[enemyType][METEORITE],at_wait,waitCnt[0],waitCnt[1],waitCnt[2]);
-	if (!lpEnemyAct.GetshotFlag())
-	{
-		pos.x = 0;
-	}
-	
-	if (!lpEnemyAct.GetmeteoriteFlag())
-	{
-		meteoPos.x = 0;
-		pos.y = 0;
-	}
-
-	switch (lpEnemyAct.SetAngle())
-	{
-	case 3:
-		speed = VECTOR2(SHOT_SPEED , 7);
-		break;
-	case 4:
-		speed = VECTOR2(SHOT_SPEED , 5);
-		break;
-	case 5:
-		speed = VECTOR2(SHOT_SPEED , 4);
-		break;
-	case 6:
-		speed = VECTOR2(SHOT_SPEED , 3);
-		break;
-	case 7:
-		speed = VECTOR2(SHOT_SPEED + 2, 3);
-		break;
-	case 8:
-		speed = VECTOR2(SHOT_SPEED , 2);
-		break;
-	default:
-		break;
-	}
-	HitCheck();
-}
-
-
-void Enemy::Draw(void)
-{
-	auto ATCnt = SEASONE_LIM - Speed(Main);
-
-
-	auto Draw = [&](VECTOR2 divID)
-	{
-		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
-	};
-	int Pos = (SCREEN_SIZE_X - 80)*(enemy_hp[enemyType] / max_hp[enemyType]);
-	DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
-	DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
-	DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
-
-
 	if (lpEnemyAct.GetshotFlag())
 	{
+	}
+	if (lpEnemyAct.GetshotFlag())
+	{
+		if (shotcnt >= 3)
+		{
+			shotcnt = 0;
+		}
 
 		VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, 0);
 		if (!lpSoundMng.CheckSound(SOUND_METEO))
@@ -90,10 +54,12 @@ void Enemy::Draw(void)
 
 		pos.x += 2;
 
-		auto DrawShot = [&](int num ,int h) {
+		auto DrawShot = [&](int num, int h) {
 			if (lpEnemyAct.GetAtDrawFlag(num))
 			{
+				shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2(0, 0), VECTOR2(static_cast<int>((tmpPos.x + 2 * waitCnt[num])), SCREEN_SIZE_Y - CHIP_SIZE * h),true, 0));
 				DrawRotaGraph2((tmpPos.x + 2 * waitCnt[num]) - pos.x, SCREEN_SIZE_Y - CHIP_SIZE * h, 0, 0, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
+				shotcnt++;
 			}
 			else
 			{
@@ -104,7 +70,7 @@ void Enemy::Draw(void)
 		DrawShot(0, 5);
 		DrawShot(1, 7);
 		DrawShot(2, 9);
-		
+
 	}
 	else
 	{
@@ -114,17 +80,51 @@ void Enemy::Draw(void)
 		}
 	}
 
-	if (lpEnemyAct.GetmeteoriteFlag())
-	{
-		if (!lpSoundMng.CheckSound(SOUND_METEO))
-		{
-			lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
-		}
-		meteoPos.x += speed.x;
-		pos.y += speed.y;
-		DrawRotaGraph(GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos() - meteoPos.x, pos.y, 1, -(PI / lpEnemyAct.SetAngle()), IMAGE_ID("image/tama.png")[0], true, true);
+	HitCheck();
+}
 
+void Enemy::CircleMove(void)
+{
+	//â~â^ìÆÇÃåvéZÅ´Å´Å´Å´Å´Å´Å´Å´Å´Å´Å´
+	CIRCLE_PI;
+	cnt++;
+
+	pos.x = circle_pos.center_pos.x + cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
+	pos.y = circle_pos.center_pos.y + cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
+
+	if (cnt > 360)
+	{
+		cnt = 0;
 	}
+	GetCircleMove_pos();
+}
+
+VECTOR2 Enemy::GetCircleMove_pos(void)
+{
+	return VECTOR2(pos.x,pos.y);
+}
+
+void Enemy::Draw(void)
+{
+	auto ATCnt = SEASONE_LIM - Speed(Main);
+	SetAnim("í èÌ");
+
+	auto Draw = [&](VECTOR2 divID)
+	{
+		DrawCircle(CENTER_POS_X, CENTER_POS_Y, CIRCLE_RANGE, 0xff0000, false);
+		DrawCircle(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125, SCREEN_SIZE_Y / 4 + 125, 4, 0xff0000, true);
+		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
+	};
+	int Pos = (SCREEN_SIZE_X - 80)*(enemy_hp[enemyType] / max_hp[enemyType]);
+	DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+	DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
+	DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
+
+	DrawRectGraph(CENTER_POS_X - 43/2 - CIRCLE_RANGE + GetCircleMove_pos().x,
+					CENTER_POS_Y - 45/2 + GetCircleMove_pos().y, 43, 0, 43, 45,
+					IMAGE_ID("image/boss_body.png")[0], true, false);
+
+	
 
 	//ÉfÉoÉbÉNóp====================================================================================================================
 	DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
@@ -176,6 +176,10 @@ void Enemy::HitCheck(void)
 
 bool Enemy::init(void)
 {
+
+
+	AddAnim("í èÌ", 0, 0, 30,1,true);
+
 	boss_ID = { VECTOR2(3,0), VECTOR2(0,1), VECTOR2(1,1),
 				VECTOR2(2,1), VECTOR2(3,1), VECTOR2(0,2),
 				VECTOR2(0,0), VECTOR2(1,0), VECTOR2(2,0),
@@ -228,5 +232,11 @@ bool Enemy::init(void)
 	}
 	shotFlag = false;
 	enemyBossFlag = true;
+
+	circle_pos.center_pos = { CENTER_POS_X,CENTER_POS_Y };
+	circle_pos.circle_r = CIRCLE_RANGE;
+	circle_pos.time = 60;
+
+	shotcnt = 0;
 	return false;
 }
