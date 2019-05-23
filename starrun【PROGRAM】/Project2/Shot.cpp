@@ -8,7 +8,11 @@ Shot::Shot(VECTOR2 pos, VECTOR2 offset, bool objType)
 {
 	this->pos = pos;
 	this->offset = offset;
-	Shot::init();
+	if (objType)
+	{
+		Shot::init();
+
+	}
 }
 
 
@@ -25,7 +29,7 @@ bool Shot::initAnim(void)
 bool Shot::init(void)
 {
 	Obj::init("image/Pshot.png", VECTOR2{ 64,32 }, VECTOR2{29,1 },pos);
-	AddAnim("’e", 0, 0, 1, 2, true);
+	AddAnim("’e", 0, 0, 28,1, true);
 
 	SetAnim("’e");
 	time = 0;
