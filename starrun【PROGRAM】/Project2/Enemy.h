@@ -8,6 +8,19 @@
 #define AT_DRAW_MAX 3
 #define SHOT_SPEED 6
 
+typedef struct Move_Circle
+{
+	float x;
+	float y;
+};
+
+typedef struct Move_Pos
+{
+	Move_Circle center_pos;	//’†SÀ•W
+	float time;				//üŠú
+	int circle_r;			//‰~‚Ì”¼Œa
+};
+
 enum ENEMY_TYPE
 {
 	ENEMY_MOB,
@@ -58,6 +71,8 @@ public:
 	bool init(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
+	void CircleMove(void);
+	VECTOR2 GetCircleMove_pos(void);
 	//VECTOR2 EnemyType(void);
 	void Draw(void);
 	void HitCheck(void);
@@ -73,12 +88,18 @@ private:
 	BOSS_DIV_ID boss_ID;
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
+
+	ListObj_itr shot[13];
+	unsigned int shotcnt;
+	/*‰~‰^“®ŒvZ—p*/
+	Move_Pos circle_pos;
+	int cnt;
 protected:
 	BOSS_ect frequency;
 	unsigned int Frequency;				//UŒ‚•p“x
 	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
 	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
-	unsigned int waitCnt[AT_DRAW_MAX];	
+	unsigned int waitCnt[AT_DRAW_MAX];
 
     bool shotFlag;						//’e‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool meteoriteFlag;					//è¦Î‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
@@ -86,4 +107,3 @@ protected:
 	BOSS_AT_TYPE At_Type;				//UŒ‚ÊßÀ°İ
 	bool At_DrawFlag[AT_DRAW_MAX];		//UŒ‚”z’u‚Å‚«‚éí—Ş
 };
-
