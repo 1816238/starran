@@ -93,6 +93,9 @@
     <ClCompile Include="SoundMng.cpp">
       <Filter>ソース ファイル\Mng</Filter>
     </ClCompile>
+    <ClCompile Include="Shot.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VECTOR2.h">
