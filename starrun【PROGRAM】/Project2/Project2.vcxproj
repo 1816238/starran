@@ -145,6 +145,7 @@
     <ClCompile Include="ResultCtl.cpp" />
     <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneMng.cpp" />
+    <ClCompile Include="Shot.cpp" />
     <ClCompile Include="SoundMng.cpp" />
     <ClCompile Include="SpeedMng.cpp" />
     <ClCompile Include="TitleScene.cpp" />

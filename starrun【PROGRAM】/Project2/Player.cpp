@@ -127,19 +127,19 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
-		Click[i] = controller.GetClick(i, NOW);
-		ClickOld[i] = controller.GetClick(i, OLD);
+		Click[i] = controller.GetClick(i+1, NOW);
+		ClickOld[i] = controller.GetClick(i+1, OLD);
 	}
 	//MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main);
 
 	//ショット
-	//if (Click[MOUSE_INPUT_RIGHT]/* & (~ClickOld[MOUSE_INPUT_RIGHT])*/)
-	//{
-	//	shotFlag = false;
-	//	auto shot=&AddObjList()(objList, std::make_unique<Shot>(pos, VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),true));
-	//}
+	if (Click[1] & (~ClickOld[1])&& shotFlag)
+	{
+		shotFlag = false;
+		auto shot=AddObjList()(objList, std::make_unique<Shot>(VECTOR2{CHIP_SIZE*3,pos.y}, VECTOR2(CHIP_SIZE * 2, 0), true));
+	}
 	//ジャンプ
-	if (Click[MOUSE_INPUT_LEFT] & (~ClickOld[MOUSE_INPUT_LEFT]))
+	if (Click[0] & (~ClickOld[0]))
 	{
 
 		if (CheckFlag[id] >> static_cast<int>(MAP_FLAG_TYPE::JUMP))
