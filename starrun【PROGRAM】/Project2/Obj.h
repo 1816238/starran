@@ -44,6 +44,8 @@ public:
 	bool AddAnim(string animName, int ID_x, int ID_y, int frame, int inv, bool loop);		//画像の間隔や枚数などをanimTblに代入
 	bool SetAnim(string animName);			//表示画像ﾌｧｲﾙ名及びｱﾆﾒｰｼｮﾝｶｳﾝﾀｰの初期化
 	string GetAnim(void);			//表示画像ﾌｧｲﾙ名の取得
+	void SetVSpos(VECTOR2 pos, int set);
+	VECTOR2 GetVSpos(int set);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//画像移動のｷｰ制御		純粋仮想関数
 	virtual bool init(void) = 0;		//純粋仮想関数
@@ -64,5 +66,7 @@ protected:
 	DIR dir;						//進行方向
 	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
 	void Setdeath(bool flag);
+	VECTOR2 VSpos[2];
+
 };
 

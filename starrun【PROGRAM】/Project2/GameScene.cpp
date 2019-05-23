@@ -59,6 +59,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}
+	(*player)->SetVSpos(enemy->GetVSpos(0), 0);
+	enemy->SetVSpos((*player)->GetVSpos(1), 1);
 	SeasonSwitch();
 	lpSpeedMng.move();
 	GameDraw();
