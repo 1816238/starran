@@ -4,10 +4,11 @@
 #include "GameScene.h"
 
 
-Shot::Shot(VECTOR2 pos, VECTOR2 offset, bool objType) 
+Shot::Shot(VECTOR2 pos, VECTOR2 offset, bool objType,int speed) 
 {
 	this->pos = pos;
 	this->offset = offset;
+	this->speed = speed/10 + 5;
 	if (objType)
 	{
 		Shot::init();
@@ -18,6 +19,7 @@ Shot::Shot(VECTOR2 pos, VECTOR2 offset, bool objType)
 
 Shot::~Shot()
 {
+	OutputDebugString("Á‚¦‚½‚æ\n");
 }
 
 bool Shot::initAnim(void)
@@ -32,20 +34,17 @@ bool Shot::init(void)
 	AddAnim("’e", 0, 0, 28,1, true);
 
 	SetAnim("’e");
-	time = 0;
-	RotAngle = 0.0;
 	return true;
 }
 
 void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	
-	time++;
 	if (time > 29)
 	{
 		time = 0;
 	}
-	pos.x+=5;
+	pos.x += speed;
 	SetPos(pos);
 	//Draw(time);
 }

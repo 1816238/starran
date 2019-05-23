@@ -45,12 +45,17 @@ const bool Player::GetDeathFlag(void)
 
 bool Player::init(void)
 {
-	shotFlag = true;
+	for (int a = 0; a < 100; a++)
+	{
+		shotFlag[a] = true;
+	}
 	jumpFlag = false;
 	DownCheck = false;
 	DeathFlag = false;
-	damageFlag = true;
+	damageFlag = false;
 	JSpeed = 3;
+	shotcnt = 0;
+
 	keyID_Tbl = { MOUSE_INPUT_LEFT,//左
 				  MOUSE_INPUT_RIGHT,//右
 				  MOUSE_ROT_VOL		//ﾎｲｰﾙ回転量
@@ -133,11 +138,33 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//MAP_ID id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN],Main);
 
 	//ショット
-	if (Click[1] & (~ClickOld[1])&& shotFlag)
+	if (Click[1] & (~ClickOld[1]))
 	{
-		shotFlag = false;
-		auto shot=AddObjList()(objList, std::make_unique<Shot>(VECTOR2{CHIP_SIZE*3,pos.y}, VECTOR2(CHIP_SIZE * 2, 0), true));
+		if (shotcnt >= 100)
+		{
+			shotcnt = 0;
+		}
+	
+
+			shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), true, getcnt[0]));
+			shotFlag[shotcnt] = false;
+			shotcnt++;
+		
 	}
+	for (int a = 0; a < 100; a++)
+	{
+		if (!shotFlag[a])
+		{
+			if ((*shot[a])->GetPos().x > SCREEN_SIZE_X)
+				{
+					shotFlag[a] = true;
+					objList.lock()->erase(shot[a]);
+				}
+			
+
+		}
+	}
+
 	//ジャンプ
 	if (Click[0] & (~ClickOld[0]))
 	{

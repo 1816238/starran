@@ -53,7 +53,6 @@ public:
 	bool initAnim(void);
 	const bool GetDeathFlag(void);											//€–S‚Éƒtƒ‰ƒO‚ğ“n‚·
 	bool init(void);													//‰Šú‰»—p
-	Obj *shot;					// ©•ª‚ªŒ‚‚Á‚½’e‚Ì±ÄŞÚ½‚ğŠi”[
 
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
@@ -66,9 +65,11 @@ private:
 	int Rot;											//Î²°Ù‰ñ“]—Ê
 	array<int, MAP_ID_MAX> CheckFlag;
 
-	bool shotFlag;											//‰E¸Ø¯¸‚Åtrue
+	ListObj_itr shot[100];					// ©•ª‚ªŒ‚‚Á‚½’e‚Ì±ÄŞÚ½‚ğŠi”[
+	bool shotFlag[100];											//‰E¸Ø¯¸‚Åtrue
 	int shotSpeed;
 	int shotPos;
+	int shotcnt;
 
 	DIR_TBL_ARRAY keyID_Tbl;								//ˆÚ“®‚Ég‚¤·°î•ñ‚ÌÃ°ÌŞÙ
 	DIR_TBL_ARRAY speed_Tbl;								//ˆÚ“®—Ê‚ÌÃ°ÌŞÙ
