@@ -71,11 +71,10 @@ void Obj::Draw(void)
 			animEndFlag = true;
 		}
 
-		ID = animTbl[animName][ANIM_TBL_START_ID] + (int)dir
-			+ count * divCnt.x;
+		ID = animTbl[animName][ANIM_TBL_START_ID] + count ;
 	}
 	animCnt++;
-
+	
 	if (ID < IMAGE_ID(imageName).size())
 	{
 		if (imageName != "image/player_W.png")
