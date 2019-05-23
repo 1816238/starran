@@ -43,10 +43,11 @@ enum ENEMY_AT_TYPE
 
 //using BOSS_ID = array<BOSS_ID[SEASONE::SEASONE_MAX], ENEMY_ID_MAX>;
 using BOSS_NAME = array<BOSS_ID, ENEMY_ID_MAX>;
-using BOSS_SEASONE = array<SEASONE[ENEMY_ID_MAX], SEASONE_MAX>;
-using BOSS_AT_TYPE = array<bool, ENEMY_ID_MAX>;
+using BOSS_SEASONE = array<SEASONE[( ENEMY_ID_MAX - 1)/ SEASONE_MAX], SEASONE_MAX>;
+using BOSS_AT_TYPE = array<bool[AT_TYPE_MAX], ENEMY_ID_MAX>;
 using BOSS_ect = array<unsigned int, ENEMY_ID_MAX>;
 using BOSS_DIV_ID = array<VECTOR2, ENEMY_ID_MAX>;
+
 class Enemy :
 	public Obj
 {
@@ -57,7 +58,7 @@ public:
 	bool init(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
-	VECTOR2 EnemyType(void);
+	//VECTOR2 EnemyType(void);
 	void Draw(void);
 	void HitCheck(void);
 	sharedListObj objList;
