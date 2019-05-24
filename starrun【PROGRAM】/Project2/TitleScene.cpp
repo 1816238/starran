@@ -27,6 +27,7 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 	GetMousePoint(&Mpos.x, &Mpos.y);
 	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > start&&Mpos < start + VECTOR2{ 320,160 }))
 	{
+		lpSoundMng.PlaySound("Sound/Sound effect/decision27.mp3", DX_PLAYTYPE_BACK);
 		return std::make_unique<GameScene>();
 	}
 
@@ -89,7 +90,10 @@ int TitleScene::Init(void)
 	}
 	objList->clear();
 	SetWindowText("AGS.exe Title");
-	lpSoundMng.PlaySound("Sound/BGM/milkyway.mp3", DX_PLAYTYPE_LOOP);
+	lpSoundMng.PlaySound("Sound/BGM/wind1.mp3", DX_PLAYTYPE_LOOP);
+	lpSoundMng.PlaySound("Sound/BGM/space.mp3", DX_PLAYTYPE_LOOP);
+	lpSoundMng.ChangeVol(40, "Sound/BGM/wind1.mp3");
+	lpSoundMng.ChangeVol(30, "Sound/BGM/space.mp3");
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X,SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	cnt = 255;
