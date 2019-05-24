@@ -27,6 +27,7 @@ enum OBJ_TYPE {
 	TYPE_PLAYER_SHOT,
 	TYPE_ENEMY_SHOT,
 	TYPE_METEO,
+	TYPE_ENEMY_BIT,
 	TYPE_MAX
 };
 
@@ -54,6 +55,7 @@ public:
 	void SetVSpos(VECTOR2 pos, int set);
 	VECTOR2 GetVSpos(int set);
 	virtual OBJ_TYPE CheckObjType(void);
+		void Setdeath(bool flag);
 
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”
@@ -74,7 +76,6 @@ protected:
 	VECTOR2 divCnt;					//•ªŠ„”
 	DIR dir;						//is•ûŒü
 	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
-	void Setdeath(bool flag);
 	VECTOR2 VSpos[2];
 	OBJ_TYPE objType;
 };

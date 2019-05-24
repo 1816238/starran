@@ -22,6 +22,8 @@ Enemy::Enemy(OBJ_TYPE objType)
 {
 	Obj::init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
 	Obj::init("image/boss_body.png", VECTOR2(215, 45), VECTOR2(5, 1));
+	AddAnim("ビット", 1, 1, 4, 1, true);
+	SetAnim("ビット");
 	this->objType = objType;
 	init();
 }
@@ -130,11 +132,9 @@ void Enemy::Draw(void)
 	DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
 	DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
 
-	DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE + GetCircleMove_pos().x,
-		CENTER_POS_Y - 45 / 2 + GetCircleMove_pos().y, 43, 0, 43, 45,
-		IMAGE_ID("image/boss_body.png")[0], true, false);
-
-
+	VECTOR2 tmp = VECTOR2{  43 / 2 - CIRCLE_RANGE + GetCircleMove_pos().x , 45 / 2 + GetCircleMove_pos().y };
+	//DrawRectGraph(tmp.x,tmp.y,  43, 0, 43, 45,IMAGE_ID("image/boss_body.png")[1], true, false,false);
+	DrawGraph(tmp.x, tmp.y, IMAGE_ID("image/boss_body.png", VECTOR2{ 43,45 }, VECTOR2{5,1})[1], true);
 
 	//デバック用====================================================================================================================
 	DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);

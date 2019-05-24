@@ -48,7 +48,9 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	{
 		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-			if ((*itr)->CheckDeath())
+			playerPos.pos=(*itr)->GetPos();
+			playerPos.itr = itr;
+			if ((*itr)->CheckDeath()|| (*playerPos.itr) ->CheckDeath() )
 			{
 				objList->erase(itr);
 				lpResultCtl.SetUp(1000, 10);
@@ -56,22 +58,35 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				return std::make_unique<ResultScene>();
 
 			}
-		
+
 			else {
 				itr++;
 			}
 		}
-		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT||(*itr)->CheckObjType()==TYPE_ENEMY_SHOT)
+		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT)
 		{
+			if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT)
+			{
+			
+			}
+			else 
+			{
+				if ((*itr)->GetPos() > playerPos.pos && (*itr)->GetPos() + 16 > playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y })
+				{
+					(*playerPos.itr)->Setdeath(true);
+					(*itr)->Setdeath(true);
+				}
+			}
+			
+
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
 				break;
 			}
-			else{itr++;}
+			else { itr++; }
 		}
-		else
-		{
+		else {
 			itr++;
 		}
 	}
@@ -133,7 +148,7 @@ int GameScene::Init(void)
 	PLAYER->init();
 	enemy->init();
 	SeasonSwitchFlag = 0;
-
+	pShot_itr = pShotObj.begin();
 	DeathPlayerFlag = false;
 	return 0;
 }
