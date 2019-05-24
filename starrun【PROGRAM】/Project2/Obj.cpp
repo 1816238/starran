@@ -145,3 +145,16 @@ void Obj::Setdeath(bool flag)
 {
 	deathFlag = flag;
 }
+
+void Obj::SetVSpos(VECTOR2 pos,int set)
+{
+	
+	VSpos[set] = pos;
+}
+
+VECTOR2 Obj::GetVSpos(int set)
+{
+
+	return VSpos[set];
+}
+
