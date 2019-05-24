@@ -48,7 +48,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	{
 		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-			playerPos.pos=(*itr)->GetPos();
+			playerPos.pos = VECTOR2{ 0,(*itr)->GetPos().y };
 			playerPos.itr = itr;
 			if ((*itr)->CheckDeath()|| (*playerPos.itr) ->CheckDeath() )
 			{
@@ -71,7 +71,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			}
 			else 
 			{
-				if ((*itr)->GetPos() > playerPos.pos && (*itr)->GetPos() + 16 > playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y })
+				if ((*itr)->GetPos() > playerPos.pos && (*itr)->GetPos() + 16 < playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y })
 				{
 					(*playerPos.itr)->Setdeath(true);
 					(*itr)->Setdeath(true);
