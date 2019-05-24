@@ -21,6 +21,7 @@ public:
 	const bool GetAtDrawFlag(int num);
 	const int SetPos();
 	const int SetAngle();
+	void SetShotFlag(bool flag);
 private:
 	void ShotCtl(VECTOR2 pos, VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3);
 	void MeteoCtl(VECTOR2 pos, VECTOR2 pos2);

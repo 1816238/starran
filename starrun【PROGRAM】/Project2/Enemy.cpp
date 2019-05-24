@@ -17,10 +17,12 @@
 #define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 )
 #define CIRCLE_RANGE ( 250 -(60+43))
 
-Enemy::Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
+Enemy::Enemy(OBJ_TYPE objType)
 {
 	Obj::init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
 	Obj::init("image/boss_body.png", VECTOR2(215, 45), VECTOR2(5, 1));
+	this->objType = objType;
+	init();
 }
 
 Enemy::Enemy()
@@ -35,51 +37,49 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos , meteoPos, frequency[enemyType], At_Type[enemyType][SHOT], At_Type[enemyType][METEORITE],at_wait,waitCnt[0],waitCnt[1],waitCnt[2]);
+	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], At_Type[enemyType][SHOT], At_Type[enemyType][METEORITE], at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
 	if (lpEnemyAct.GetshotFlag())
 	{
-	}
-	if (lpEnemyAct.GetshotFlag())
+	}for (int num = 0; num < AT_DRAW_MAX; num++)
 	{
-		if (shotcnt >= 3)
+		if (lpEnemyAct.GetshotFlag())
 		{
-			shotcnt = 0;
-		}
 
-		VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, 0);
-		if (!lpSoundMng.CheckSound(SOUND_METEO))
+			VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, 0);
+			if (!lpSoundMng.CheckSound(SOUND_METEO))
+			{
+				lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
+			}
+
+
+			auto DrawShot = [&](int num, int h) {
+				if (lpEnemyAct.GetAtDrawFlag(num))
+				{
+					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y + h*CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
+					lpEnemyAct.SetShotFlag(false);
+				}
+				else
+				{
+					waitCnt[num]++;
+				}
+			};
+
+			DrawShot(num,7+3*num);
+
+
+		}
+		else
 		{
-			lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
+
+			lpEnemyAct.SetShotFlag(waitCnt[num]==50);
+			waitCnt[num]++;
+
 		}
-
-		pos.x += 2;
-
-		auto DrawShot = [&](int num, int h) {
-			if (lpEnemyAct.GetAtDrawFlag(num))
-			{
-				shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2(0, 0), VECTOR2(static_cast<int>((tmpPos.x + 2 * waitCnt[num])), SCREEN_SIZE_Y - CHIP_SIZE * h),false, 0));
-				DrawRotaGraph2((tmpPos.x + 2 * waitCnt[num]) - pos.x, SCREEN_SIZE_Y - CHIP_SIZE * h, 0, 0, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
-				shotcnt++;
-			}
-			else
-			{
-				waitCnt[num]++;
-			}
-		};
-
-		DrawShot(0, 5);
-		DrawShot(1, 7);
-		DrawShot(2, 9);
-
-	}
-	else
-	{
-		for (int num = 0; num < AT_DRAW_MAX; num++)
+		if (waitCnt[num] > 50)
 		{
 			waitCnt[num] = 0;
 		}
 	}
-
 	HitCheck();
 }
 
@@ -101,7 +101,7 @@ void Enemy::CircleMove(void)
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
 {
-	return VECTOR2(pos.x,pos.y);
+	return VECTOR2(pos.x, pos.y);
 }
 
 void Enemy::Draw(void)
@@ -120,11 +120,11 @@ void Enemy::Draw(void)
 	DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
 	DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
 
-	DrawRectGraph(CENTER_POS_X - 43/2 - CIRCLE_RANGE + GetCircleMove_pos().x,
-					CENTER_POS_Y - 45/2 + GetCircleMove_pos().y, 43, 0, 43, 45,
-					IMAGE_ID("image/boss_body.png")[0], true, false);
+	DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE + GetCircleMove_pos().x,
+		CENTER_POS_Y - 45 / 2 + GetCircleMove_pos().y, 43, 0, 43, 45,
+		IMAGE_ID("image/boss_body.png")[0], true, false);
 
-	
+
 
 	//デバック用====================================================================================================================
 	DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
@@ -167,7 +167,7 @@ void Enemy::Draw(void)
 
 void Enemy::HitCheck(void)
 {
-	if (CheckHitKey(KEY_INPUT_P)==1 && enemyType < ENEMY_ID_MAX - 1)
+	if (CheckHitKey(KEY_INPUT_P) == 1 && enemyType < ENEMY_ID_MAX - 1)
 	{
 		enemyType = static_cast<BOSS_ID>(enemyType + 1);
 		bool enemyBossFlag = false;
@@ -178,7 +178,7 @@ bool Enemy::init(void)
 {
 
 
-	AddAnim("通常", 0, 0, 30,1,true);
+	AddAnim("通常", 0, 0, 30, 1, true);
 
 	boss_ID = { VECTOR2(3,0), VECTOR2(0,1), VECTOR2(1,1),
 				VECTOR2(2,1), VECTOR2(3,1), VECTOR2(0,2),
@@ -202,22 +202,22 @@ bool Enemy::init(void)
 				true,false,
 				false,true,
 				true,true,
-				false,false};
+				false,false };
 
 	max_hp = { 100, 200, 250,
 			   350, 500, 650,
 			   800, 950,1050,
-			  1250,1450,1650,0};
+			  1250,1450,1650,0 };
 
 	enemy_hp = { 100, 200, 250,
 				 350, 500, 650,
 				 800, 950,1050,
-				1250,1450,1650,0};
+				1250,1450,1650,0 };
 
 	frequency = { 20,20,20,
 				  15,15,15,
 				  10,10,10,
-				   5, 5, 5,0};
+				   5, 5, 5,0 };
 
 	enemyType = CANCER;
 
@@ -239,4 +239,9 @@ bool Enemy::init(void)
 
 	shotcnt = 0;
 	return false;
+}
+
+OBJ_TYPE Enemy::CheckObjType(void)
+{
+	return objType;
 }

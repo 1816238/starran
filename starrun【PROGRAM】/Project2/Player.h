@@ -45,7 +45,7 @@ public:
 		static Player s_Instance;
 		return s_Instance;
 	}*/
-	Player(VECTOR2 setUpPos, VECTOR2 drawOffset);
+	Player(VECTOR2 setUpPos, OBJ_TYPE objType,VECTOR2 drawOffset);
 	Player();
 	 ~Player();
 	 Player(Player& in) {};
@@ -53,7 +53,7 @@ public:
 	bool initAnim(void);
 	const bool GetDeathFlag(void);											//€–S‚Éƒtƒ‰ƒO‚ğ“n‚·
 	bool init(void);													//‰Šú‰»—p
-
+	OBJ_TYPE CheckObjType(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);

@@ -43,7 +43,7 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 		(*itr)->UpDate(controller, objList);
 	}
 	//–qyÌßÚÃŞ¨¹°Äz
-	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
+	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
 	TitleMove();
 	TitleDraw();
 	return std::move(own);		//Š—LŒ ‚ğˆÚ‚·

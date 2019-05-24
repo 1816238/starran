@@ -127,6 +127,11 @@ const int EnemyAct::SetAngle()
 	return randAngle;
 }
 
+void EnemyAct::SetShotFlag(bool flag)
+{
+	shotFlag = flag;
+}
+
 void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);

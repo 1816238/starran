@@ -35,7 +35,7 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 		return std::make_unique<TitleScene>();
 	}
 	//–qyÌßÚÃŞ¨¹°Äz
-	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
+	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
 	lpResultCtl.ResultLoad(objList, false);
 	ResultDraw();
 	return std::move(own);		//Š—LŒ ‚ğˆÚ‚·

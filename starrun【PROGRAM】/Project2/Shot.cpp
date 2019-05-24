@@ -5,16 +5,15 @@
 #include "GameScene.h"
 
 
-Shot::Shot(VECTOR2 pos, VECTOR2 offset, bool objType,int speed) 
+Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType,int speed) 
 {
 	this->pos = pos;
 	this->offset = offset;
 	this->speed = speed/10 + 5;
-	if (objType)
-	{
-		Shot::init();
+	this->objType = objType;
+	Shot::init();
 
-	}
+	
 }
 
 
@@ -31,27 +30,57 @@ bool Shot::initAnim(void)
 
 bool Shot::init(void)
 {
-	Obj::init("image/Pshot.png", VECTOR2{ 64,32 }, VECTOR2{29,1 },pos);
-	AddAnim("’e", 0, 0, 28,1, true);
+	if (objType == TYPE_PLAYER_SHOT)
+	{
+		Obj::init("image/Pshot.png", VECTOR2{ 64,32 }, VECTOR2{ 29,1 }, pos);
+		AddAnim("Ž©•ª‚Ì’e", 0, 0, 28, 1, true);
 
-	SetAnim("’e");
-	return true;
+		SetAnim("Ž©•ª‚Ì’e");
+		return true;
+	}
+	if (objType == TYPE_ENEMY_SHOT)
+	{
+		Obj::init("image/Eshot.png", VECTOR2{ 256,80 }, VECTOR2{ 29,1 });
+		AddAnim("“G‚Ì’e", 0, 0, 28, 1, true);
+		SetAnim("“G‚Ì’e");
+		return true;
+	}
+	return false;
+}
+
+OBJ_TYPE Shot::CheckObjType(void)
+{
+	return objType;
+}
+
+bool Shot::CheckDeath(void)
+{
+	return deathFlag;
 }
 
 void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	
-	if (time > 29)
+	if (objType == TYPE_PLAYER_SHOT)
 	{
-		time = 0;
+		
+		pos.x += speed;
+
+		if (pos.x > SCREEN_SIZE_X)
+		{
+			deathFlag = true;
+		}
+
 	}
-	pos.x += speed;
-
-
-	if (!lpEnemyAct.GetshotFlag())
+	else if (objType == TYPE_ENEMY_SHOT)
 	{
-		pos.x = 0;		//shot‚Ìpos.x
-	}
+		pos.x -= speed;
+		if (pos.x+256 <0)
+		{
+			deathFlag = true;
+		}
+
+		
+	}else{}
 	SetPos(pos);
 	//Draw(time);
 }

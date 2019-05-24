@@ -10,40 +10,30 @@ void SpeedMng::move(void)
 	int end ;
 	if (Seasonflag != 4 && subseasonFlag != 4)
 	{
-		//‹Gß‚Ì•Ï‚í‚è–Ú
-		if (standardTime >= -1280 || standardTime >= 39680)
+		for (int i = 0; i < switchFlag.size(); i++)
 		{
-			Seasonflag = 0;
+			
+			if (standardTime >= switchFlag[i])
+			{
+				if (i / 5==0)
+				{
+					Seasonflag = i;
+					if (i%5 == 4)
+					{
+						Seasonflag = 0;
+					}
+				}
+				else {
+					subseasonFlag = i%5;
+					if (i%5 == 4)
+					{
+						subseasonFlag = 0;
+					}
+				}
+			}
+		
 		}
-		if (standardTime >= 8960)
-		{
-			Seasonflag = 1;
-		}
-		if (standardTime >= 19200)
-		{
-			Seasonflag = 2;
-		}
-		if (standardTime >= 29440)
-		{
-			Seasonflag = 3;
-		}
-		//ƒTƒuÏ¯Ìß‚Ì‹Gß‚Ì•Ï‚í‚è–Ú
-		if (standardTime >= -1280 || standardTime >= 40960)
-		{
-			subseasonFlag = 0;
-		}
-		if (standardTime >= 10240)
-		{
-			subseasonFlag = 1;
-		}
-		if (standardTime >= 20480)
-		{
-			subseasonFlag = 2;
-		}
-		if (standardTime >= 30720)
-		{
-			subseasonFlag = 3;
-		}
+	
 
 		//Seasonflag += (standardTime % 10240 == 10239 ? 1 : 0);
 
@@ -128,6 +118,19 @@ bool SpeedMng::Init(void)
 	yellowstar = 0;
 	speed = SPEED;
 	time = 0;
+	switchFlag.resize(10);
+	switchFlag = {
+		-1280,		//tğŒ1
+		8960,		//‰ÄğŒ
+		19200,		//HğŒ
+		29440,		//“~ğŒ
+		39680,		//tğŒ2
+		-1280 ,		//ƒTƒutğŒ1
+		10240,		//ƒTƒu‰ÄğŒ
+		20480,		//ƒTƒuHğŒ
+		30720,		//ƒTƒu“~ğŒ
+		40960		//ƒTƒutğŒ2
+	};
 	reset();
 	return false;
 	

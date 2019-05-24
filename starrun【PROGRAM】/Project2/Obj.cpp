@@ -38,7 +38,7 @@ void Obj::UpDate(const GameCtl &controller, weekListObj objList)
 	SetMove(controller, objList);
 }
 
-bool Obj::CheckDeth(void)
+bool Obj::CheckDeath(void)
 {
 	return deathFlag;
 }
@@ -144,6 +144,11 @@ bool Obj::CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize
 void Obj::Setdeath(bool flag)
 {
 	deathFlag = flag;
+}
+
+OBJ_TYPE Obj::CheckObjType(void)
+{
+	return objType;
 }
 
 void Obj::SetVSpos(VECTOR2 pos,int set)

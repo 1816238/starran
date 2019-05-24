@@ -21,7 +21,14 @@ enum ANIM_TBL {
 	ANIM_TBL_MAX
 };
 
-
+enum OBJ_TYPE {
+	TYPE_PLAYER,
+	TYPE_ENEMY,
+	TYPE_PLAYER_SHOT,
+	TYPE_ENEMY_SHOT,
+	TYPE_METEO,
+	TYPE_MAX
+};
 
 class GameCtl;
 using namespace std;
@@ -37,7 +44,7 @@ public:
 	virtual bool initAnim(void) { return true; };
 	virtual ~Obj();
 	void UpDate(const GameCtl &controller, weekListObj objList);
-	virtual bool CheckDeth(void);
+	virtual bool CheckDeath(void);
 	void Draw(unsigned int id);				//ŒÅ’èID‚Å‚Ì¶¬
 	virtual void Draw(void);						//map‰æ‘œ‚Ì•`‰æŠÖŒW
 	const VECTOR2 & GetPos(void);			//pos‚Ìæ“¾
@@ -46,6 +53,8 @@ public:
 	string GetAnim(void);			//•\¦‰æ‘œÌ§²Ù–¼‚Ìæ“¾
 	void SetVSpos(VECTOR2 pos, int set);
 	VECTOR2 GetVSpos(int set);
+	virtual OBJ_TYPE CheckObjType(void);
+
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”
 	virtual bool init(void) = 0;		//ƒˆ‰¼‘zŠÖ”
@@ -67,6 +76,6 @@ protected:
 	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
 	void Setdeath(bool flag);
 	VECTOR2 VSpos[2];
-
+	OBJ_TYPE objType;
 };
 

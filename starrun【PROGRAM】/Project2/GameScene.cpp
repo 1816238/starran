@@ -46,13 +46,29 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	//(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
 	for (auto itr = objList->begin(); itr != objList->end(); )
 	{
-		if ((*itr)->CheckDeth())
+		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-			objList->erase(itr);
-			lpResultCtl.SetUp(1000, 10);
-			lpResultCtl.ResultSave(objList);
-			return std::make_unique<ResultScene>();
+			if ((*itr)->CheckDeath())
+			{
+				objList->erase(itr);
+				lpResultCtl.SetUp(1000, 10);
+				lpResultCtl.ResultSave(objList);
+				return std::make_unique<ResultScene>();
+
+			}
 		
+			else {
+				itr++;
+			}
+		}
+		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT||(*itr)->CheckObjType()==TYPE_ENEMY_SHOT)
+		{
+			if ((*itr)->CheckDeath())
+			{
+				objList->erase(itr);
+				break;
+			}
+			else{itr++;}
 		}
 		else
 		{
@@ -107,9 +123,9 @@ int GameScene::Init(void)
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	enemy = std::make_unique<Enemy>();
 	PLAYER = std::make_unique<Player>();
-	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
+	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
 	//player = std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),lpSceneMng.GetDrawOffset());
-	auto obj = AddObjList()(objList, std::make_unique<Enemy>());
+	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);

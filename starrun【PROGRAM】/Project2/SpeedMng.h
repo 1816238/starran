@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "VECTOR2.h"
 class MapControl;
 using namespace std;
@@ -33,6 +34,7 @@ public:
 	SpeedMng(SpeedMng& in) {};
 	void operator=(SpeedMng& in) {};
 	unsigned int GetSeasoonFlag(MapType type);
+	vector<int> switchFlag;
 private:
 	SpeedMng();
 	~SpeedMng();

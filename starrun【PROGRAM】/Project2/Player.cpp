@@ -11,7 +11,7 @@
 #include "SpeedMng.h"
 #include "Shot.h"
 
-Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
+Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
 
@@ -19,7 +19,7 @@ Player::Player(VECTOR2 setUpPos, VECTOR2 drawOffset) :Obj(drawOffset)
 	/*MAIN*/
 
 	initAnim();
-
+	this->objType = objType;
 	pos = setUpPos;
 	Obj::init("image/player_W.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
 
@@ -91,6 +91,11 @@ bool Player::init(void)
 	return false;
 }
 
+OBJ_TYPE Player::CheckObjType(void)
+{
+	return objType;
+}
+
 
 void Player::SetMove(const GameCtl & controller, weekListObj objList)
 {
@@ -140,30 +145,15 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//ショット
 	if (Click[1] & (~ClickOld[1]))
 	{
-		if (shotcnt >= 100)
+		if (shotcnt <= 100)
 		{
-			shotcnt = 0;
-		}
-	
+			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0]));
 
-			shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), true, getcnt[0]));
-			shotFlag[shotcnt] = false;
-			shotcnt++;
+		}
+		shotcnt++;
 		
 	}
-	for (int a = 0; a < 100; a++)
-	{
-		if (!shotFlag[a])
-		{
-			if ((*shot[a])->GetPos().x > SCREEN_SIZE_X)
-				{
-					shotFlag[a] = true;
-					objList.lock()->erase(shot[a]);
-				}
-			
 
-		}
-	}
 
 	//ジャンプ
 	if (Click[0] & (~ClickOld[0]))

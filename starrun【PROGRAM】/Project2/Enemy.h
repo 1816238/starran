@@ -65,10 +65,12 @@ class Enemy :
 	public Obj
 {
 public:
-	Enemy(VECTOR2 setUpPos, VECTOR2 drawOffset);
+	Enemy(OBJ_TYPE objType);
 	Enemy();
 	~Enemy();
 	bool init(void);
+	OBJ_TYPE CheckObjType(void);
+
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void CircleMove(void);
