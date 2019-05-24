@@ -8,18 +8,10 @@
 #define AT_DRAW_MAX 3
 #define SHOT_SPEED -6
 
-typedef struct Move_Circle
-{
-	float x;
-	float y;
-};
+#define CENTER_POS_X ( SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125) 
+#define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 )
+#define CIRCLE_RANGE ( 250 -(60+43))
 
-typedef struct Move_Pos
-{
-	Move_Circle center_pos;	//’†SÀ•W
-	float time;				//üŠú
-	int circle_r;			//‰~‚Ì”¼Œa
-};
 
 enum ENEMY_TYPE
 {
@@ -74,7 +66,7 @@ public:
 
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
-	void CircleMove(void);
+	//void CircleMove(void);
 	VECTOR2 GetCircleMove_pos(void);
 	//VECTOR2 EnemyType(void);
 	void Draw(void);
@@ -93,9 +85,7 @@ private:
 	VECTOR2 speed;
 
 	unsigned int shotcnt;
-	/*‰~‰^“®ŒvZ—p*/
-	Move_Pos circle_pos;
-	int cnt;
+	
 protected:
 	BOSS_ect frequency;
 	unsigned int Frequency;				//UŒ‚•p“x

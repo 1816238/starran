@@ -129,7 +129,7 @@ void EnemyAct::SetShotFlag(bool flag)
 void EnemyAct::SetMeteoFlag(bool flag)
 {
 	lpSoundMng.StopSound(SOUND_METEO);
-	meteoriteFlag = false;
+	meteoriteFlag = flag;
 }
 
 void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3)

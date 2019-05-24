@@ -35,29 +35,35 @@ bool Meteo::init(void)
 			Obj::init("image/metorite15.png", VECTOR2{ 590,300 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：15度", 0, 0, 20, 1, true);
 			SetAnim("隕石：15度");
-			return true;
+			lpEnemyAct.SetMeteoFlag(false);
+			return false;
 			break;
 		case 30:
-			Obj::init("image/metorite30.png", VECTOR2{ 560,370 }, VECTOR2{ 4,5 });
+			Obj::init("image/metorite30.png", VECTOR2{ 560,390 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：30度", 0, 0, 20, 1, true);
 			SetAnim("隕石：30度");
-			return true;
+			lpEnemyAct.SetMeteoFlag(false);
+			return false;
 			break;
 		case 45:
 			Obj::init("image/metorite45.png", VECTOR2{ 470,480 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：45度", 0, 0, 20, 1, true);
 			SetAnim("隕石：45度");
-			return true;
+			lpEnemyAct.SetMeteoFlag(false);
+			return false;
 			break;
 		case 60:
 			Obj::init("image/metorite60.png", VECTOR2{ 390,540 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：60度", 0, 0, 20, 1, true);
 			SetAnim("隕石：60度");
-			return true;
+			lpEnemyAct.SetMeteoFlag(false);
+			return false;
 			break;
 		default:
 			break;
 		}
+		lpEnemyAct.SetMeteoFlag(false);
+
 	}
 	return false;
 }
