@@ -89,6 +89,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			waitCnt[num] = 0;
 		}
 	}
+	CircleMove();
 	HitCheck();
 }
 
