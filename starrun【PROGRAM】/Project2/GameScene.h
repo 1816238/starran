@@ -8,6 +8,11 @@
 class Enemy;
 class Player;
 
+typedef struct HIT {
+	VECTOR2 pos;
+	uniqueObjList::iterator itr;
+};
+
 class GameScene :
 	public BaseScene
 {
@@ -27,5 +32,8 @@ private:
 	 ListObj_itr player;
 	int SeasonSwitchFlag;
 	void SeasonSwitch(void);
+	list<HIT>pShotObj;
+	list<HIT>::iterator pShot_itr;
+	HIT playerPos;
 };
 
