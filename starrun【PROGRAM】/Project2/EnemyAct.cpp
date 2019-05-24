@@ -67,7 +67,6 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, 
 	}
 	
 	ShotCtl(pos , pos2,waitcnt,waitcnt2,waitcnt3);
-	MeteoCtl(pos , pos2);
 }
 
 const bool EnemyAct::GetshotFlag()
@@ -97,28 +96,22 @@ const int EnemyAct::SetPos()
 
 const int EnemyAct::SetAngle()
 {
-	if (!meteoriteFlag)
+	if (meteoriteFlag)
 	{
 		
-		switch ((rand() % 8) +1)
+		switch ((rand() % 6) +1)
 		{
 		case 3:
-			randAngle = 3;
+			randAngle = 1;
 			break;
 		case 4:
-			randAngle = 4;
+			randAngle = 2;
 			break;
 		case 5: 
-			randAngle = 5;
+			randAngle = 3;
 			break;
 		case 6:
-			randAngle = 6;
-			break;
-		case 7:
-			randAngle = 7;
-			break;
-		case 8:
-			randAngle = 8;
+			randAngle = 4;
 			break;
 		default:
 			break;
@@ -129,7 +122,14 @@ const int EnemyAct::SetAngle()
 
 void EnemyAct::SetShotFlag(bool flag)
 {
+	lpSoundMng.StopSound(SOUND_METEO);
 	shotFlag = flag;
+}
+
+void EnemyAct::SetMeteoFlag(bool flag)
+{
+	lpSoundMng.StopSound(SOUND_METEO);
+	meteoriteFlag = false;
 }
 
 void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3)
@@ -195,15 +195,5 @@ void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int 
 		{
 			At_DrawFlag[num] = false;
 		}
-	}
-}
-
-void EnemyAct::MeteoCtl(VECTOR2 pos, VECTOR2 pos2)
-{
-	if (meteoriteFlag == true && pos.y > SCREEN_SIZE_Y + 235 
-		|| SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos2.x < -460)
-	{
-		lpSoundMng.StopSound(SOUND_METEO);
-		meteoriteFlag = false;
 	}
 }

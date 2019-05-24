@@ -22,9 +22,9 @@ public:
 	const int SetPos();
 	const int SetAngle();
 	void SetShotFlag(bool flag);
+	void SetMeteoFlag(bool flag);
 private:
 	void ShotCtl(VECTOR2 pos, VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3);
-	void MeteoCtl(VECTOR2 pos, VECTOR2 pos2);
 	int randPos;
 	int randAngle;
 	int max_waitCnt;

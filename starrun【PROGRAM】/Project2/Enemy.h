@@ -6,7 +6,7 @@
 #include "MapControl.h"
 
 #define AT_DRAW_MAX 3
-#define SHOT_SPEED 6
+#define SHOT_SPEED -6
 
 typedef struct Move_Circle
 {
@@ -70,6 +70,7 @@ public:
 	~Enemy();
 	bool init(void);
 	OBJ_TYPE CheckObjType(void);
+	bool meteo[3];
 
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
@@ -91,7 +92,6 @@ private:
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
 
-	ListObj_itr shot[13];
 	unsigned int shotcnt;
 	/*‰~‰^“®ŒvŽZ—p*/
 	Move_Pos circle_pos;
