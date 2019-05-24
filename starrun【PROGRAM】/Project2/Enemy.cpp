@@ -8,6 +8,7 @@
 #include "classObj.h"
 #include "SpeedMng.h"
 #include "Shot.h"
+#include "Meteo.h"
 #include "EnemyAct.h"
 #include "Enemy.h"
 
@@ -38,9 +39,19 @@ Enemy::~Enemy()
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], At_Type[enemyType][SHOT], At_Type[enemyType][METEORITE], at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
-	if (lpEnemyAct.GetshotFlag())
+	if (int meteo_cnt = 0 <= 2)
 	{
-	}for (int num = 0; num < AT_DRAW_MAX; num++)
+		if (lpEnemyAct.GetmeteoriteFlag())
+		{
+			AddObjList()(objList, std::make_unique<Meteo>(VECTOR2{ GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(),0 }, VECTOR2{ 0,0 }));
+			meteo_cnt++;
+			lpEnemyAct.SetMeteoFlag(false);
+
+		}
+		
+	}
+
+	for (int num = 0; num < AT_DRAW_MAX; num++)
 	{
 		if (lpEnemyAct.GetshotFlag())
 		{
@@ -65,8 +76,6 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			};
 
 			DrawShot(num,7+3*num);
-
-
 		}
 		else
 		{
@@ -134,8 +143,8 @@ void Enemy::Draw(void)
 	DrawFormatString(1100, 75, 0xffff00, "UŒ‚SHOT......%d", At_Type[enemyType][SHOT]);
 	DrawFormatString(1100, 100, 0xffff00, "UŒ‚METEO.....%d", At_Type[enemyType][METEORITE]);
 	DrawFormatString(1100, 125, 0xffff00, "“G‚ÌUŒ‚•p“x..%d", frequency[enemyType]);
-	if (At_Type[enemyType][SHOT])
-	{
+	/*if (At_Type[enemyType][SHOT])
+	{*/
 		DrawFormatString(1100, 150, 0xffff00, "’e‚ÌFlag......%d", lpEnemyAct.GetshotFlag());
 		DrawFormatString(1100, 175, 0xffff00, "’e‚ÌÀ•W......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
 
@@ -143,7 +152,7 @@ void Enemy::Draw(void)
 		{
 			DrawFormatString(1100, 200 + 25 * num, 0xffff00, "At_DrawFlag[%d]...%d", num, lpEnemyAct.GetAtDrawFlag(num));
 		}
-	}
+	//}
 	if (At_Type[enemyType][METEORITE])
 	{
 		DrawFormatString(1100, 300, 0xffff00, "è¦Î‚ÌFlag....%d", lpEnemyAct.GetmeteoriteFlag());
