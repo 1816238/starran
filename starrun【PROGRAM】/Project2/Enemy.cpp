@@ -57,7 +57,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		auto DrawShot = [&](int num, int h) {
 			if (lpEnemyAct.GetAtDrawFlag(num))
 			{
-				shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2(0, 0), VECTOR2(static_cast<int>((tmpPos.x + 2 * waitCnt[num])), SCREEN_SIZE_Y - CHIP_SIZE * h),true, 0));
+				shot[shotcnt] = AddObjList()(objList, std::make_unique<Shot>(VECTOR2(0, 0), VECTOR2(static_cast<int>((tmpPos.x + 2 * waitCnt[num])), SCREEN_SIZE_Y - CHIP_SIZE * h),false, 0));
 				DrawRotaGraph2((tmpPos.x + 2 * waitCnt[num]) - pos.x, SCREEN_SIZE_Y - CHIP_SIZE * h, 0, 0, 0.25f, 0, IMAGE_ID("image/tama.png")[0], true, true);
 				shotcnt++;
 			}

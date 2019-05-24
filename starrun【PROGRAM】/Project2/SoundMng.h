@@ -27,6 +27,7 @@ public:
 	const VEC_INT& GetID(std::string f_name);		// SEÊÝÄÞÙ‚Ì“üŽè
 	const int& PlaySound(std::string f_name, int soundType);
 	const int& StopSound(std::string f_name);
+	const int& ChangeVol(int vol,std::string f_name);
 	const int& CheckSound(std::string f_name);
 private:
 	SoundMng();
