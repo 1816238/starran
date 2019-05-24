@@ -30,7 +30,11 @@ Player::Player()
 {
 }
 
-Player::~Player() = default;
+Player::~Player() 
+{
+	OutputDebugString("player消えたよ\n");
+
+};
 
 bool Player::initAnim(void)
 {
@@ -54,7 +58,7 @@ bool Player::init(void)
 	DeathFlag = false;
 	damageFlag = false;
 	JSpeed = 3;
-	shotcnt = 0;
+	shotcnt = 100;
 
 	keyID_Tbl = { MOUSE_INPUT_LEFT,//左
 				  MOUSE_INPUT_RIGHT,//右
@@ -88,6 +92,8 @@ bool Player::init(void)
 	0b11			//MAP_ID_CLOUD_DOWN3,
 	};
 	
+	OutputDebugString("player初期化したよ\n");
+
 	return false;
 }
 
@@ -145,12 +151,12 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//ショット
 	if (Click[1] & (~ClickOld[1]))
 	{
-		if (shotcnt <= 100)
+		if (shotcnt > 0)
 		{
 			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0]));
-
+			shotcnt--;
 		}
-		shotcnt++;
+	
 		
 	}
 
@@ -244,6 +250,9 @@ void Player::Draw(void)
 	DrawFormatString(0, 180, 0xffff, "YellowStar_player：%d", lpSpeedMng.GetYellow());
 	DrawFormatString(0, 200, 0xffff, "subFlag：%d", lpMapControl.GetSubFlag());
 	DrawFormatString(0, 220, 0xffff, "SpeedFlag(main,sub):%d,%d", lpSpeedMng.GetFlag(Main), lpSpeedMng.GetFlag(Sub));
+	DrawFormatString(0, 240, 0xffff, "star:青%d,緑%d,赤%d", getcnt[0], getcnt[1], getcnt[2]);
+	DrawFormatString(0, 280, 0xffff, "残弾:%d",shotcnt );
+
 
 
 
@@ -266,6 +275,8 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		{
 
 		case MAP_ID_BLUE:			//弾のｽﾋﾟｰﾄﾞｱｯﾌﾟ
+			shotcnt += (shotcnt<100 ? 10 : 0);
+			shotcnt = (shotcnt > 100 ? 100 : shotcnt);
 			getcnt[0]++;
 			break;
 		case MAP_ID_YELLOW:			//ｽﾋﾟｰﾄﾞｱｯﾌﾟ
