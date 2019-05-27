@@ -50,8 +50,13 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
-		AddObjList()(objList, std::make_unique<Meteo>(VECTOR2{ GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), 0 }, VECTOR2{ 0,0 }));
-		lpEnemyAct.SetMeteoFlag(false);
+		if (meteo_waitCnt > 120)
+		{
+			AddObjList()(objList, std::make_unique<Meteo>(VECTOR2{ GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), -500 }, VECTOR2{ 0,0 }));
+			lpEnemyAct.SetMeteoFlag(false);
+			meteo_waitCnt = 0;
+		}
+		meteo_waitCnt++;
 	}
 
 	for (int num = 0; num < AT_DRAW_MAX; num++)

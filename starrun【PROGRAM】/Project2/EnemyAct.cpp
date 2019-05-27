@@ -36,8 +36,6 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , BOSS_ID enemy_
 				meteoriteFlag = true;
 				if (!meteoriteFlag)
 				{
-
-					SetPos();
 					SetAngle();
 				}
 			}
@@ -108,6 +106,7 @@ void EnemyAct::SetShotFlag(bool flag)
 
 void EnemyAct::SetMeteoFlag(bool flag)
 {
+	OutputDebugString("SetMeteoFlag\n");
 	meteoriteFlag = flag;
 }
 

@@ -12,6 +12,7 @@ Meteo::Meteo(VECTOR2 pos, VECTOR2 offset)
 	this->offset = offset;
 	this->objType = TYPE_METEO;
 	Meteo::init();
+	OutputDebugString("pop\n");
 
 }
 
@@ -27,44 +28,35 @@ bool Meteo::initAnim(void)
 
 bool Meteo::init(void)
 {
-	if (lpEnemyAct.GetmeteoriteFlag())
-	{
 		switch (15 * lpEnemyAct.SetAngle())
 		{
 		case 15:
 			Obj::init("image/metorite15.png", VECTOR2{ 590,300 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：15度", 0, 0, 20, 1, true);
 			SetAnim("隕石：15度");
-			lpEnemyAct.SetMeteoFlag(false);
 			return false;
 			break;
 		case 30:
 			Obj::init("image/metorite30.png", VECTOR2{ 560,390 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：30度", 0, 0, 20, 1, true);
 			SetAnim("隕石：30度");
-			lpEnemyAct.SetMeteoFlag(false);
 			return false;
 			break;
 		case 45:
 			Obj::init("image/metorite45.png", VECTOR2{ 470,480 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：45度", 0, 0, 20, 1, true);
 			SetAnim("隕石：45度");
-			lpEnemyAct.SetMeteoFlag(false);
 			return false;
 			break;
 		case 60:
 			Obj::init("image/metorite60.png", VECTOR2{ 390,540 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：60度", 0, 0, 20, 1, true);
 			SetAnim("隕石：60度");
-			lpEnemyAct.SetMeteoFlag(false);
 			return false;
 			break;
 		default:
 			break;
 		}
-		lpEnemyAct.SetMeteoFlag(false);
-
-	}
 	return false;
 }
 
@@ -83,6 +75,8 @@ void Meteo::SetMove(const GameCtl & controller, weekListObj objList)
 		|| SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos2.x < -460)
 	{
 		lpSoundMng.StopSound(SOUND_METEO);
+		lpEnemyAct.SetMeteoFlag(false);
+
 		deathFlag = true;
 	}
 

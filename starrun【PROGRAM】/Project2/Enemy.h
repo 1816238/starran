@@ -81,6 +81,7 @@ private:
 	BOSS_DIV_ID boss_ID;
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
+ 	int meteo_waitCnt;
 
 	unsigned int shotcnt;
 	
