@@ -14,58 +14,39 @@ EnemyAct::~EnemyAct()
 {
 }
 
-void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , bool at_shot, bool at_meteorite,int at_wait,int waitcnt,int waitcnt2,int waitcnt3)
+void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , BOSS_ID enemy_name,int at_wait,int waitcnt,int waitcnt2,int waitcnt3)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
-	
-	if ((ATCnt %frequency) == 1)
-	{
-		if (at_shot)
-		{
-			
-			shotFlag = true;
-			if (!shotFlag)
-			{
-				SetPos();
-			}
-		}
 
-		if (at_meteorite)
-		{
-			meteoriteFlag = true;
-			if (!meteoriteFlag)
-			{
-				SetPos();
-				SetAngle();
-			}
-		}
-	}
-
-	if (AttackType[SHOT] && AttackType[METEORITE])
-	{
 		switch (ATCnt %frequency)
 		{
 		case 1:
-			shotFlag = true;
-			if (!shotFlag)
+			if (At_Type[enemy_name][SHOT])
 			{
-				SetPos();
+				shotFlag = true;
+				if (!shotFlag)
+				{
+					SetPos();
+				}
 			}
 			break;
 		case 2:
-			meteoriteFlag = true;
-			if (!meteoriteFlag)
+			if (At_Type[enemy_name][METEORITE])
 			{
+				meteoriteFlag = true;
+				if (!meteoriteFlag)
+				{
 
-				SetPos();
-				SetAngle();
+					SetPos();
+					SetAngle();
+				}
 			}
 			break;
 		default:
 			break;
 		}
-	}
-	
+
+	//SetMeteoFlag(false);
 	ShotCtl(pos , pos2,waitcnt,waitcnt2,waitcnt3);
 }
 
@@ -122,13 +103,11 @@ const int EnemyAct::SetAngle()
 
 void EnemyAct::SetShotFlag(bool flag)
 {
-	lpSoundMng.StopSound(SOUND_METEO);
 	shotFlag = flag;
 }
 
 void EnemyAct::SetMeteoFlag(bool flag)
 {
-	lpSoundMng.StopSound(SOUND_METEO);
 	meteoriteFlag = flag;
 }
 
