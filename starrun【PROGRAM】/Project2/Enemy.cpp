@@ -41,20 +41,17 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], At_Type[enemyType][SHOT], At_Type[enemyType][METEORITE], at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
+	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType],enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
 	
 	if (enemyBossFlag)
 	{
 		AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE - 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }));
 		enemyBossFlag = false;
 	}
-	for (int num = 0; num < 2; num++)
+	if (lpEnemyAct.GetmeteoriteFlag())
 	{
-		if (lpEnemyAct.GetmeteoriteFlag())
-		{
-			AddObjList()(objList, std::make_unique<Meteo>(VECTOR2{ GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), 0}, VECTOR2{ 0,0 }));
+		AddObjList()(objList, std::make_unique<Meteo>(VECTOR2{ GIMMICK_POP_X + CHIP_SIZE * lpEnemyAct.SetPos(), 0 }, VECTOR2{ 0,0 }));
 		lpEnemyAct.SetMeteoFlag(false);
-		}
 	}
 
 	for (int num = 0; num < AT_DRAW_MAX; num++)

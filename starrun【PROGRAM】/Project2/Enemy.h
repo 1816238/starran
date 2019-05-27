@@ -71,8 +71,6 @@ private:
 	//VECTOR2 EnemyType(void);
 	void Draw(void);
 	void HitCheck(void);
-	sharedListObj objList;
-	BOSS_ID enemyType;
 	BOSS_NAME enemy_name;
 	BOSS_SEASONE seasone;
 	unsigned int enemyHp;
@@ -87,6 +85,8 @@ private:
 	unsigned int shotcnt;
 	
 protected:
+	BOSS_ID enemyType;
+	sharedListObj objList;
 	BOSS_ect frequency;
 	unsigned int Frequency;				//UŒ‚•p“x
 	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”

@@ -1,4 +1,5 @@
 #pragma once
+#include "classObj.h"
 #include "Enemy.h"
 
 #define lpEnemyAct EnemyAct::GetInstance()
@@ -15,7 +16,7 @@ public:
 	}
 	EnemyAct();
 	~EnemyAct();
-	void SelectAct(VECTOR2 pos, VECTOR2 pos2, int frequency , bool at_shot, bool at_meteorite, int at_wait,int waitcnt,int waitcnt2,int waitcnt3);
+	void SelectAct(VECTOR2 pos, VECTOR2 pos2, int frequency ,BOSS_ID enemy_name, int at_wait,int waitcnt,int waitcnt2,int waitcnt3);
 	const bool GetshotFlag();
 	const bool GetmeteoriteFlag();
 	const bool GetAtDrawFlag(int num);
