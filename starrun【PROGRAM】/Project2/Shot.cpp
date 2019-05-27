@@ -32,16 +32,16 @@ bool Shot::init(void)
 {
 	if (objType == TYPE_PLAYER_SHOT)
 	{
-		Obj::init("image/Pshot.png", VECTOR2{ 64,32 }, VECTOR2{ 29,1 }, pos);
-		AddAnim("Ž©•ª‚Ì’e", 0, 0, 28, 1, true);
+		Obj::init("image/Pshot.png", VECTOR2{ 48,32 }, VECTOR2{ 5,6 }, pos);
+		AddAnim("Ž©•ª‚Ì’e", 0, 0, 29, 1, true);
 
 		SetAnim("Ž©•ª‚Ì’e");
 		return true;
 	}
 	if (objType == TYPE_ENEMY_SHOT)
 	{
-		Obj::init("image/Eshot.png", VECTOR2{ 256,80 }, VECTOR2{ 29,1 });
-		AddAnim("“G‚Ì’e", 0, 0, 28, 1, true);
+		Obj::init("image/Eshot.png", VECTOR2{ 200,30 }, VECTOR2{ 7,2 });
+		AddAnim("“G‚Ì’e", 0, 0, 14, 1, true);
 		SetAnim("“G‚Ì’e");
 		return true;
 	}

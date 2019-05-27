@@ -48,9 +48,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	{
 		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-			playerPos.pos = VECTOR2{ 0,(*itr)->GetPos().y };
-			playerPos.itr = itr;
-			if ((*itr)->CheckDeath()|| (*playerPos.itr) ->CheckDeath() )
+		
+			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
 				lpResultCtl.SetUp(1000, 10);
@@ -58,10 +57,20 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				return std::make_unique<ResultScene>();
 
 			}
-
-			else {
-				itr++;
-			}
+			else 
+			{
+				playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };
+				playerPos.itr = itr;
+				if ((*playerPos.itr)->CheckDeath())
+				{
+					objList->erase(itr);
+					lpResultCtl.SetUp(1000, 10);
+					lpResultCtl.ResultSave(objList);
+					return std::make_unique<ResultScene>();
+				}
+				
+			}	
+			itr++;
 		}
 		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT)
 		{
@@ -71,7 +80,9 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			}
 			else 
 			{
-				if ((*itr)->GetPos() > playerPos.pos && (*itr)->GetPos() + 16 < playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y })
+				VECTOR2 tmp = (*itr)->GetPos() + 32;
+				VECTOR2 tmpP = playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y };
+				if ((*itr)->GetPos() < playerPos.pos && tmp > tmpP)
 				{
 					(*playerPos.itr)->Setdeath(true);
 					(*itr)->Setdeath(true);
@@ -116,7 +127,11 @@ bool GameScene::GameDraw(void)
 		(*data).Draw();
 	}
 	DrawFormatString(0, 260, 0xffff, "DeathPlayerFlag:%d", DeathPlayerFlag);
+	for (int i = 0; i < 21; i++)
+	{
+		DrawLine(0, i*CHIP_SIZE, 1280, i*CHIP_SIZE, 0xffff00);
 
+	}
 	//[]() {};		©ƒ‰ƒ€ƒ_Ž®‚Ìˆê‚Â¨[]{};ˆø”‚ðÈ—ª‚µ‚½Œ`
 	//std::for_each((*objList).begin(), (*objList).end(), [](std::unique_ptr<Obj>&itr) {itr->Draw(); }/*ƒ‰ƒ€ƒ_Ž®*/);
 	ScreenFlip();

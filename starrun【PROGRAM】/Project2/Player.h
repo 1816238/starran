@@ -6,7 +6,7 @@
 #define PLAYER_DF_SPEED ( 1)
 #define MOUSE_ROT_VOL (Rot)
 #define PLAYER_SIZE_X 64
-#define PLAYER_SIZE_Y CHIP_SIZE*2
+#define PLAYER_SIZE_Y 64
 #define ADD_SPEED 10
 
 #define lpPlayer Player::GetInstance()
