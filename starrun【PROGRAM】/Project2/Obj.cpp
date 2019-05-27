@@ -83,7 +83,11 @@ void Obj::Draw(void)
 
 		}
 	}
-	DrawFormatString(0, 20, 0x00ffff, "PLAYERÇÃç¿ïW\nX...%d\nY...%d\n", pos.x, pos.y);
+	if (objType == TYPE_ENEMY_SHOT)
+	{
+		DrawBox(pos.x, pos.y, pos.x + 32, pos.y + 32, 0xffffff, false);
+	}
+	//DrawFormatString(0, 20, 0x00ffff, "PLAYERÇÃç¿ïW\nX...%d\nY...%d\n", pos.x, pos.y);
 
 }
 
