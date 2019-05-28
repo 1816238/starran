@@ -52,7 +52,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		}
 		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
 		{
-
+			itr++;
 		}
 		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT|| (*itr)->CheckObjType() == TYPE_METEO)
 		{
