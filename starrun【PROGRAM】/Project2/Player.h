@@ -47,9 +47,9 @@ public:
 	}*/
 	Player(VECTOR2 setUpPos, OBJ_TYPE objType,VECTOR2 drawOffset);
 	Player();
-	 ~Player();
-	 Player(Player& in) {};
-	 void operator=(Player& in) {};
+	~Player();
+	Player(Player&) {};
+	void operator=(Player&) {};
 	bool initAnim(void);
 	const bool GetDeathFlag(void);											//死亡時にフラグを渡す
 	bool init(void);													//初期化用
@@ -80,6 +80,5 @@ private:
 	array<VECTOR2,DIR_MAX>DirPos;
 	bool DownCheck;											//当たり判定用フラグ
 	bool DeathFlag;											//死亡判定用フラグ
-	bool damageFlag;										//ﾀﾞﾒｰｼﾞを受けるとtrueその状態で一定時間内にもう一度ﾀﾞﾒｰｼﾞを受けると死亡
 };
 

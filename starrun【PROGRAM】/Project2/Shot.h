@@ -17,6 +17,5 @@ private:
 	VECTOR2 offset;
 	int speed;
 	int time;
-	bool deathFlag;
 };
 

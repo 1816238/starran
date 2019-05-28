@@ -1,5 +1,6 @@
-#include "time.h"
+#include<math.h>
 #include "Dxlib.h"
+#include "time.h"
 #include "classObj.h"
 #include "SceneMng.h"
 #include "MapControl.h"
@@ -26,18 +27,6 @@ GameScene::~GameScene()
 
 unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 {
-	/*if(SetDeathFlag())
-	{ 
-		lpResultCtl.SetUp(1000, 10);
-		lpResultCtl.ResultSave(objList);
-		return std::make_unique<ResultScene>();
-	}
-
-	auto resultMove = [&]() {	lpResultCtl.SetUp(1000, 10);
-	lpResultCtl.ResultSave(objList);
-	return std::make_unique<ResultScene>(); };
-*/
-
 	for (auto itr = objList->begin(); itr != objList->end(); itr++)
 	{
 		(*itr)->UpDate(controller, objList);
@@ -48,7 +37,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	{
 		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-		
+			(*itr)->Setdeath(playerPos.deathFlag);
+			(*itr)->SetDamageFlag(playerPos.damageFlag, 0);
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
@@ -57,22 +47,14 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				return std::make_unique<ResultScene>();
 
 			}
-			else 
-			{
-				playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };
-				playerPos.itr = itr;
-				if ((*playerPos.itr)->CheckDeath())
-				{
-					objList->erase(itr);
-					lpResultCtl.SetUp(1000, 10);
-					lpResultCtl.ResultSave(objList);
-					return std::make_unique<ResultScene>();
-				}
-				
-			}	
+			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
 			itr++;
 		}
-		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT)
+		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
+		{
+
+		}
+		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT|| (*itr)->CheckObjType() == TYPE_METEO)
 		{
 			if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT)
 			{
@@ -80,11 +62,17 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			}
 			else 
 			{
-				VECTOR2 tmp = (*itr)->GetPos() + 32;
-				VECTOR2 tmpP = playerPos.pos + VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y };
-				if ((*itr)->GetPos() < playerPos.pos && tmp > tmpP)
+				if (circleHit((*itr)->GetPos() + 16, 16, playerPos.pos, VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y }))
 				{
-					(*playerPos.itr)->Setdeath(true);
+					if (playerPos.damageFlag)
+					{
+						playerPos.deathFlag = true;
+					}
+					else {
+						playerPos.damageFlag = true;
+
+					}
+
 					(*itr)->Setdeath(true);
 				}
 			}
@@ -101,8 +89,6 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			itr++;
 		}
 	}
-	(*player)->SetVSpos(enemy->GetVSpos(0), 0);
-	enemy->SetVSpos((*player)->GetVSpos(1), 1);
 	SeasonSwitch();
 	lpSpeedMng.move();
 	GameDraw();
@@ -110,11 +96,27 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	return std::move(own);		//èäóLå†Çà⁄Ç∑
 }
 
-bool GameScene::SetDeathFlag(void)
+bool GameScene::circleHit(VECTOR2 CePos, int CeRad, VECTOR2 SquPos, VECTOR2 SquRange)
 {
-	//DeathPlayerFlag = GetDeathFlag();
-		return DeathPlayerFlag;
+	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - SquPos.y) < CeRad)					//ç∂è„
+	{
+		return true;
+	}
+	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - (SquPos.y+SquRange.y)) < CeRad)	//ç∂â∫
+	{
+		return true;
+	}
+	if (abs(CePos.x - (SquPos.x+SquRange.x)) < CeRad && abs(CePos.y - SquPos.y) < CeRad)	//âEè„
+	{
+		return true;
+	}	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - (SquPos.y+SquRange.y)) < CeRad)//âEâ∫
+	{
+		return true;
+	}
+	return false;
 }
+
+
 
 bool GameScene::GameDraw(void)
 {
@@ -126,7 +128,6 @@ bool GameScene::GameDraw(void)
 	{
 		(*data).Draw();
 	}
-	DrawFormatString(0, 260, 0xffff, "DeathPlayerFlag:%d", DeathPlayerFlag);
 	for (int i = 0; i < 21; i++)
 	{
 		DrawLine(0, i*CHIP_SIZE, 1280, i*CHIP_SIZE, 0xffff00);
@@ -151,20 +152,16 @@ int GameScene::Init(void)
 	lpSoundMng.StopSound("Sound/BGM/milkyway.mp3");
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
-	enemy = std::make_unique<Enemy>();
-	PLAYER = std::make_unique<Player>();
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
-	//player = std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),lpSceneMng.GetDrawOffset());
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
-	PLAYER->init();
-	enemy->init();
 	SeasonSwitchFlag = 0;
 	pShot_itr = pShotObj.begin();
-	DeathPlayerFlag = false;
+	playerPos.damageFlag = false;
+	playerPos.deathFlag = false;
 	return 0;
 }
 void GameScene::SeasonSwitch(void)

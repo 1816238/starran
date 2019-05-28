@@ -242,33 +242,6 @@ bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,boo
 
 bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
 {
-	if (objFlag)
-	{
-		return false;
-	}
-	bool MakePlayerflag = false;
-	bool MakeEnemyflag = false;
-	for (int y = 0; y < mapSize.y; y++)
-	{
-		for (int x = 0; x < mapSize.x; x++)
-		{
-
-			if (MakePlayerflag)
-			{
-				break;
-			}
-			{
-				//ÌßÚ²Ô°ƒLƒƒƒ‰‚ð²Ý½ÀÝ½‚·‚é
-				//ListObj_itr obj = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15), lpSceneMng.GetDrawOffset()));
-
-				MakePlayerflag = true;
-			}
-			//ListObj_itr obj = AddObjList()(objList, std::make_unique<Enemy>());
-
-			break;
-		}
-	}
-
 	return true;
 }
 
