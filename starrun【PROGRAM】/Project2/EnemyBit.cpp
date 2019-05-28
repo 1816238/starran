@@ -40,8 +40,6 @@ bool EnemyBit::init(void)
 		SetAnim("í èÌ");
 	}
 
-
-
 	circle_pos.center_pos = { CENTER_POS_X,CENTER_POS_Y };
 	circle_pos.circle_r = CIRCLE_RANGE;
 	circle_pos.time = 3600;
@@ -65,27 +63,27 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 	SetAnim("í èÌ");
 
 	cnt++;
-
-	switch (bit_cnt)
+	auto Circle_Drwa = [&](int num)
 	{
-	case 0:
-		tmp_pos_x = circle_pos.center_pos.x + sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		tmp_pos_y = circle_pos.center_pos.y - cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		break;
-	case 1:
-		tmp_pos_x = circle_pos.center_pos.x - sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		tmp_pos_y = circle_pos.center_pos.y + cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		break;
-	case 2:
-		tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		break;
-	case 3:
-		tmp_pos_x = circle_pos.center_pos.x + cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		tmp_pos_y = circle_pos.center_pos.y + sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
-		break;
-	default:
-		break;
+		if(bit_cnt < 2)
+		{
+			tmp_pos_x = circle_pos.center_pos.x + num * sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+			tmp_pos_y = circle_pos.center_pos.y - num * cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		}
+		else
+		{
+			tmp_pos_x = circle_pos.center_pos.x + num * cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+			tmp_pos_y = circle_pos.center_pos.y + num * sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		}
+	};
+
+	if (bit_cnt == 0 || bit_cnt == 2)
+	{
+		Circle_Drwa(1);
+	}
+	if (bit_cnt == 1 || bit_cnt == 3)
+	{
+		Circle_Drwa(-1);
 	}
 
 /*
