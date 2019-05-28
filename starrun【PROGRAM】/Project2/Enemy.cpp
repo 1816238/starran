@@ -45,8 +45,11 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	
 	if (enemyBossFlag)
 	{
-		AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE - 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }));
-		enemyBossFlag = false;
+		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
+		{
+			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt));
+			enemyBossFlag = false;
+		}
 	}
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
@@ -219,6 +222,11 @@ bool Enemy::init(void)
 				 350, 500, 650,
 				 800, 950,1050,
 				1250,1450,1650,0 };
+
+	enemy_bit_cnt = { 4,4,4,
+					  4,4,4,
+					  4,4,4,
+					  4,4,4 };
 
 	frequency = { 20,20,20,
 				  15,15,15,

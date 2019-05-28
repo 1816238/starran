@@ -18,7 +18,7 @@ class EnemyBit :
 	public Obj
 {
 public:
-	EnemyBit(VECTOR2 pos, VECTOR2 offset);
+	EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt);
 	~EnemyBit();
 	bool initAnim(void);
 	bool init(void);
@@ -32,6 +32,7 @@ private:
 	int speed;
 	int time;
 	bool deathFlag;
+	int bit_cnt;
 	/*‰~‰^“®ŒvŽZ—p*/
 	Move_Pos circle_pos;
 	int cnt;

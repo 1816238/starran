@@ -7,7 +7,7 @@
 #define PI  3.1415926535897932384626433832795f
 #define CIRCLE_PI ( PI*2 )
 
-EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset)
+EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt)
 {
 	//Obj::init("image/player_W.png", VECTOR2(40, 64), VECTOR2(1, 1), pos);
 
@@ -15,6 +15,9 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset)
 	this->offset = offset;
 	this->speed = 1;
 	this->objType = TYPE_ENEMY_BIT;
+	this->bit_cnt = bit_cnt;
+	OutputDebugString("pop\n");
+
 	EnemyBit::init();
 
 }
@@ -47,7 +50,7 @@ bool EnemyBit::init(void)
 
 OBJ_TYPE EnemyBit::CheckObjType(void)
 {
-	return OBJ_TYPE();
+	return objType;
 }
 
 bool EnemyBit::CheckDeath(void)
@@ -63,12 +66,31 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 
 	cnt++;
 
-	tmp_pos_x = circle_pos.center_pos.x + cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
-	tmp_pos_y = circle_pos.center_pos.y + sin(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
+	switch (bit_cnt)
+	{
+	case 0:
+		tmp_pos_x = circle_pos.center_pos.x + sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		tmp_pos_y = circle_pos.center_pos.y - cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		break;
+	case 1:
+		tmp_pos_x = circle_pos.center_pos.x - sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		tmp_pos_y = circle_pos.center_pos.y + cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		break;
+	case 2:
+		tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		break;
+	case 3:
+		tmp_pos_x = circle_pos.center_pos.x + cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		tmp_pos_y = circle_pos.center_pos.y + sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
+		break;
+	default:
+		break;
+	}
+
 /*
-	pos.x = circle_pos.center_pos.x * cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
-	pos.y = circle_pos.center_pos.y + cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;*/
-	
+	tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
+	tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;ç∂*/
 	SetPos(VECTOR2(tmp_pos_x, tmp_pos_y));
 }
 

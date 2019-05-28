@@ -8,8 +8,8 @@
 #define AT_DRAW_MAX 3
 #define SHOT_SPEED -6
 
-#define CENTER_POS_X ( SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125) 
-#define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 )
+#define CENTER_POS_X ( SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125  - 43 / 2) 
+#define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 - 43 / 2)
 #define CIRCLE_RANGE ( 250 -(60+43))
 
 
@@ -77,6 +77,7 @@ private:
 	unsigned int maxHp;
 	BOSS_ect max_hp;
 	BOSS_ect enemy_hp;
+	BOSS_ect enemy_bit_cnt;
 	bool enemyBossFlag;
 	BOSS_DIV_ID boss_ID;
 	VECTOR2 meteoPos;
