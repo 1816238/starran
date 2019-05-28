@@ -85,7 +85,7 @@ void Obj::Draw(void)
 	}
 	if (objType == TYPE_ENEMY_SHOT)
 	{
-		DrawCircle(pos.x+16, pos.y+16, 16, 0xffffff, false);
+		DrawCircle(pos.x+15, pos.y+16, 10, 0xffffff, false);
 	}
 	//DrawFormatString(0, 20, 0x00ffff, "PLAYERÇÃç¿ïW\nX...%d\nY...%d\n", pos.x, pos.y);
 
@@ -155,13 +155,18 @@ void Obj::SetDamageFlag(bool flag, int damage)
 	if (!damageFlag&&flag)
 	{
 		damageFlag = flag;
-
+		HP -= damage;
 	}
 	else if(damageFlag&&flag)
 	{
 		Setdeath(true);
 	}else{}
 	Obj::damage = damage;
+}
+
+int Obj::GetBitNo(void)
+{
+	return bit_no;
 }
 
 OBJ_TYPE Obj::CheckObjType(void)

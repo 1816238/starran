@@ -7,7 +7,7 @@
 #define PI  3.1415926535897932384626433832795f
 #define CIRCLE_PI ( PI*2 )
 
-EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt)
+EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
 {
 	//Obj::init("image/player_W.png", VECTOR2(40, 64), VECTOR2(1, 1), pos);
 
@@ -15,7 +15,8 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt)
 	this->offset = offset;
 	this->speed = 1;
 	this->objType = TYPE_ENEMY_BIT;
-	this->bit_cnt = bit_cnt;
+	this->HP = HP;
+	this->bit_no = bit_cnt;
 	OutputDebugString("pop\n");
 
 	EnemyBit::init();
@@ -46,15 +47,6 @@ bool EnemyBit::init(void)
 	return true;
 }
 
-OBJ_TYPE EnemyBit::CheckObjType(void)
-{
-	return objType;
-}
-
-bool EnemyBit::CheckDeath(void)
-{
-	return false;
-}
 
 void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 {
@@ -65,7 +57,7 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 	cnt++;
 	auto Circle_Drwa = [&](int num)
 	{
-		if(bit_cnt < 2)
+		if(bit_no < 2)
 		{
 			tmp_pos_x = circle_pos.center_pos.x + num * sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
 			tmp_pos_y = circle_pos.center_pos.y - num * cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
@@ -77,15 +69,15 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 		}
 	};
 
-	if (bit_cnt == 0 || bit_cnt == 2)
+	if (bit_no == 0 || bit_no == 2)
 	{
 		Circle_Drwa(1);
 	}
-	if (bit_cnt == 1 || bit_cnt == 3)
+	if (bit_no == 1 || bit_no == 3)
 	{
 		Circle_Drwa(-1);
 	}
-
+	deathFlag = (HP <= 0 ? true : false);
 /*
 	tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
 	tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;¶*/

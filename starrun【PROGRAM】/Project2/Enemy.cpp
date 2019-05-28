@@ -47,7 +47,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
 		{
-			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt));
+			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,bit_cnt));
 			enemyBossFlag = false;
 		}
 	}

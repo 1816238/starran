@@ -18,12 +18,10 @@ class EnemyBit :
 	public Obj
 {
 public:
-	EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt);
+	EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP);
 	~EnemyBit();
 	bool initAnim(void);
 	bool init(void);
-	OBJ_TYPE CheckObjType(void);
-	bool CheckDeath(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//
 	//void Draw(void);
@@ -32,7 +30,6 @@ private:
 	int speed;
 	int time;
 	bool deathFlag;
-	int bit_cnt;
 	/*‰~‰^“®ŒvŽZ—p*/
 	Move_Pos circle_pos;
 	int cnt;

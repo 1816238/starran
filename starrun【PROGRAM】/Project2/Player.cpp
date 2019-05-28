@@ -351,7 +351,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			get_star(id, (DIR_TBL_ID)dir);
 			if (dir == DIR_DOWN)
 			{
-				if ((!(jumpFlag & 1)))
+				if (!(jumpFlag & 0b11))
 				{
 					pos.y += 1 + time["¼Þ¬ÝÌß"] / ADD_SPEED;
 				}
@@ -362,7 +362,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 
 			if (dir == DIR_DOWN)
 			{
-				if ((!(jumpFlag & 1)))
+				if (!(jumpFlag & 0b11))
 				{
 					pos.y += 1 + time["¼Þ¬ÝÌß"] / ADD_SPEED;
 				}

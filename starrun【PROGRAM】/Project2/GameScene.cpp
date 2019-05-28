@@ -37,8 +37,6 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	{
 		if ((*itr)->CheckObjType() == TYPE_PLAYER)
 		{
-			(*itr)->Setdeath(playerPos.deathFlag);
-			(*itr)->SetDamageFlag(playerPos.damageFlag, 0);
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
@@ -47,11 +45,25 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				return std::make_unique<ResultScene>();
 
 			}
+			(*itr)->Setdeath(playerPos.deathFlag);
+			(*itr)->SetDamageFlag(playerPos.damageFlag, 0);
+
 			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
 			itr++;
 		}
 		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
 		{
+			Bit_itr = BitObj.begin();
+			do{
+				if ((*itr)->GetBitNo() == Bit_itr->ObjNo)
+				{
+
+					break;
+				}
+				else {
+					Bit_itr++;
+				}
+			} while (Bit_itr != BitObj.end());
 			itr++;
 		}
 		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT|| (*itr)->CheckObjType() == TYPE_METEO)
@@ -62,7 +74,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			}
 			else 
 			{
-				if (circleHit((*itr)->GetPos() + 16, 16, playerPos.pos, VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y }))
+				if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos, VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y }))
 				{
 					if (playerPos.damageFlag)
 					{
@@ -159,9 +171,18 @@ int GameScene::Init(void)
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
 	SeasonSwitchFlag = 0;
-	pShot_itr = pShotObj.begin();
 	playerPos.damageFlag = false;
 	playerPos.deathFlag = false;
+
+	Bit_itr = BitObj.begin();
+	BitObj.resize(4);
+	int i = 0;
+	for (auto itr = BitObj.begin(); itr != BitObj.end(); itr++)
+	{
+		
+		itr->ObjNo = i;
+		i++;
+	}
 	return 0;
 }
 void GameScene::SeasonSwitch(void)

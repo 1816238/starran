@@ -10,7 +10,7 @@ class Player;
 
 typedef struct HIT {
 	VECTOR2 pos;
-	uniqueObjList::iterator itr;
+	int ObjNo;
 	bool deathFlag;
 	bool damageFlag;
 };
@@ -33,8 +33,9 @@ private:
 	 ListObj_itr player;
 	int SeasonSwitchFlag;
 	void SeasonSwitch(void);
-	list<HIT>pShotObj;
-	list<HIT>::iterator pShot_itr;
+	list<HIT>BitObj;
+	list<HIT>::iterator Bit_itr;
 	HIT playerPos;
+	
 };
 
