@@ -83,22 +83,19 @@ private:
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
  	int meteo_waitCnt;
- 	int shot_waitCnt;
+	int shot_waitCnt;
+    bool shotFlag[AT_DRAW_MAX];						//’e‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
+	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
+	unsigned int waitCnt[AT_DRAW_MAX];
 
-	unsigned int shotcnt;
 	
 protected:
 	BOSS_ID enemyType;
 	sharedListObj objList;
 	BOSS_ect frequency;
 	unsigned int Frequency;				//UŒ‚•p“x
-	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
-	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
-	unsigned int waitCnt[AT_DRAW_MAX];
-
-    bool shotFlag;						//’e‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool meteoriteFlag;					//è¦Î‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool AttackType[AT_TYPE_MAX];		//UŒ‚ÊßÀ°İ
 	BOSS_AT_TYPE At_Type;				//UŒ‚ÊßÀ°İ
-	bool At_DrawFlag[AT_DRAW_MAX];		//UŒ‚”z’u‚Å‚«‚éí—Ş
 };

@@ -42,15 +42,17 @@ Enemy::~Enemy()
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
-
+	//“G‚ÌËÞ¯Ä‚Ì²Ý½ÀÝ½
 	if (enemyBossFlag)
 	{
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
 		{
-			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,bit_cnt));
+			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt, bit_cnt));
 			enemyBossFlag = false;
 		}
 	}
+
+	//è¦Î‚Ì²Ý½ÀÝ½
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
 		if (meteo_waitCnt > 120)
@@ -62,42 +64,60 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		meteo_waitCnt++;
 	}
 
-	for (int num = 0; num < AT_DRAW_MAX; num++)
+	//“G‚Ì’e‚Ì²Ý½ÀÝ½‹y‚Ñ”­ŽË‚Ü‚Å‚ÌŠÇ—
+	if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
 	{
 		VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
 		if (!lpSoundMng.CheckSound(SOUND_METEO))
 		{
 			lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
 		}
-
-
-		auto DrawShot = [&](int num, int h) {
-			if (lpEnemyAct.GetAtDrawFlag(num))
-			{
-				AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
-				lpEnemyAct.SetShotFlag(false);
-			}
-			else
-			{
-				waitCnt[num]++;
-			}
-		};
-
-		DrawShot(num, 7 + 3 * num);
-
-		if (waitCnt[num] > AT_DRAW_MAX)
+		if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
 		{
-			waitCnt[num] = 0;
+			auto DrawShot = [&](int h) {
+				AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
+			};
+			switch ((shot_waitCnt / at_wait) % at_wait)
+			{
+			case 1:
+				if (!shotFlag[0])
+				{
+					DrawShot(9);
+					shotFlag[0] = true;
+				}
+				break;
+			case 3:
+				if (!shotFlag[1])
+				{
+					DrawShot(7);
+					shotFlag[1] = true;
+				}
+				break;
+			case 7:
+				if (!shotFlag[2])
+				{
+					DrawShot(6);
+					shotFlag[2] = true;
+				}
+				break;
+			default:
+				break;
+			}
 		}
+		shot_waitCnt++;
 	}
-	//CircleMove();
+	else
+	{
+		OutputDebugString("shot_waitCnt = 0 \n");
+
+		for (int num = 0; num < AT_DRAW_MAX; num++)
+		{
+			shotFlag[num] = false;
+		}
+		shot_waitCnt = shot_waitCnt / 3;
+	}
 	HitCheck();
 }
-
-//void Enemy::CircleMove(void)
-//{
-//
-//}
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
 {
@@ -122,9 +142,6 @@ void Enemy::Draw(void)
 
 	DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE, CENTER_POS_Y - 45 / 2, 43, 0, 43, 45,
 		IMAGE_ID("image/boss_body.png")[0], true, false);
-	/*DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE + GetCircleMove_pos().x,
-		CENTER_POS_Y - 45 / 2 + GetCircleMove_pos().y, 43, 0, 43, 45,
-		IMAGE_ID("image/boss_body.png")[0], true, false);*/
 	
 	//ƒfƒoƒbƒN—p====================================================================================================================
 	DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
@@ -136,12 +153,11 @@ void Enemy::Draw(void)
 	DrawFormatString(1100, 125, 0xffff00, "“G‚ÌUŒ‚•p“x..%d", frequency[enemyType]);
 	/*if (At_Type[enemyType][SHOT])
 	{*/
-		DrawFormatString(1100, 150, 0xffff00, "’e‚ÌFlag......%d", lpEnemyAct.GetshotFlag());
 		DrawFormatString(1100, 175, 0xffff00, "’e‚ÌÀ•W......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
 
 		for (int num = 0; num < AT_DRAW_MAX; num++)
 		{
-			DrawFormatString(1100, 200 + 25 * num, 0xffff00, "At_DrawFlag[%d]...%d", num, lpEnemyAct.GetAtDrawFlag(num));
+			DrawFormatString(1100, 150, 0xffff00, "’e‚ÌFlag[%d]......%d",num ,shotFlag[num]);
 		}
 	//}
 	if (At_Type[enemyType][METEORITE])
@@ -159,11 +175,6 @@ void Enemy::Draw(void)
 		Draw(boss_ID[enemyType]);
 	}
 }
-
-//VECTOR2 Enemy::EnemyType(void)
-//{
-//	seasone[enemyType];
-//}
 
 void Enemy::HitCheck(void)
 {
@@ -225,21 +236,16 @@ bool Enemy::init(void)
 
 	enemyType = CANCER;
 
-	at_Cnt = 36;
-	at_wait = 60;
+	at_Cnt = 30;
+	at_wait = 20;
 
 	meteoPos = VECTOR2(0, 0);
 	speed = VECTOR2(0, 0);
 	for (int num = 0; num < AT_DRAW_MAX; num++)
 	{
-		At_DrawFlag[num] = false;
+		shotFlag[num] = false;
 	}
-	shotFlag = false;
 	enemyBossFlag = true;
-
-	//circle_pos.center_pos = { CENTER_POS_X,CENTER_POS_Y };
-	//circle_pos.circle_r = CIRCLE_RANGE;
-	//circle_pos.time = 60;
 
 	shotcnt = 0;
 	return false;
