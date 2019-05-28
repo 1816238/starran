@@ -25,7 +25,7 @@ public:
 	void SetShotFlag(bool flag);
 	void SetMeteoFlag(bool flag);
 private:
-	void ShotCtl(VECTOR2 pos, VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3);
+	void ShotCtl(VECTOR2 pos, VECTOR2 pos2,int at_wait, int waitcnt, int waitcnt2, int waitcnt3);
 	int randPos;
 	int randAngle;
 	int max_waitCnt;

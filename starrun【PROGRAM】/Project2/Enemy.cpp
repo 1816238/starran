@@ -41,8 +41,8 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType],enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
-	
+	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
+
 	if (enemyBossFlag)
 	{
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
@@ -64,38 +64,28 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 
 	for (int num = 0; num < AT_DRAW_MAX; num++)
 	{
-		if (lpEnemyAct.GetshotFlag())
+		VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
+		if (!lpSoundMng.CheckSound(SOUND_METEO))
 		{
+			lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
+		}
 
-			VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, 0);
-			if (!lpSoundMng.CheckSound(SOUND_METEO))
+
+		auto DrawShot = [&](int num, int h) {
+			if (lpEnemyAct.GetAtDrawFlag(num))
 			{
-				lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
+				AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
+				lpEnemyAct.SetShotFlag(false);
 			}
+			else
+			{
+				waitCnt[num]++;
+			}
+		};
 
+		DrawShot(num, 7 + 3 * num);
 
-			auto DrawShot = [&](int num, int h) {
-				if (lpEnemyAct.GetAtDrawFlag(num))
-				{
-					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y + h*CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
-					lpEnemyAct.SetShotFlag(false);
-				}
-				else
-				{
-					waitCnt[num]++;
-				}
-			};
-
-			DrawShot(num,7+3*num);
-		}
-		else
-		{
-
-			lpEnemyAct.SetShotFlag(waitCnt[num]==50);
-			waitCnt[num]++;
-
-		}
-		if (waitCnt[num] > 50)
+		if (waitCnt[num] > AT_DRAW_MAX)
 		{
 			waitCnt[num] = 0;
 		}

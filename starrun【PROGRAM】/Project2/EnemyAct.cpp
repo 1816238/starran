@@ -45,7 +45,7 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , BOSS_ID enemy_
 		}
 
 	//SetMeteoFlag(false);
-	ShotCtl(pos , pos2,waitcnt,waitcnt2,waitcnt3);
+	ShotCtl(pos , pos2,at_wait,waitcnt,waitcnt2,waitcnt3);
 }
 
 const bool EnemyAct::GetshotFlag()
@@ -110,7 +110,7 @@ void EnemyAct::SetMeteoFlag(bool flag)
 	meteoriteFlag = flag;
 }
 
-void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int waitcnt3)
+void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2,int at_wait, int waitcnt, int waitcnt2, int waitcnt3)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
 
@@ -131,36 +131,6 @@ void EnemyAct::ShotCtl(VECTOR2 pos,VECTOR2 pos2, int waitcnt, int waitcnt2, int 
 		default:
 			break;
 		}
-		if (waitcnt < waitcnt2 < waitcnt3)
-		{
-			max_waitCnt = waitcnt3;
-		}
-		else if (waitcnt < waitcnt3 < waitcnt2)
-		{
-			max_waitCnt = waitcnt2;
-
-		}
-		else if (waitcnt2 < waitcnt < waitcnt3)
-		{
-			max_waitCnt = waitcnt3;
-
-		}
-		else if (waitcnt2 < waitcnt3 < waitcnt)
-		{
-			max_waitCnt = waitcnt;
-
-		}
-		else if (waitcnt3 < waitcnt2 < waitcnt)
-		{
-			max_waitCnt = waitcnt;
-
-		}
-		else if (waitcnt3 < waitcnt < waitcnt2)
-		{
-			max_waitCnt = waitcnt2;
-
-		}
-		else {}
 		if (SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 2* max_waitCnt - pos.x < -118)
 		{
 			lpSoundMng.StopSound(SOUND_METEO);

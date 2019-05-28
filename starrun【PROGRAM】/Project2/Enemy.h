@@ -83,6 +83,7 @@ private:
 	VECTOR2 meteoPos;
 	VECTOR2 speed;
  	int meteo_waitCnt;
+ 	int shot_waitCnt;
 
 	unsigned int shotcnt;
 	
