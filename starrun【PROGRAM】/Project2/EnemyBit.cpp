@@ -13,7 +13,7 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
 
 	this->pos = pos;
 	this->offset = offset;
-	this->speed = 1;
+	this->speed = 6;
 	this->objType = TYPE_ENEMY_BIT;
 	this->HP = HP;
 	this->bit_no = bit_cnt;

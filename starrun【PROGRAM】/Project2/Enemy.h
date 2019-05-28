@@ -88,6 +88,7 @@ private:
 	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
 	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
 	unsigned int waitCnt[AT_DRAW_MAX];
+	unsigned int shotcnt;
 
 	
 protected:
