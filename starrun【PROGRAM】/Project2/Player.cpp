@@ -242,7 +242,7 @@ void Player::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//デバッグ用
-	DrawBox(0, pos.y,PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, true);
+	DrawBox(64, pos.y,PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, false);
 
 	DrawFormatString(0, 0, 0xff00ff, "time(main,sub,std):%d,%d,%d", Speed(Main), Speed(Sub), Speed(Std));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);

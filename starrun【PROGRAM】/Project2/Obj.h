@@ -55,15 +55,14 @@ public:
 	void SetVSpos(VECTOR2 pos, int set);
 	VECTOR2 GetVSpos(int set);
 	virtual OBJ_TYPE CheckObjType(void);
-		void Setdeath(bool flag);
-
+	void Setdeath(bool flag);
+	void SetDamageFlag(bool flag, int damage);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//画像移動のｷｰ制御		純粋仮想関数
 	virtual bool init(void) = 0;		//純粋仮想関数
 
 	map<string, int[ANIM_TBL_MAX]> animTbl;
 	string animName;				//表示画像ﾌｧｲﾙ名
-	bool deathFlag;
 protected:
 	bool animEndFlag;				//ｱﾆﾒｰｼｮﾝ最終ｺﾏ到達ﾌﾗｸﾞ
 	unsigned int animCnt;			//ｱﾆﾒｰｼｮﾝｶｳﾝﾀｰ
@@ -78,5 +77,9 @@ protected:
 	bool CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize2);
 	VECTOR2 VSpos[2];
 	OBJ_TYPE objType;
+	bool damageFlag;
+	int damage;
+	bool deathFlag;
+
 };
 

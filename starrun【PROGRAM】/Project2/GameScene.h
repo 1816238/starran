@@ -11,6 +11,8 @@ class Player;
 typedef struct HIT {
 	VECTOR2 pos;
 	uniqueObjList::iterator itr;
+	bool deathFlag;
+	bool damageFlag;
 };
 
 class GameScene :
@@ -20,14 +22,13 @@ public:
 	GameScene();
 	~GameScene();
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
-	 bool SetDeathFlag(void);
 private:
+	bool circleHit(VECTOR2 CePos, int CeRad, VECTOR2 SquPos, VECTOR2 SquRange);//‰~‚Ì’†S,‰~‚Ì”¼Œa,lŠp‚Ì¶ãÀ•W,lŠp‚Ì”ÍˆÍ
 	sharedListObj objList;
 	virtual int Init(void);
 	bool GameDraw(void);
 	 bool DeathPlayerFlag;
-	 std::unique_ptr<Enemy> enemy;
-	 std::unique_ptr<Player> PLAYER;
+
 	// std::unique_ptr<Player> player;
 	 ListObj_itr player;
 	int SeasonSwitchFlag;
