@@ -114,7 +114,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		{
 			shotFlag[num] = false;
 		}
-		shot_waitCnt = shot_waitCnt / 3;
+		shot_waitCnt = shot_waitCnt / 2;
 	}
 	HitCheck();
 }
