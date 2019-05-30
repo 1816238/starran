@@ -37,6 +37,6 @@ private:
 	list<HIT>BitObj;
 	list<HIT>::iterator Bit_itr;
 	HIT playerPos;
-	
+	int effect_image;
 };
 

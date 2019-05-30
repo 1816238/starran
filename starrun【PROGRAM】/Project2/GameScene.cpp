@@ -13,6 +13,7 @@
 #include "ResultScene.h"
 #include "SpeedMng.h"
 #include "SoundMng.h"
+#include "Effect.h"
 #include "GameScene.h"
 
 GameScene::GameScene()
@@ -186,11 +187,21 @@ bool GameScene::GameDraw(void)
 	for (auto &data : (*objList))
 	{
 		(*data).Draw();
-	}
+	}/*
 	for (int i = 0; i < 21; i++)
 	{
 		DrawLine(0, i*CHIP_SIZE, 1280, i*CHIP_SIZE, 0xffff00);
 
+	}*/
+	if (playerPos.damageFlag)		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+	{
+		OutputDebugString("effect\n");
+			lpEffect.Shake();
+			//lpEffect.Draw();
+	}
+	else
+	{
+		SetDrawScreen(DX_SCREEN_BACK);
 	}
 	//[]() {};		©ƒ‰ƒ€ƒ_Ž®‚Ìˆê‚Â¨[]{};ˆø”‚ðÈ—ª‚µ‚½Œ`
 	//std::for_each((*objList).begin(), (*objList).end(), [](std::unique_ptr<Obj>&itr) {itr->Draw(); }/*ƒ‰ƒ€ƒ_Ž®*/);
