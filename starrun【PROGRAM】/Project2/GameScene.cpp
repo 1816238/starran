@@ -54,6 +54,16 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
 			itr++;
 		}
+		else if ((*itr)->CheckObjType() == TYPE_ENEMY)
+		{
+			int tmp_hp = 0;
+			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+			{
+				tmp_hp += Bit_itr->HP;
+			}
+			(*itr)->SetHP(tmp_hp);
+			itr++;
+		}
 		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
 		{
 			bool tmpFlag = false;
@@ -67,7 +77,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						Bit_itr->damageFlag = false;
 					}
 					Bit_itr->pos = (*itr)->GetPos();
-
+					Bit_itr->HP = (*itr)->GetHP();
 					if (Bit_itr->deathFlag || (*itr)->CheckDeath())
 					{
 						objList->erase(itr);
@@ -226,7 +236,7 @@ int GameScene::Init(void)
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
-	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 2));
+	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 3));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
@@ -252,7 +262,7 @@ void GameScene::SeasonSwitch(void)
 		switch (SeasonSwitchFlag)
 		{
 		case 0:
-			lpMapControl.MapLoad("data/mapdata1.map", objList, false, true);
+			lpMapControl.MapLoad("data/mapdata3.map", objList, false, true);
 			SeasonSwitchFlag++;
 				break;
 		case 1:
@@ -260,6 +270,9 @@ void GameScene::SeasonSwitch(void)
 			SeasonSwitchFlag++;
 			break;
 		case 2:
+			lpMapControl.MapLoad("data/mapdata3.map", objList, false, true);
+			SeasonSwitchFlag++;
+
 			break;
 		case 3:
 

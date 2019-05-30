@@ -10,6 +10,7 @@
 #include "GameScene.h"
 #include "SpeedMng.h"
 #include "Shot.h"
+#include "Effect.h"
 
 Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -206,14 +207,9 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//~‚è‚é
 	if (controller.WheelCheck(NOW)&~controller.WheelCheck(OLD))
 	{
-		if (!(CheckFlag[id]>>static_cast<int> (MAP_FLAG_TYPE::DOWN)))
+		if (((CheckFlag[id]>>static_cast<int> (MAP_FLAG_TYPE::DOWN))&1))
 		{
-			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN] + VECTOR2{ 0,CHIP_SIZE }, Main);
-			if (id == MAP_ID_NON || id >= MAP_ID_BLUE)
-			{
 				pos.y += CHIP_SIZE * 1.5;
-
-			}
 		}
 	}
 	if (pos.y > SCREEN_SIZE_Y)
@@ -296,9 +292,10 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			{
 				damageFlag = true;
 				time["ÀÞÒ°¼Þ"] = 0;
+				lpEffect.SetEffectFlag(true);
 			}
 			else {
-				DeathFlag = true;
+				Setdeath(true);
 			}
 			break;
 		case MAP_ID_NON:
