@@ -80,17 +80,17 @@ bool Player::init(void)
 	CheckFlag = {
 	//Jump,Down,
 	0b01,			//MAP_ID_NON,
-	0b10,			//MAP_ID_CLOUD1,
-	0b10,			//MAP_ID_CLOUD2,
-	0b10,			//MAP_ID_CLOUD3,
+	0b11,			//MAP_ID_CLOUD1,
+	0b11,			//MAP_ID_CLOUD2,
+	0b11,			//MAP_ID_CLOUD3,
 	0b01,			//MAP_ID_BLUE,
 	0b01,			//MAP_ID_YELLOW,
 	0b01,			//MAP_ID_GREEN,
 	0b01,			//MAP_ID_RED,
 	0b01,			//MAP_ID_PURPLE,
-	0b11,			//MAP_ID_CLOUD_DOWN1,
-	0b11,			//MAP_ID_CLOUD_DOWN2,
-	0b11			//MAP_ID_CLOUD_DOWN3,
+	0b10,			//MAP_ID_CLOUD_DOWN1,
+	0b10,			//MAP_ID_CLOUD_DOWN2,
+	0b10			//MAP_ID_CLOUD_DOWN3,
 	};
 	
 	OutputDebugString("player‰Šú‰»‚µ‚½‚æ\n");
@@ -154,7 +154,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		if (shotcnt > 0)
 		{
-			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0]));
+			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0],getcnt[2]));
 			shotcnt--;
 		}
 	
@@ -207,7 +207,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//~‚è‚é
 	if (controller.WheelCheck(NOW)&~controller.WheelCheck(OLD))
 	{
-		if (((CheckFlag[id]>>static_cast<int> (MAP_FLAG_TYPE::DOWN))&1))
+		if (!((CheckFlag[id]>>static_cast<int> (MAP_FLAG_TYPE::DOWN))&1))
 		{
 				pos.y += CHIP_SIZE * 1.5;
 		}

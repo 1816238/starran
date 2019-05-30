@@ -34,10 +34,15 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	}
 	//–qyÌßÚÃÞ¨¹°Äz
 	//(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
+	
 	for (auto itr = objList->begin(); itr != objList->end(); )
 	{
-		if ((*itr)->CheckObjType() == TYPE_PLAYER)
+		bool breakFlag = false;
+		bool tmpFlag = false;
+		int tmp_hp = 0;
+		switch ((*itr)->CheckObjType())
 		{
+		case TYPE_PLAYER:
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
@@ -53,27 +58,27 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
 			itr++;
-		}
-		else if ((*itr)->CheckObjType() == TYPE_ENEMY)
-		{
-			int tmp_hp = 0;
+		
+			break;
+		case TYPE_ENEMY:
+		
 			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 			{
 				tmp_hp += Bit_itr->HP;
 			}
 			(*itr)->SetHP(tmp_hp);
 			itr++;
-		}
-		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
-		{
-			bool tmpFlag = false;
-			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end();	Bit_itr++)
+
+			break;
+		case TYPE_ENEMY_BIT:
+			
+			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 			{
 				if ((*itr)->GetBitNo() == Bit_itr->ObjNo)
 				{
 					if (Bit_itr->damageFlag)
 					{
-						(*itr)->SetDamage(true, SHOT_DAMAGE);
+						(*itr)->SetDamage(true, attack);
 						Bit_itr->damageFlag = false;
 					}
 					Bit_itr->pos = (*itr)->GetPos();
@@ -87,7 +92,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					}
 
 				}
-			
+
 			}
 			if (!tmpFlag)
 			{
@@ -95,55 +100,60 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 			}
 			else {
-				break;
-			}
-		}
-		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT|| (*itr)->CheckObjType() == TYPE_METEO)
-		{
-			if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT)
-			{
-				
-				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
-				{
-					if (!Bit_itr->deathFlag)
-					{
-						if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
-						{
-							Bit_itr->damageFlag = true;
-							(*itr)->Setdeath(true);
-						}
-					}
-				}
-
-			}
-			else 
-			{
-				if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{14,0}, VECTOR2{ PLAYER_SIZE_X-14,PLAYER_SIZE_Y }))
-				{
-					if (playerPos.damageFlag)
-					{
-						playerPos.deathFlag = true;
-					}
-					else {
-						playerPos.damageFlag = true;
-						lpEffect.SetEffectFlag(true);
-					}
-
-					(*itr)->Setdeath(true);
-				}
+				breakFlag = true;
 			}
 			
-
+			break;
+		case TYPE_PLAYER_SHOT:
+			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+			{
+				attack = (*itr)->GetAttack();
+				if (!Bit_itr->deathFlag)
+				{
+					if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
+					{
+						Bit_itr->damageFlag = true;
+						(*itr)->Setdeath(true);
+					}
+				}
+			}
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
-				break;
+				breakFlag=true;
 			}
 			else { itr++; }
+			break;
+		case TYPE_ENEMY_SHOT:
+		case TYPE_METEO:
+			if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{ 14,0 }, VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
+			{
+				if (playerPos.damageFlag)
+				{
+					playerPos.deathFlag = true;
+				}
+				else {
+					playerPos.damageFlag = true;
+					lpEffect.SetEffectFlag(true);
+				}
+
+				(*itr)->Setdeath(true);
+			}
+			if ((*itr)->CheckDeath())
+			{
+				objList->erase(itr);
+				breakFlag=true;
+			}
+			else { itr++; }
+			break;
+		default:
+			break;
 		}
-		else {
-			itr++;
+		if(breakFlag)
+		{
+			break;
 		}
+
 	}
 	SeasonSwitch();
 	lpSpeedMng.move();

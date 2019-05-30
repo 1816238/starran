@@ -5,15 +5,25 @@
 #include "GameScene.h"
 
 
-Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType,int speed) 
+Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType,int speed,int attack) 
 {
 	this->pos = pos;
 	this->offset = offset;
-	this->speed = speed/10 + 5;
+	this->speed = speed/30 + 5;
 	this->objType = objType;
+	this->attack = 1+attack/30;
 	Shot::init();
 
 	
+}
+
+Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType, int speed)
+{
+	this->pos = pos;
+	this->offset = offset;
+	this->speed = speed / 30 + 5;
+	this->objType = objType;
+	Shot::init();
 }
 
 

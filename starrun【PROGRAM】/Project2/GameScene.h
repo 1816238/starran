@@ -39,5 +39,6 @@ private:
 	list<HIT>::iterator Bit_itr;
 	HIT playerPos;
 	int effect_image;
+	int attack=0;
 };
 

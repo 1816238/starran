@@ -193,6 +193,12 @@ void Obj::SetHP(int hp)
 	HP = hp;
 }
 
+int Obj::GetAttack(void)
+{
+	return attack;
+}
+
+
 OBJ_TYPE Obj::CheckObjType(void)
 {
 	return objType;
