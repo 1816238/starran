@@ -50,7 +50,7 @@ enum ENEMY_AT_TYPE
 using BOSS_NAME = array<BOSS_ID, ENEMY_ID_MAX>;
 using BOSS_SEASONE = array<SEASONE[( ENEMY_ID_MAX - 1)/ SEASONE_MAX], SEASONE_MAX>;
 using BOSS_AT_TYPE = array<bool[AT_TYPE_MAX], ENEMY_ID_MAX>;
-using BOSS_ect = array<unsigned int, ENEMY_ID_MAX>;
+using BOSS_ect = array<float, ENEMY_ID_MAX>;
 using BOSS_DIV_ID = array<VECTOR2, ENEMY_ID_MAX>;
 
 class Enemy :

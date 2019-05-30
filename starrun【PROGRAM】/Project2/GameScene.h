@@ -13,6 +13,7 @@ typedef struct HIT {
 	int ObjNo;
 	bool deathFlag;
 	bool damageFlag;
+	int HP;
 };
 
 class GameScene :

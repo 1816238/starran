@@ -183,6 +183,16 @@ int Obj::GetBitNo(void)
 	return bit_no;
 }
 
+int Obj::GetHP(void)
+{
+	return HP;
+}
+
+void Obj::SetHP(int hp)
+{
+	HP = hp;
+}
+
 OBJ_TYPE Obj::CheckObjType(void)
 {
 	return objType;

@@ -59,6 +59,8 @@ public:
 	void SetDamage(bool flag, int damage);
 	void SetDamage(bool flag);
 	int GetBitNo(void);
+	int GetHP(void);
+	void SetHP(int hp);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”
 	virtual bool init(void) = 0;		//ƒˆ‰¼‘zŠÖ”

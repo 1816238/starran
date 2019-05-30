@@ -47,7 +47,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
 		{
-			AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
+			auto obj=AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
 			enemyBossFlag = false;
 		}
 	}
@@ -117,6 +117,8 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		shot_waitCnt = shot_waitCnt / 2;
 	}
 	HitCheck();
+	enemy_hp[enemyType] = static_cast<float>(HP);
+	deathFlag = (enemy_hp[enemyType] <= 0 ? true : false);
 }
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
@@ -136,7 +138,11 @@ void Enemy::Draw(void)
 		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 	};
 	int Pos = (SCREEN_SIZE_X - 80)*(enemy_hp[enemyType] / max_hp[enemyType]);
-	DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+	if (enemy_hp[enemyType] > 0)
+	{
+		DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+
+	}
 	DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
 	DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
 
