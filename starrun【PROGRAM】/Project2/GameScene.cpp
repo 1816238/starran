@@ -116,7 +116,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					}
 					else {
 						playerPos.damageFlag = true;
-
+						lpEffect.SetEffectFlag(true);
 					}
 
 					(*itr)->Setdeath(true);
@@ -181,28 +181,30 @@ bool GameScene::circleHit(VECTOR2 CePos, int CeRad, VECTOR2 CePos2, int CeRad2)
 bool GameScene::GameDraw(void)
 {
 	(*objList).sort([](uniqueObj& obj1, uniqueObj& obj2) {return ((*obj1).GetPos().y < (*obj2).GetPos().y); });
+	
+	if (lpEffect.GetEffectFlag())		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+	{
+		OutputDebugString("effect\n");
+			lpEffect.Shake();
+			//lpEffect.Draw();
+	}
 	ClsDrawScreen();
 	DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
 	lpMapControl.Draw(false);
 	for (auto &data : (*objList))
 	{
 		(*data).Draw();
-	}/*
+	}
+	
+		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+		lpEffect.Draw();
+
+	/*
 	for (int i = 0; i < 21; i++)
 	{
 		DrawLine(0, i*CHIP_SIZE, 1280, i*CHIP_SIZE, 0xffff00);
 
 	}*/
-	if (playerPos.damageFlag)		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
-	{
-		OutputDebugString("effect\n");
-			lpEffect.Shake();
-			//lpEffect.Draw();
-	}
-	else
-	{
-		SetDrawScreen(DX_SCREEN_BACK);
-	}
 	//[]() {};		©ƒ‰ƒ€ƒ_Ž®‚Ìˆê‚Â¨[]{};ˆø”‚ðÈ—ª‚µ‚½Œ`
 	//std::for_each((*objList).begin(), (*objList).end(), [](std::unique_ptr<Obj>&itr) {itr->Draw(); }/*ƒ‰ƒ€ƒ_Ž®*/);
 	ScreenFlip();
