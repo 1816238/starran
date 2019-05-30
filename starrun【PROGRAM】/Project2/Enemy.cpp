@@ -51,7 +51,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			enemyBossFlag = false;
 		}
 	}
-
+	
 	//覐΂̲ݽ�ݽ
 	if (lpEnemyAct.GetmeteoriteFlag())
 	{
@@ -248,6 +248,7 @@ bool Enemy::init(void)
 	enemyBossFlag = true;
 
 	shotcnt = 0;
+	deathFlag = false;
 	return false;
 }
 

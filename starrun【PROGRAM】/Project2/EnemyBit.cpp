@@ -25,7 +25,7 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
 
 EnemyBit::~EnemyBit()
 {
-	OutputDebugString("ビット死んだよ");
+	OutputDebugString("ビット死んだよ\n");
 }
 
 bool EnemyBit::initAnim(void)

@@ -225,6 +225,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 		if (time["ÀÞÒ°¼Þ"] >= 180)
 		{
 			damageFlag = false;
+			time["ÀÞÒ°¼Þ"] = 0;
 		}
 	}
 	CheckMapHit();
