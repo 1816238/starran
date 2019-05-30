@@ -25,6 +25,7 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
 
 EnemyBit::~EnemyBit()
 {
+	OutputDebugString("ƒrƒbƒgŽ€‚ñ‚¾‚æ");
 }
 
 bool EnemyBit::initAnim(void)
@@ -77,8 +78,16 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		Circle_Drwa(-1);
 	}
+	if (damageFlag)
+	{
+		HP -= damage;
+		damageFlag = false;
+		
+	}
+
 	deathFlag = (HP <= 0 ? true : false);
-/*
+	Setdeath(deathFlag);
+	/*
 	tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
 	tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;¶*/
 	SetPos(VECTOR2(tmp_pos_x, tmp_pos_y));

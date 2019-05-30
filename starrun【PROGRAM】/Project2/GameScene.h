@@ -24,6 +24,7 @@ public:
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
 private:
 	bool circleHit(VECTOR2 CePos, int CeRad, VECTOR2 SquPos, VECTOR2 SquRange);//‰~‚Ì’†S,‰~‚Ì”¼Œa,lŠp‚Ì¶ãÀ•W,lŠp‚Ì”ÍˆÍ
+	bool circleHit(VECTOR2 CePos, int CeRad, VECTOR2 CePos2, int CeRad2);
 	sharedListObj objList;
 	virtual int Init(void);
 	bool GameDraw(void);

@@ -83,9 +83,18 @@ void Obj::Draw(void)
 
 		}
 	}
+	//
 	if (objType == TYPE_ENEMY_SHOT)
 	{
 		DrawCircle(pos.x+15, pos.y+16, 10, 0xffffff, false);
+	}
+	if (objType == TYPE_PLAYER_SHOT)
+	{
+		DrawCircle(pos.x + 32, pos.y+16 , 10, 0xffffff, false);
+	}
+	if (objType == TYPE_ENEMY_BIT)
+	{
+		DrawCircle(pos.x+22, pos.y+22, 22, 0xffffff, false);
 	}
 	//DrawFormatString(0, 20, 0x00ffff, "PLAYERÇÃç¿ïW\nX...%d\nY...%d\n", pos.x, pos.y);
 
@@ -150,18 +159,23 @@ void Obj::Setdeath(bool flag)
 	deathFlag = flag;
 }
 
-void Obj::SetDamageFlag(bool flag, int damage)
+void Obj::SetDamage(bool flag, int damage)
+{
+	damageFlag = flag;
+	Obj::damage = damage;
+}
+
+void Obj::SetDamage(bool flag)
 {
 	if (!damageFlag&&flag)
 	{
 		damageFlag = flag;
-		HP -= damage;
 	}
-	else if(damageFlag&&flag)
+	else if (damageFlag&&flag)
 	{
 		Setdeath(true);
-	}else{}
-	Obj::damage = damage;
+	}
+	else {}
 }
 
 int Obj::GetBitNo(void)

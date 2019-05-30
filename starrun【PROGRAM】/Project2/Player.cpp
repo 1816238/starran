@@ -57,7 +57,7 @@ bool Player::init(void)
 	DownCheck = false;
 	DeathFlag = false;
 	damageFlag = false;
-	JSpeed = 3;
+	JSpeed = 5;
 	shotcnt = 100;
 
 	keyID_Tbl = { MOUSE_INPUT_LEFT,//左
@@ -242,7 +242,7 @@ void Player::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	//デバッグ用
-	DrawBox(64, pos.y,PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, false);
+	DrawBox(64+14,pos.y,64+PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, false);
 
 	DrawFormatString(0, 0, 0xff00ff, "time(main,sub,std):%d,%d,%d", Speed(Main), Speed(Sub), Speed(Std));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);

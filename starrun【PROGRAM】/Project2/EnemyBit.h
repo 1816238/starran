@@ -35,5 +35,6 @@ private:
 	int cnt;
 	float tmp_pos_x;
 	float tmp_pos_y;
+
 };
 

@@ -56,7 +56,8 @@ public:
 	VECTOR2 GetVSpos(int set);
 	virtual OBJ_TYPE CheckObjType(void);
 	void Setdeath(bool flag);
-	void SetDamageFlag(bool flag, int damage);
+	void SetDamage(bool flag, int damage);
+	void SetDamage(bool flag);
 	int GetBitNo(void);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”

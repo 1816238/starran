@@ -46,35 +46,68 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 			}
 			(*itr)->Setdeath(playerPos.deathFlag);
-			(*itr)->SetDamageFlag(playerPos.damageFlag, 0);
+			(*itr)->SetDamage(playerPos.damageFlag);
+			playerPos.damageFlag = false;
+			playerPos.deathFlag = false;
 
 			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
 			itr++;
 		}
 		else if ((*itr)->CheckObjType() == TYPE_ENEMY_BIT)
 		{
-			Bit_itr = BitObj.begin();
-			do{
+			bool tmpFlag = false;
+			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end();	Bit_itr++)
+			{
 				if ((*itr)->GetBitNo() == Bit_itr->ObjNo)
 				{
+					if (Bit_itr->damageFlag)
+					{
+						(*itr)->SetDamage(true, SHOT_DAMAGE);
+						Bit_itr->damageFlag = false;
+					}
+					Bit_itr->pos = (*itr)->GetPos();
 
-					break;
+					if (Bit_itr->deathFlag || (*itr)->CheckDeath())
+					{
+						objList->erase(itr);
+						Bit_itr->deathFlag = true;
+						tmpFlag = true;
+						break;
+					}
+
 				}
-				else {
-					Bit_itr++;
-				}
-			} while (Bit_itr != BitObj.end());
-			itr++;
+			
+			}
+			if (!tmpFlag)
+			{
+				itr++;
+
+			}
+			else {
+				break;
+			}
 		}
 		else if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT || (*itr)->CheckObjType() == TYPE_ENEMY_SHOT|| (*itr)->CheckObjType() == TYPE_METEO)
 		{
 			if ((*itr)->CheckObjType() == TYPE_PLAYER_SHOT)
 			{
-			
+				
+				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+				{
+					if (!Bit_itr->deathFlag)
+					{
+						if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
+						{
+							Bit_itr->damageFlag = true;
+							(*itr)->Setdeath(true);
+						}
+					}
+				}
+
 			}
 			else 
 			{
-				if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos, VECTOR2{ PLAYER_SIZE_X,PLAYER_SIZE_Y }))
+				if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{14,0}, VECTOR2{ PLAYER_SIZE_X-14,PLAYER_SIZE_Y }))
 				{
 					if (playerPos.damageFlag)
 					{
@@ -110,6 +143,10 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 bool GameScene::circleHit(VECTOR2 CePos, int CeRad, VECTOR2 SquPos, VECTOR2 SquRange)
 {
+	if (CePos > SquPos&&CePos < SquPos + SquRange)
+	{
+		return true;
+	}
 	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - SquPos.y) < CeRad)					//¶ã
 	{
 		return true;
@@ -121,7 +158,17 @@ bool GameScene::circleHit(VECTOR2 CePos, int CeRad, VECTOR2 SquPos, VECTOR2 SquR
 	if (abs(CePos.x - (SquPos.x+SquRange.x)) < CeRad && abs(CePos.y - SquPos.y) < CeRad)	//‰Eã
 	{
 		return true;
-	}	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - (SquPos.y+SquRange.y)) < CeRad)//‰E‰º
+	}	
+	if (abs(CePos.x - SquPos.x) < CeRad && abs(CePos.y - (SquPos.y+SquRange.y)) < CeRad)	//‰E‰º
+	{
+		return true;
+	}
+	return false;
+}
+
+bool GameScene::circleHit(VECTOR2 CePos, int CeRad, VECTOR2 CePos2, int CeRad2)
+{
+	if (sqrt(pow(abs(CePos.x - CePos2.x), 2) + pow(abs(CePos.y - CePos2.y), 2)) <= static_cast<double>(CeRad + CeRad2))
 	{
 		return true;
 	}
