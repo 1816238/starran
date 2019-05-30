@@ -43,14 +43,14 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		switch ((*itr)->CheckObjType())
 		{
 		case TYPE_PLAYER:
-			if ((*itr)->CheckDeath())
+			/*if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
 				lpResultCtl.SetUp(1000, 10);
 				lpResultCtl.ResultSave(objList);
 				return std::make_unique<ResultScene>();
 
-			}
+			}*/
 			(*itr)->Setdeath(playerPos.deathFlag);
 			(*itr)->SetDamage(playerPos.damageFlag);
 			playerPos.damageFlag = false;
