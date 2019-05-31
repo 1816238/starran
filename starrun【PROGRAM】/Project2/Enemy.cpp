@@ -41,6 +41,7 @@ Enemy::~Enemy()
 
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
+	HitCheck();
 	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
 	//ìGÇÃÀﬁØƒÇÃ≤›Ω¿›Ω
 	if (enemyBossFlag)
@@ -65,58 +66,66 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 
 	//ìGÇÃíeÇÃ≤›Ω¿›ΩãyÇ—î≠éÀÇ‹Ç≈ÇÃä«óù
-	if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
+	if (At_Type[enemyType][SHOT])
 	{
-		VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
-		if (!lpSoundMng.CheckSound(SOUND_METEO))
-		{
-			lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
-		}
-		if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
-		{
-			auto DrawShot = [&](int h) {
-				AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
-			};
-			switch ((shot_waitCnt / at_wait) % at_wait)
-			{
-			case 1:
-				if (!shotFlag[0])
-				{
-					DrawShot(9);
-					shotFlag[0] = true;
-				}
-				break;
-			case 3:
-				if (!shotFlag[1])
-				{
-					DrawShot(7);
-					shotFlag[1] = true;
-				}
-				break;
-			case 7:
-				if (!shotFlag[2])
-				{
-					DrawShot(6);
-					shotFlag[2] = true;
-				}
-				break;
-			default:
-				break;
-			}
-		}
-		shot_waitCnt++;
-	}
-	else
-	{
-		OutputDebugString("shot_waitCnt = 0 \n");
 
-		for (int num = 0; num < AT_DRAW_MAX; num++)
+
+		if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
 		{
-			shotFlag[num] = false;
+			VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
+			if (!lpSoundMng.CheckSound(SOUND_METEO))
+			{
+				lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
+			}
+			if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
+			{
+				auto DrawShot = [&](int h) {
+					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
+				};
+				switch ((shot_waitCnt / at_wait) % at_wait)
+				{
+				case 1:
+					if (!shotFlag[0])
+					{
+						DrawShot(9);
+						shotFlag[0] = true;
+					}
+					break;
+				case 3:
+					if (!shotFlag[1])
+					{
+						DrawShot(7);
+						shotFlag[1] = true;
+					}
+					break;
+				case 7:
+					if (!shotFlag[2])
+					{
+						DrawShot(6);
+						shotFlag[2] = true;
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			shot_waitCnt++;
 		}
-		shot_waitCnt = shot_waitCnt / 2;
+		else
+		{
+			OutputDebugString("shot_waitCnt = 0 \n");
+
+			for (int num = 0; num < AT_DRAW_MAX; num++)
+			{
+				shotFlag[num] = false;
+			}
+			shot_waitCnt = shot_waitCnt / 2;
+		}
 	}
-	HitCheck();
+	if (CheckHitKey(KEY_INPUT_S))
+	{
+		HP = 0;
+	}
 	enemy_hp[enemyType] = static_cast<float>(HP);
 	deathFlag = (enemy_hp[enemyType] <= 0 ? true : false);
 }
@@ -184,9 +193,26 @@ void Enemy::Draw(void)
 
 void Enemy::HitCheck(void)
 {
-	if (CheckHitKey(KEY_INPUT_P) == 1 && enemyType < ENEMY_ID_MAX - 1)
+	if (lpSpeedMng.GetSeasoonFlag(Main) && !lpSpeedMng.GetSeasoonFlag(Sub))
 	{
-		enemyType = static_cast<BOSS_ID>(enemyType + 1);
+		enemy_shift_flag = true;
+	}
+	if (deathFlag || (enemy_shift_flag &&!lpSpeedMng.GetSeasoonFlag(Main) && lpSpeedMng.GetSeasoonFlag(Sub)))
+	{
+		if (enemyType < PISCES)
+		{
+			enemyType = static_cast<BOSS_ID>(enemyType + 1);
+			HP = max_hp[enemyType];
+			enemy_shift_flag = false;
+			deathFlag = false;
+		}
+		else
+		{
+			enemyType = CANCER;
+			HP = max_hp[enemyType];
+			enemy_shift_flag = false;
+			deathFlag = false;
+		}
 	}
 }
 
@@ -252,8 +278,9 @@ bool Enemy::init(void)
 		shotFlag[num] = false;
 	}
 	enemyBossFlag = true;
-
+	Obj::HP = enemy_hp[CANCER];
 	shotcnt = 0;
+	enemy_shift_flag = false;
 	deathFlag = false;
 	return false;
 }

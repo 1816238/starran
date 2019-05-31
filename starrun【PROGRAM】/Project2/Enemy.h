@@ -85,6 +85,7 @@ private:
  	int meteo_waitCnt;
 	int shot_waitCnt;
     bool shotFlag[AT_DRAW_MAX];						//’e‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	bool enemy_shift_flag;
 	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
 	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
 	unsigned int waitCnt[AT_DRAW_MAX];
