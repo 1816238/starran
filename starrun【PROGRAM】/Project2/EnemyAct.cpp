@@ -80,3 +80,13 @@ void EnemyAct::SetMeteoFlag(bool flag)
 {
 	meteoriteFlag = flag;
 }
+
+void EnemyAct::Setswitch(bool flag)
+{
+	switchflag = flag;
+}
+
+bool EnemyAct::Getswitch(void)
+{
+	return switchflag;
+}

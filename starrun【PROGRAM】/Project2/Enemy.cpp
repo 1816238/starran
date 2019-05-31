@@ -215,6 +215,7 @@ void Enemy::HitCheck(void)
 			enemy_shift_flag = false;
 			deathFlag = false;
 		}
+		lpEnemyAct.Setswitch(true);
 	}
 }
 
