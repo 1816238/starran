@@ -1,3 +1,4 @@
+#include <math.h>
 #include <DxLib.h>
 #include "ImageMng.h"
 #include "SoundMng.h"
@@ -85,16 +86,16 @@ void Meteo::SetMove(const GameCtl & controller, weekListObj objList)
 	switch (lpEnemyAct.SetAngle())
 	{
 	case 1:
-		enemy_speed = VECTOR2(SHOT_SPEED, 7);
+		enemy_speed = VECTOR2(SHOT_SPEED, 2);
 		break;
 	case 2:
-		enemy_speed = VECTOR2(SHOT_SPEED, 5);
-		break;
-	case 3:
 		enemy_speed = VECTOR2(SHOT_SPEED, 4);
 		break;
+	case 3:
+		enemy_speed = VECTOR2(SHOT_SPEED, SHOT_SPEED);
+		break;
 	case 4:
-		enemy_speed = VECTOR2(SHOT_SPEED, 3);
+		enemy_speed = VECTOR2(3,SHOT_SPEED);
 		break;
 	default:
 		break;

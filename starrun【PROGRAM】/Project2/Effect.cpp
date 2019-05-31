@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "BaseScene.h"
+#include "ImageMng.h"
 #include "Enemy.h"
 #include "EnemyBit.h"
 #include "Effect.h"
@@ -25,8 +26,8 @@ void Effect::Rotation(void)
 	effect_flag[ROTATION] = true;
 	//SetDrawArea(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y);
 	effect_image[ROTATION] = MakeScreen((CIRCLE_RANGE + 43 / 2)*2, (CIRCLE_RANGE + 45 / 2)*2);
-	GetDrawScreenGraph(CENTER_POS_X - (CIRCLE_RANGE + 43 / 2), CENTER_POS_Y - (CIRCLE_RANGE + 45 / 2),
-						CENTER_POS_X + (CIRCLE_RANGE + 43 / 2), CENTER_POS_Y + (CIRCLE_RANGE + 43 / 2), effect_image[ROTATION]);
+	/*GetDrawScreenGraph(CENTER_POS_X - (CIRCLE_RANGE + 43 / 2), CENTER_POS_Y - (CIRCLE_RANGE + 45 / 2),
+						CENTER_POS_X + (CIRCLE_RANGE + 43 / 2), CENTER_POS_Y + (CIRCLE_RANGE + 43 / 2), effect_image[ROTATION]);*/
 }
 
 bool Effect::init()
@@ -64,7 +65,7 @@ void Effect::Draw(EFFECT_TYPE type)
 			{
 				rotation_cnt += 0.01f;
 			
-			DrawRotaGraph(CENTER_POS_X, CENTER_POS_Y, 1.0f - rotation_cnt, PI / rotation_cnt, effect_image[ROTATION], true, false);
+			DrawRotaGraph(CENTER_POS_X, CENTER_POS_Y, 1.0f - rotation_cnt, PI / rotation_cnt, IMAGE_ID("image/boss_escap.png")[0], true, false);
 			}
 			effect_flag[ROTATION] = false;
 		}

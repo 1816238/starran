@@ -74,38 +74,34 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
 		{
 			VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
-		
-			if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
-			{
+		/*
+			if ( || (shot_waitCnt / at_wait) % at_wait == 8
+			 || (shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 9
+			 || (shot_waitCnt / at_wait) % at_wait == 2 || (shot_waitCnt / at_wait) % at_wait == 10
+			 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 11
+			 || (shot_waitCnt / at_wait) % at_wait == 4 || (shot_waitCnt / at_wait) % at_wait == 12
+			 || (shot_waitCnt / at_wait) % at_wait == 5 || (shot_waitCnt / at_wait) % at_wait == 13
+			 || (shot_waitCnt / at_wait) % at_wait == 6 || (shot_waitCnt / at_wait) % at_wait == 14
+			 || (shot_waitCnt / at_wait) % at_wait == 7 || (shot_waitCnt / at_wait) % at_wait == 15)
+			{*/
+				for (int num = 0; num < 16; num++)
+				{
+					(shot_waitCnt / at_wait) % at_wait == num;
+				
 				auto DrawShot = [&](int h) {
 					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 12));
 				};
-				switch ((shot_waitCnt / at_wait) % at_wait)
+
+				auto Enemy_Shot = [&](int shot_num, int draw_num)
 				{
-				case 1:
-					if (!shotFlag[0])
+					if (!shotFlag[shot_num])
 					{
-						DrawShot(9);
-						shotFlag[0] = true;
+						DrawShot(draw_num);
+						shotFlag[shot_num] = true;
 					}
-					break;
-				case 3:
-					if (!shotFlag[1])
-					{
-						DrawShot(7);
-						shotFlag[1] = true;
-					}
-					break;
-				case 7:
-					if (!shotFlag[2])
-					{
-						DrawShot(6);
-						shotFlag[2] = true;
-					}
-					break;
-				default:
-					break;
-				}
+				};
+				Enemy_Shot((enemy_shot_tbl[(shot_waitCnt / at_wait) % at_wait] >> 0x08) & 0xff,
+							enemy_shot_tbl[(shot_waitCnt / at_wait) % at_wait] & 0xff);
 			}
 			shot_waitCnt++;
 		}
@@ -117,7 +113,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			{
 				shotFlag[num] = false;
 			}
-			shot_waitCnt = shot_waitCnt / 2;
+			shot_waitCnt = 0;
 		}
 	}
 	if (CheckHitKey(KEY_INPUT_S))
@@ -271,11 +267,28 @@ bool Enemy::init(void)
 				  15,15,15,
 				  10,10,10,
 				   5, 5, 5,0 };
-
+					 //0x00ff
+	enemy_shot_tbl = { 0x0305,//0,3,
+					   0x0009,//,1,7,
+					   0x070f,//2,15,
+					   0x0107,//3,9,
+					   0x0406,//4,6,
+					   0x050d,//5,2,
+					   0x0610,//6,16,
+					   0x0211 ,//7,4,
+					   0x080c,//8,13,
+					   0x0915,//9,7,
+					   0x0a0a,//10,10,
+					   0x0b14,//11,5,
+					   0x0c08,//12,8,
+					   0x0d0e,//13,14,
+					   0x0e13,//14,19,
+					   0x0f0b//15,12 */
+						};
 	enemyType = CANCER;
 
 	at_Cnt = 30;
-	at_wait = 20;
+	at_wait = 30;
 
 	meteoPos = VECTOR2(0, 0);
 	speed = VECTOR2(0, 0);

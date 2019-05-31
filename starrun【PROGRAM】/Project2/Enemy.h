@@ -61,6 +61,7 @@ using BOSS_SEASONE = array<SEASONE[( ENEMY_ID_MAX - 1)/ SEASONE_MAX], SEASONE_MA
 using BOSS_AT_TYPE = array<bool[AT_TYPE_MAX], ENEMY_ID_MAX>;
 using BOSS_ect = array<float, ENEMY_ID_MAX>;
 using BOSS_DIV_ID = array<VECTOR2, ENEMY_ID_MAX>;
+using BOSS_SHOT = array<int, 0x10>;
 
 class Enemy :
 	public Obj
@@ -100,6 +101,7 @@ private:
 	unsigned int waitCnt[AT_DRAW_MAX];
 	unsigned int shotcnt;
 	vector<ListObj_itr> BitObj;
+	BOSS_SHOT enemy_shot_tbl;
 	
 
 protected:
