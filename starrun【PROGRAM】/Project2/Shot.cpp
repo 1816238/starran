@@ -3,7 +3,7 @@
 #include "EnemyAct.h"
 #include "Shot.h"
 #include "GameScene.h"
-
+#include "SoundMng.h"
 
 Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType,int speed,int attack) 
 {
@@ -47,12 +47,15 @@ bool Shot::init(void)
 
 		SetAnim("Ž©•ª‚Ì’e");
 		return true;
+
 	}
 	if (objType == TYPE_ENEMY_SHOT)
 	{
 		Obj::init("image/Eshot.png", VECTOR2{ 200,30 }, VECTOR2{ 7,2 });
 		AddAnim("“G‚Ì’e", 0, 0, 14, 1, true);
 		SetAnim("“G‚Ì’e");
+		lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_BACK);
+		
 		return true;
 	}
 	return false;
@@ -78,6 +81,7 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 		if (pos.x > SCREEN_SIZE_X)
 		{
 			deathFlag = true;
+		
 		}
 
 	}
@@ -87,6 +91,7 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 		if (pos.x+256 <0)
 		{
 			deathFlag = true;
+			lpSoundMng.StopSound(SOUND_METEO);
 		}
 
 		

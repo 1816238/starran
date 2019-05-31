@@ -24,7 +24,7 @@
 
 #define EFFECT_TIME 5
 
-#define SOUND_METEO "Sound/Sound effect/earth-tremor1.mp3"
+#define SOUND_METEO "Sound/SE/earth-tremor1.mp3"
 
 #define PI    3.1415926535897932384626433832795f
 

@@ -5,6 +5,7 @@
 #include "TitleScene.h"
 #include "ResultCtl.h"
 #include "ResultScene.h"
+#include "SoundMng.h"
 
 ResultScene::ResultScene()
 {
@@ -49,8 +50,9 @@ int ResultScene::Init(void)
 	}
 	objList->clear();
 	lpResultCtl.SetUp(0,0);
-
 	SetWindowText("AGS.exe Result");
+	lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+	lpSoundMng.StopSound(SOUND_METEO);
 	return 0;
 }
 

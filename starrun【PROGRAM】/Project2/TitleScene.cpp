@@ -27,7 +27,7 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 	GetMousePoint(&Mpos.x, &Mpos.y);
 	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > start&&Mpos < start + VECTOR2{ 320,160 }))
 	{
-		lpSoundMng.PlaySound("Sound/Sound effect/decision27.mp3", DX_PLAYTYPE_BACK);
+		lpSoundMng.PlaySound("Sound/SE/decision27.mp3", DX_PLAYTYPE_BACK);
 		return std::make_unique<GameScene>();
 	}
 

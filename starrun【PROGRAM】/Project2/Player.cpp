@@ -11,6 +11,7 @@
 #include "SpeedMng.h"
 #include "Shot.h"
 #include "Effect.h"
+#include "SoundMng.h"
 
 Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -23,7 +24,7 @@ Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawO
 	this->objType = objType;
 	pos = setUpPos;
 	Obj::init("image/player_W.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
-
+	Sound_ID("Sound/SE/pshot.mp3")[0];
 	init();
 }
 
@@ -154,8 +155,10 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		if (shotcnt > 0)
 		{
+		
 			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0],getcnt[2]));
 			shotcnt--;
+			lpSoundMng.PlaySound("Sound/SE/pshot.mp3", DX_PLAYTYPE_BACK);
 		}
 	
 		
@@ -174,7 +177,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 				jumpFlag += 1;
 
 				time["¼Þ¬ÝÌß"] = 0.00f;
-
+				lpSoundMng.PlaySound("Sound/SE/jump.mp3", DX_PLAYTYPE_BACK);
 			}
 		}
 		else {
@@ -182,6 +185,8 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 			{
 				time["¼Þ¬ÝÌß"] = 0.0;
 				jumpFlag += 2;
+				lpSoundMng.PlaySound("Sound/SE/jump.mp3", DX_PLAYTYPE_BACK);
+
 			}
 
 		}
@@ -198,6 +203,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 			{
 				jumpFlag = 0;
 				time["¼Þ¬ÝÌß"] = 0.0;
+				lpSoundMng.PlaySound("Sound/SE/Landing.mp3", DX_PLAYTYPE_BACK);
 			}
 		}
 

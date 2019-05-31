@@ -46,6 +46,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
+			
+
 				lpResultCtl.SetUp(1000, 10);
 				lpResultCtl.ResultSave(objList);
 				return std::make_unique<ResultScene>();
@@ -261,8 +263,10 @@ int GameScene::Init(void)
 	{
 		
 		itr->ObjNo = i;
+		itr->HP = 1;
 		i++;
 	}
+	lpSoundMng.PlaySound("Sound/BGM/GameSceen.mp3", DX_PLAYTYPE_LOOP);
 	return 0;
 }
 void GameScene::SeasonSwitch(void)
