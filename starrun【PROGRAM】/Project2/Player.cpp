@@ -337,6 +337,10 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 				Setdeath(true);
 			}
 			break;
+		case MAP_ID_FULL_MOON:
+		case MAP_ID_HALF_MOON:
+		case MAP_ID_CRESCENT_MOON:
+			break;
 		default:
 		case MAP_ID_NON:
 		case MAP_ID_CLOUD1:
@@ -345,9 +349,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_CLOUD_DOWN1:
 		case MAP_ID_CLOUD_DOWN2:
 		case MAP_ID_CLOUD_DOWN3:
-		case MAP_ID_FULL_MOON:
-		case MAP_ID_HALF_MOON:
-		case MAP_ID_CRESCENT_MOON:
+
 		case MAP_ID_MAX:
 
 			return false;
