@@ -46,7 +46,7 @@ bool Player::initAnim(void)
 
 const bool Player::GetDeathFlag(void)
 {
-	return DeathFlag;
+	return deathFlag;
 }
 
 bool Player::init(void)
@@ -57,7 +57,7 @@ bool Player::init(void)
 	}
 	jumpFlag = false;
 	DownCheck = false;
-	DeathFlag = false;
+	deathFlag = false;
 	damageFlag = false;
 	JSpeed = 5;
 	shotcnt = 100;
@@ -72,6 +72,10 @@ bool Player::init(void)
 		getcnt[i] = 0;
 
 	}
+	meter_name[0] = "image/blumeter.png";
+	meter_name[1] = "image/grnmeter.png";
+	meter_name[2] = "image/redmeter.png";
+	meter_name[3] = "image/yelmeter.png";
 	DirPos = {	VECTOR2{ PLAYER_SIZE_X-1,1},				// 上
 				VECTOR2{PLAYER_SIZE_X/2,PLAYER_SIZE_Y},		// 下
 				VECTOR2{1,PLAYER_SIZE_Y/2},					// 左
@@ -91,9 +95,29 @@ bool Player::init(void)
 	0b01,			//MAP_ID_PURPLE,
 	0b10,			//MAP_ID_CLOUD_DOWN1,
 	0b10,			//MAP_ID_CLOUD_DOWN2,
-	0b10			//MAP_ID_CLOUD_DOWN3,
+	0b10,			//MAP_ID_CLOUD_DOWN3,
+	0b01,			//MAP_ID_FULL_MOON,
+	0b01,			//MAP_ID_HALF_MOON,
+	0b01			//MAP_ID_CRESCENT_MOON,
 	};
-	
+	Score = 0;
+	ScoreTbl = {
+	0,			//MAP_ID_NON,
+	0,			//MAP_ID_CLOUD1,
+	0,			//MAP_ID_CLOUD2,
+	0,			//MAP_ID_CLOUD3,
+	10,			//MAP_ID_BLUE,
+	10,			//MAP_ID_YELLOW,
+	10,			//MAP_ID_GREEN,
+	10,			//MAP_ID_RED,
+	-100,			//MAP_ID_PURPLE,
+	0,			//MAP_ID_CLOUD_DOWN1,
+	0,			//MAP_ID_CLOUD_DOWN2,
+	0,			//MAP_ID_CLOUD_DOWN3,
+	1000,		//MAP_ID_FULL_MOON,
+	500,		//MAP_ID_HALF_MOON,
+	250			//MAP_ID_CRESCENT_MOON,
+	};
 	OutputDebugString("player初期化したよ\n");
 
 	return false;
@@ -243,10 +267,17 @@ void Player::Draw(void)
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, !(time["ﾀﾞﾒｰｼﾞ"] / 10 % 2) * 255);
 	DrawGraph(CHIP_SIZE * 2, pos.y, IMAGE_ID("image/player_W.png")[0], true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	for (int i = 0; i < 4; i++)
+	{
+		double star = getcnt[i] % 30;
+		double tmp = star / 30.0 * 100;
+		DrawCircleGauge(i*CHIP_SIZE*3 +48, 48,tmp, IMAGE_ID(meter_name[i])[0],0.0);
+		DrawCircle(i*CHIP_SIZE * 3 + 48, 48, 48, 0xffffff, false);
+		DrawFormatString(i*CHIP_SIZE*3+10, 48, 0x000000, "Level.%d", getcnt[i] / 30);
+	}
 
-	//デバッグ用
-	DrawBox(64+14,pos.y,64+PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, false);
-
+	//デバッグ用	
+	/*DrawBox(64+14,pos.y,64+PLAYER_SIZE_X, pos.y + PLAYER_SIZE_Y, 0x0000ff, false);
 	DrawFormatString(0, 0, 0xff00ff, "time(main,sub,std):%d,%d,%d", Speed(Main), Speed(Sub), Speed(Std));
 	DrawFormatString(0, 20, 0x00ffff, "PLAYERの座標\nX...%d\nY...%d\n", pos.x, pos.y);
 	DrawFormatString(0, 80, 0xffff, "加算値：%d", Speed(Main) + lpSpeedMng.GetYellow());
@@ -256,7 +287,7 @@ void Player::Draw(void)
 	DrawFormatString(0, 200, 0xffff, "subFlag：%d", lpMapControl.GetSubFlag());
 	DrawFormatString(0, 220, 0xffff, "SpeedFlag(main,sub):%d,%d", lpSpeedMng.GetFlag(Main), lpSpeedMng.GetFlag(Sub));
 	DrawFormatString(0, 240, 0xffff, "star:青%d,緑%d,赤%d", getcnt[0], getcnt[1], getcnt[2]);
-	DrawFormatString(0, 280, 0xffff, "残弾:%d",shotcnt );
+	DrawFormatString(0, 280, 0xffff, "残弾:%d",shotcnt );*/
 
 
 
@@ -286,6 +317,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 			break;
 		case MAP_ID_YELLOW:			//ｽﾋﾟｰﾄﾞｱｯﾌﾟ
 			lpSpeedMng.AddStar();
+			getcnt[3]++;
 			break;
 		case MAP_ID_GREEN:			//
 			getcnt[1]++;
@@ -298,12 +330,13 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 			{
 				damageFlag = true;
 				time["ﾀﾞﾒｰｼﾞ"] = 0;
-				lpEffect.SetEffectFlag(true);
+				lpEffect.SetEffectFlag(SHAKE,true,);
 			}
 			else {
 				Setdeath(true);
 			}
 			break;
+		default:
 		case MAP_ID_NON:
 		case MAP_ID_CLOUD1:
 		case MAP_ID_CLOUD2:
@@ -311,8 +344,11 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		case MAP_ID_CLOUD_DOWN1:
 		case MAP_ID_CLOUD_DOWN2:
 		case MAP_ID_CLOUD_DOWN3:
+		case MAP_ID_FULL_MOON:
+		case MAP_ID_HALF_MOON:
+		case MAP_ID_CRESCENT_MOON:
 		case MAP_ID_MAX:
-		default:
+
 			return false;
 			break;
 		}
@@ -320,6 +356,10 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
 		return true;
 
+	};
+	auto get_score = [&](MAP_ID id) {
+		Score = ScoreTbl[id]; 
+		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
 	};
 	auto CheckHit = [&](MAP_ID id, MapType type, DIR_TBL_ID dir) {
 
@@ -353,6 +393,10 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		case MAP_ID_BLUE:
 		case MAP_ID_PURPLE:
 			get_star(id, (DIR_TBL_ID)dir);
+		case MAP_ID_FULL_MOON:
+		case MAP_ID_HALF_MOON:
+		case MAP_ID_CRESCENT_MOON:
+			get_score(id);
 			if (dir == DIR_DOWN)
 			{
 				if (!(jumpFlag & 0b11))
@@ -376,7 +420,7 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		case MAP_ID_MAX:
 			break;
 		default:
-			DeathFlag = true;
+			deathFlag = true;
 			break;
 		}
 

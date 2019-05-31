@@ -223,6 +223,16 @@ int Obj::GetAttack(void)
 	return attack;
 }
 
+int Obj::GetScore(void)
+{
+	return Score;
+}
+
+void Obj::AddScore(int num)
+{
+	Score += num;
+}
+
 
 OBJ_TYPE Obj::CheckObjType(void)
 {

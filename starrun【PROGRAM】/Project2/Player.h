@@ -75,11 +75,14 @@ private:
 	DIR_TBL_ARRAY keyID_Tbl;								//移動に使うｷｰ情報のﾃｰﾌﾞﾙ
 	DIR_TBL_ARRAY speed_Tbl;								//移動量のﾃｰﾌﾞﾙ
 	//MAP_MOVE_TBL_ARRAY mapMove_Tbl;						//移動制限をかけるﾌﾞﾛｯｸIDを保管しておく
-	int getcnt[4];											//星を取得した数
+	int getcnt[4];												//ｽﾀｰの取得量
+	string meter_name[4];											//各星のﾒｰﾀｰ画像の名前
+					
 	map<string, int> time;
 
 	array<VECTOR2,DIR_MAX>DirPos;
 	bool DownCheck;											//当たり判定用フラグ
-	bool DeathFlag;											//死亡判定用フラグ
+	array<int, MAP_ID_MAX> ScoreTbl;
+
 };
 
