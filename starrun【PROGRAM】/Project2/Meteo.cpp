@@ -34,35 +34,37 @@ bool Meteo::init(void)
 			Obj::init("image/metorite15.png", VECTOR2{ 590,300 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：15度", 0, 0, 20, 1, true);
 			SetAnim("隕石：15度");
+			obj_no = static_cast<int>(ANGLE_15);
 			return false;
 			break;
 		case 30:
 			Obj::init("image/metorite30.png", VECTOR2{ 560,390 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：30度", 0, 0, 20, 1, true);
 			SetAnim("隕石：30度");
+			obj_no = static_cast<int>(ANGLE_30);
+
 			return false;
 			break;
 		case 45:
 			Obj::init("image/metorite45.png", VECTOR2{ 470,480 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：45度", 0, 0, 20, 1, true);
 			SetAnim("隕石：45度");
+			obj_no = static_cast<int>(ANGLE_45);
+
 			return false;
 			break;
 		case 60:
 			Obj::init("image/metorite60.png", VECTOR2{ 390,540 }, VECTOR2{ 4,5 });
 			AddAnim("隕石：60度", 0, 0, 20, 1, true);
 			SetAnim("隕石：60度");
+			obj_no = static_cast<int>(ANGLE_60);
+
 			return false;
 			break;
 		default:
 			break;
 		}
 	return false;
-}
-
-OBJ_TYPE Meteo::CheckObjType(void)
-{
-	return objType;
 }
 
 void Meteo::SetMove(const GameCtl & controller, weekListObj objList)

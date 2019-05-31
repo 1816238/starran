@@ -9,8 +9,6 @@ public:
 	~Meteo();
 	bool initAnim(void);
 	bool init(void);
-	OBJ_TYPE CheckObjType(void);
-	bool CheckDeath(void) {return deathFlag;};
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//
 	double RotAngle;
