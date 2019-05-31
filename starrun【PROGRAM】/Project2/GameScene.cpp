@@ -45,11 +45,11 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		case TYPE_PLAYER:
 			/*if ((*itr)->CheckDeath())
 			{
-				objList->erase(itr);
 			
-
-				lpResultCtl.SetUp(1000, 10);
+		
+				lpResultCtl.SetUp((*itr)->GetScore(), lpSpeedMng.GetTime());
 				lpResultCtl.ResultSave(objList);
+				objList->erase(itr);
 				return std::make_unique<ResultScene>();
 
 			}*/

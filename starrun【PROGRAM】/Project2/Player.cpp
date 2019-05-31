@@ -330,7 +330,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			{
 				damageFlag = true;
 				time["ÀÞÒ°¼Þ"] = 0;
-				lpEffect.SetEffectFlag(SHAKE,true,);
+				lpEffect.SetEffectFlag(SHAKE,true);
 			}
 			else {
 				Setdeath(true);
