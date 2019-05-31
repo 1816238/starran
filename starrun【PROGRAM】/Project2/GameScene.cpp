@@ -43,7 +43,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		switch ((*itr)->CheckObjType())
 		{
 		case TYPE_PLAYER:
-			/*if ((*itr)->CheckDeath())
+			if ((*itr)->CheckDeath())
 			{
 			
 		
@@ -52,7 +52,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				objList->erase(itr);
 				return std::make_unique<ResultScene>();
 
-			}*/
+			}
 			(*itr)->Setdeath(playerPos.deathFlag);
 			(*itr)->SetDamage(playerPos.damageFlag);
 			playerPos.damageFlag = false;
@@ -242,6 +242,7 @@ bool GameScene::GameDraw(void)
 		OutputDebugString("effect\n");
 		lpEffect.Rotation();
 	}
+
 	ClsDrawScreen();
 	DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
 	lpMapControl.Draw(false);
@@ -249,7 +250,8 @@ bool GameScene::GameDraw(void)
 	{
 		(*data).Draw();
 	}
-
+	int time = lpSpeedMng.GetTime();
+	DrawFormatString(500, 0, 0xffff00, "%d.%d.%d", time / 3600, time / 60 % 60, time % 60);
 	
 	//¿ﬁ“∞ºﬁÇéÛÇØÇΩç€ÇÃeffect
 	if (lpEffect.GetEffectFlag(SHAKE))
@@ -288,7 +290,7 @@ int GameScene::Init(void)
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
-	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 3));
+	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 4));
 	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();

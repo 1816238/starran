@@ -16,8 +16,6 @@
 Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawOffset)
 {
 
-
-
 	/*MAIN*/
 
 	initAnim();
@@ -352,14 +350,10 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			return false;
 			break;
 		}
-
+		Score = ScoreTbl[id]; 
 		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
 		return true;
 
-	};
-	auto get_score = [&](MAP_ID id) {
-		Score = ScoreTbl[id]; 
-		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
 	};
 	auto CheckHit = [&](MAP_ID id, MapType type, DIR_TBL_ID dir) {
 
@@ -392,11 +386,10 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_RED:
 		case MAP_ID_BLUE:
 		case MAP_ID_PURPLE:
-			get_star(id, (DIR_TBL_ID)dir);
 		case MAP_ID_FULL_MOON:
 		case MAP_ID_HALF_MOON:
 		case MAP_ID_CRESCENT_MOON:
-			get_score(id);
+			get_star(id, (DIR_TBL_ID)dir);
 			if (dir == DIR_DOWN)
 			{
 				if (!(jumpFlag & 0b11))

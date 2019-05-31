@@ -62,7 +62,8 @@ bool ResultScene::ResultDraw(void)
 	DrawFormatString(0, 0, 0x00ff00, "ENTERでTitleへ",0);
 	DrawFormatString(0, 20, 0x00ff00, "F1でコンテニュー",0);
 	DrawFormatString(0, 40, 0x00ff00, "SCORE...%d",lpResultCtl.GetLoadScoreData());
-	DrawFormatString(0, 60, 0x00ff00, "TIME...%d",lpResultCtl.GetLoadTimeData());
+	int time = lpResultCtl.GetLoadTimeData();
+	DrawFormatString(0, 60, 0x00ff00, "TIME...%d.%d.%d",time/3600,time/60%60,time%60);
 	ScreenFlip();
 	return true;
 }

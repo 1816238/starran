@@ -62,9 +62,9 @@ void Effect::Draw(EFFECT_TYPE type)
 		{
 			if (rotation_cnt <= 1.0f)
 			{
-				rotation_cnt += 0.1f;
+				rotation_cnt += 0.01f;
 			
-			DrawRotaGraph(CENTER_POS_X, CENTER_POS_Y, 1.0f - rotation_cnt, PI / rotation_cnt, effect_image[ROTATION], false, false);
+			DrawRotaGraph(CENTER_POS_X, CENTER_POS_Y, 1.0f - rotation_cnt, PI / rotation_cnt, effect_image[ROTATION], true, false);
 			}
 			effect_flag[ROTATION] = false;
 		}
