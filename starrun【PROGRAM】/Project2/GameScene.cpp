@@ -43,7 +43,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		switch ((*itr)->CheckObjType())
 		{
 		case TYPE_PLAYER:
-			if ((*itr)->CheckDeath())
+			/*if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
 			
@@ -52,7 +52,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				lpResultCtl.ResultSave(objList);
 				return std::make_unique<ResultScene>();
 
-			}
+			}*/
 			(*itr)->Setdeath(playerPos.deathFlag);
 			(*itr)->SetDamage(playerPos.damageFlag);
 			playerPos.damageFlag = false;
@@ -137,7 +137,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				}
 				else {
 					playerPos.damageFlag = true;
-					lpEffect.SetEffectFlag(true);
+					lpEffect.SetEffectFlag(SHAKE,true);
 				}
 
 				(*itr)->Setdeath(true);
@@ -161,7 +161,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				}
 				else {
 					playerPos.damageFlag = true;
-					lpEffect.SetEffectFlag(true);
+					lpEffect.SetEffectFlag(SHAKE,true);
 				}
 
 				(*itr)->Setdeath(true);
@@ -229,11 +229,18 @@ bool GameScene::GameDraw(void)
 {
 	(*objList).sort([](uniqueObj& obj1, uniqueObj& obj2) {return ((*obj1).GetPos().y < (*obj2).GetPos().y); });
 	
-	if (lpEffect.GetEffectFlag())		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+
+	if (lpEffect.GetEffectFlag(SHAKE))		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
 	{
 		OutputDebugString("effect\n");
-			lpEffect.Shake();
-			//lpEffect.Draw();
+		lpEffect.Shake();
+		//lpEffect.Draw();
+	}
+	if (!lpSpeedMng.GetFlag(Main) && lpSpeedMng.GetFlag(Sub))		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+	{
+		lpEffect.SetEffectFlag(ROTATION,true);
+		OutputDebugString("effect\n");
+		lpEffect.Rotation();
 	}
 	ClsDrawScreen();
 	DrawGraph(0, 0, lpImageMng.GetID("image/back.jpg")[0], true);
@@ -242,9 +249,17 @@ bool GameScene::GameDraw(void)
 	{
 		(*data).Draw();
 	}
+
 	
-		//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
-		lpEffect.Draw();
+	//ÀÞÒ°¼Þ‚ðŽó‚¯‚½Û‚Ìeffect
+	if (lpEffect.GetEffectFlag(SHAKE))
+	{
+		lpEffect.Draw(SHAKE);
+	}
+	if (lpEffect.GetEffectFlag(ROTATION))
+	{
+		lpEffect.Draw(ROTATION);
+	}
 
 	/*
 	for (int i = 0; i < 21; i++)
