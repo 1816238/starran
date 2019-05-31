@@ -73,10 +73,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
 		{
 			VECTOR2 tmpPos = VECTOR2(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y);
-			if (!lpSoundMng.CheckSound(SOUND_METEO))
-			{
-				lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
-			}
+		
 			if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
 			{
 				auto DrawShot = [&](int h) {
