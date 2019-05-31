@@ -52,13 +52,11 @@ public:
 	bool AddAnim(string animName, int ID_x, int ID_y, int frame, int inv, bool loop);		//‰æ‘œ‚ÌŠÔŠu‚â–‡”‚È‚Ç‚ğanimTbl‚É‘ã“ü
 	bool SetAnim(string animName);			//•\¦‰æ‘œÌ§²Ù–¼‹y‚Ñ±ÆÒ°¼®İ¶³İÀ°‚Ì‰Šú‰»
 	string GetAnim(void);			//•\¦‰æ‘œÌ§²Ù–¼‚Ìæ“¾
-	void SetVSpos(VECTOR2 pos, int set);
-	VECTOR2 GetVSpos(int set);
 	virtual OBJ_TYPE CheckObjType(void);
 	void Setdeath(bool flag);
 	void SetDamage(bool flag, int damage);
 	void SetDamage(bool flag);
-	int GetBitNo(void);
+	int GetObjNo(void);
 	int GetHP(void);
 	void SetHP(int hp);
 	int GetAttack(void);
@@ -87,7 +85,7 @@ protected:
 	int damage;
 	bool deathFlag;
 	int HP;
-	int bit_no;
+	int obj_no;
 	int attack;
 };
 

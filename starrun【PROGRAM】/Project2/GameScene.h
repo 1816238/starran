@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <vector>
 #include"Obj.h"
 #include "BaseScene.h"
 #include "classObj.h"
@@ -39,6 +40,8 @@ private:
 	list<HIT>::iterator Bit_itr;
 	HIT playerPos;
 	int effect_image;
-	int attack=0;
+	int attack;
+	vector<VECTOR2> MeteoOffset;
+	vector<int> MeteoRad;
 };
 

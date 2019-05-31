@@ -43,7 +43,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 		switch ((*itr)->CheckObjType())
 		{
 		case TYPE_PLAYER:
-			/*if ((*itr)->CheckDeath())
+			if ((*itr)->CheckDeath())
 			{
 				objList->erase(itr);
 			
@@ -52,7 +52,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				lpResultCtl.ResultSave(objList);
 				return std::make_unique<ResultScene>();
 
-			}*/
+			}
 			(*itr)->Setdeath(playerPos.deathFlag);
 			(*itr)->SetDamage(playerPos.damageFlag);
 			playerPos.damageFlag = false;
@@ -76,7 +76,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			
 			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 			{
-				if ((*itr)->GetBitNo() == Bit_itr->ObjNo)
+				if ((*itr)->GetObjNo() == Bit_itr->ObjNo)
 				{
 					if (Bit_itr->damageFlag)
 					{
@@ -90,6 +90,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						objList->erase(itr);
 						Bit_itr->deathFlag = true;
 						tmpFlag = true;
+						Bit_itr->HP = 1;
 						break;
 					}
 
@@ -127,7 +128,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			else { itr++; }
 			break;
 		case TYPE_ENEMY_SHOT:
-		case TYPE_METEO:
+
 			if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{ 14,0 }, VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
 			{
 				if (playerPos.damageFlag)
@@ -145,6 +146,30 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			{
 				objList->erase(itr);
 				breakFlag=true;
+			}
+			else { itr++; }
+			break;
+		case TYPE_METEO:
+			if (circleHit((*itr)->GetPos() + MeteoOffset[(*itr)->GetObjNo()] + MeteoRad[(*itr)->GetObjNo()],
+				MeteoRad[(*itr)->GetObjNo()],
+				playerPos.pos + VECTOR2{ 14,0 },
+				VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
+			{
+				if (playerPos.damageFlag)
+				{
+					playerPos.deathFlag = true;
+				}
+				else {
+					playerPos.damageFlag = true;
+					lpEffect.SetEffectFlag(true);
+				}
+
+				(*itr)->Setdeath(true);
+			}
+			if ((*itr)->CheckDeath())
+			{
+				objList->erase(itr);
+				breakFlag = true;
 			}
 			else { itr++; }
 			break;
@@ -255,6 +280,7 @@ int GameScene::Init(void)
 	SeasonSwitchFlag = 0;
 	playerPos.damageFlag = false;
 	playerPos.deathFlag = false;
+	attack = 0;
 
 	Bit_itr = BitObj.begin();
 	BitObj.resize(4);
@@ -266,6 +292,15 @@ int GameScene::Init(void)
 		itr->HP = 1;
 		i++;
 	}
+
+	MeteoOffset.resize(ANGLE_MAX);
+	MeteoRad.resize(ANGLE_MAX);
+	MeteoOffset = {
+		{10,250},{20,340},{10,420},{0,470}
+	};
+	MeteoRad = {
+		20,15,15,20
+	};
 	lpSoundMng.PlaySound("Sound/BGM/GameSceen.mp3", DX_PLAYTYPE_LOOP);
 	return 0;
 }

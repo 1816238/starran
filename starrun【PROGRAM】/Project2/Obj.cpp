@@ -96,6 +96,31 @@ void Obj::Draw(void)
 	{
 		DrawCircle(pos.x+22, pos.y+22, 22, 0xffffff, false);
 	}
+	if (objType == TYPE_METEO)
+	{
+		switch (obj_no)
+		{
+		case 0:
+			DrawCircle(pos.x + 10+20, pos.y +  250+20, 20, 0xf0ff0f, false);
+
+			break;
+		case 1:
+			DrawCircle(pos.x + 20+15, pos.y + 340+15, 15, 0xf0ff0f, false);
+
+			break;
+		case 2:
+			DrawCircle(pos.x + 10+15, pos.y + 420+15, +15, 0xf0ff0f, false);
+
+			break;
+		case 3:
+			DrawCircle(pos.x + 20, pos.y + 470+20, 22, 0xf0ff0f, false);
+
+			break;
+		default:
+			break;
+		}
+
+	}
 	//DrawFormatString(0, 20, 0x00ffff, "PLAYERÇÃç¿ïW\nX...%d\nY...%d\n", pos.x, pos.y);
 
 }
@@ -178,9 +203,9 @@ void Obj::SetDamage(bool flag)
 	else {}
 }
 
-int Obj::GetBitNo(void)
+int Obj::GetObjNo(void)
 {
-	return bit_no;
+	return obj_no;
 }
 
 int Obj::GetHP(void)
@@ -204,15 +229,5 @@ OBJ_TYPE Obj::CheckObjType(void)
 	return objType;
 }
 
-void Obj::SetVSpos(VECTOR2 pos,int set)
-{
-	
-	VSpos[set] = pos;
-}
 
-VECTOR2 Obj::GetVSpos(int set)
-{
-
-	return VSpos[set];
-}
 

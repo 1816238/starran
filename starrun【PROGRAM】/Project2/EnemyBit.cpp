@@ -16,7 +16,7 @@ EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
 	this->speed = 6;
 	this->objType = TYPE_ENEMY_BIT;
 	this->HP = HP;
-	this->bit_no = bit_cnt;
+	this->obj_no = bit_cnt;
 	OutputDebugString("pop\n");
 
 	EnemyBit::init();
@@ -58,7 +58,7 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 	cnt++;
 	auto Circle_Drwa = [&](int num)
 	{
-		if(bit_no < 2)
+		if(obj_no < 2)
 		{
 			tmp_pos_x = circle_pos.center_pos.x + num * sin(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
 			tmp_pos_y = circle_pos.center_pos.y - num * cos(CIRCLE_PI / circle_pos.time * cnt) * circle_pos.circle_r;
@@ -70,11 +70,11 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 		}
 	};
 
-	if (bit_no == 0 || bit_no == 2)
+	if (obj_no == 0 || obj_no == 2)
 	{
 		Circle_Drwa(1);
 	}
-	if (bit_no == 1 || bit_no == 3)
+	if (obj_no == 1 || obj_no == 3)
 	{
 		Circle_Drwa(-1);
 	}
