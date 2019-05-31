@@ -65,11 +65,12 @@ bool Player::init(void)
 				  MOUSE_ROT_VOL		//ﾎｲｰﾙ回転量
 				  };
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 1; i < 4; i++)
 	{
 		getcnt[i] = 0;
 
 	}
+	getcnt[0] = 100;
 	meter_name[0] = "image/blumeter.png";
 	meter_name[1] = "image/grnmeter.png";
 	meter_name[2] = "image/redmeter.png";
@@ -175,11 +176,11 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	//ショット
 	if (Click[1] & (~ClickOld[1]))
 	{
-		if (shotcnt > 0)
+		if (getcnt[0] > 0)
 		{
 		
 			AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ CHIP_SIZE * 3,pos.y }, VECTOR2(CHIP_SIZE * 2, 0), TYPE_PLAYER_SHOT, getcnt[0],getcnt[2]));
-			shotcnt--;
+			getcnt[0]--;
 			lpSoundMng.PlaySound("Sound/SE/pshot.mp3", DX_PLAYTYPE_BACK);
 		}
 	
@@ -268,10 +269,12 @@ void Player::Draw(void)
 	for (int i = 0; i < 4; i++)
 	{
 		double star = getcnt[i] % 30;
-		double tmp = star / 30.0 * 100;
+		double tmp = (i != 0 ? star / 30.0 * 100:static_cast<double>(getcnt[0])/100.0*100.0);
+
 		DrawCircleGauge(i*CHIP_SIZE*3 +48, 48,tmp, IMAGE_ID(meter_name[i])[0],0.0);
 		DrawCircle(i*CHIP_SIZE * 3 + 48, 48, 48, 0xffffff, false);
-		DrawFormatString(i*CHIP_SIZE*3+10, 48, 0x000000, "Level.%d", getcnt[i] / 30);
+
+		(i!=0?DrawFormatString(i*CHIP_SIZE*3+10, 48, 0x000000, "Level.%d", getcnt[i] / 30): DrawFormatString(i*CHIP_SIZE * 3 + 10, 48, 0x000000, "残り%d発", getcnt[i]));
 	}
 
 	//デバッグ用	
@@ -309,9 +312,9 @@ void Player::CheckMapHit(void)		//ﾏｯﾌﾟとの当たり判定
 		{
 
 		case MAP_ID_BLUE:			//弾のｽﾋﾟｰﾄﾞｱｯﾌﾟ
-			shotcnt += (shotcnt<100 ? 10 : 0);
-			shotcnt = (shotcnt > 100 ? 100 : shotcnt);
 			getcnt[0]++;
+			getcnt[0] = (getcnt[0] > 100 ? 100 : getcnt[0]);
+			
 			break;
 		case MAP_ID_YELLOW:			//ｽﾋﾟｰﾄﾞｱｯﾌﾟ
 			lpSpeedMng.AddStar();

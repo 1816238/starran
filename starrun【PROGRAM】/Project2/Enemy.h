@@ -99,8 +99,9 @@ private:
 	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
 	unsigned int waitCnt[AT_DRAW_MAX];
 	unsigned int shotcnt;
-
+	vector<ListObj_itr> BitObj;
 	
+
 protected:
 	BOSS_ID enemyType;
 	sharedListObj objList;

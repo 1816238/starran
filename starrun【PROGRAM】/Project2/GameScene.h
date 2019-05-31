@@ -43,5 +43,6 @@ private:
 	int attack;
 	vector<VECTOR2> MeteoOffset;
 	vector<int> MeteoRad;
+	int timeFont;
 };
 

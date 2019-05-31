@@ -86,7 +86,7 @@ int SpeedMng::GetTime(void)
 void SpeedMng::AddStar(void)
 {
 	yellowstar++;
-	speed += (yellowstar % 30==19?1:0);
+	speed = SPEED + yellowstar / 30;
 
 }
 

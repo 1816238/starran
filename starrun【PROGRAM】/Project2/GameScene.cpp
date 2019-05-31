@@ -34,153 +34,155 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	}
 	//èñèqÅyÃﬂ⁄√ﬁ®π∞ƒÅz
 	//(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
-	
-	for (auto itr = objList->begin(); itr != objList->end(); )
+	if ((lpSpeedMng.GetFlag(Main)))
 	{
-		bool breakFlag = false;
-		bool tmpFlag = false;
-		int tmp_hp = 0;
-		switch ((*itr)->CheckObjType())
+		for (auto itr = objList->begin(); itr != objList->end(); )
 		{
-		case TYPE_PLAYER:
-			if ((*itr)->CheckDeath())
+			bool breakFlag = false;
+			bool tmpFlag = false;
+			int tmp_hp = 0;
+			switch ((*itr)->CheckObjType())
 			{
-			
-		
-				lpResultCtl.SetUp((*itr)->GetScore(), lpSpeedMng.GetTime());
-				lpResultCtl.ResultSave(objList);
-				objList->erase(itr);
-				return std::make_unique<ResultScene>();
-
-			}
-			(*itr)->Setdeath(playerPos.deathFlag);
-			(*itr)->SetDamage(playerPos.damageFlag);
-			playerPos.damageFlag = false;
-			playerPos.deathFlag = false;
-
-			playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };	
-			itr++;
-		
-			break;
-		case TYPE_ENEMY:
-		
-			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
-			{
-				tmp_hp += Bit_itr->HP;
-			}
-			(*itr)->SetHP(tmp_hp);
-			itr++;
-
-			break;
-		case TYPE_ENEMY_BIT:
-			
-			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
-			{
-				if ((*itr)->GetObjNo() == Bit_itr->ObjNo)
+			case TYPE_PLAYER:
+				if ((*itr)->CheckDeath())
 				{
-					if (Bit_itr->damageFlag)
-					{
-						(*itr)->SetDamage(true, attack);
-						Bit_itr->damageFlag = false;
-					}
-					Bit_itr->pos = (*itr)->GetPos();
-					Bit_itr->HP = (*itr)->GetHP();
-					if (Bit_itr->deathFlag || (*itr)->CheckDeath())
-					{
-						objList->erase(itr);
-						Bit_itr->deathFlag = true;
-						tmpFlag = true;
-						Bit_itr->HP = 1;
-						break;
-					}
+
+
+					lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
+					lpResultCtl.ResultSave(objList);
+					objList->erase(itr);
+					return std::make_unique<ResultScene>();
 
 				}
+				(*itr)->Setdeath(playerPos.deathFlag);
+				(*itr)->SetDamage(playerPos.damageFlag);
+				playerPos.damageFlag = false;
+				playerPos.deathFlag = false;
 
-			}
-			if (!tmpFlag)
-			{
+				playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };
 				itr++;
 
-			}
-			else {
-				breakFlag = true;
-			}
-			
-			break;
-		case TYPE_PLAYER_SHOT:
-			for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
-			{
-				attack = (*itr)->GetAttack();
-				if (!Bit_itr->deathFlag)
+				break;
+			case TYPE_ENEMY:
+
+				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 				{
-					if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
+					tmp_hp += Bit_itr->HP;
+				}
+				(*itr)->SetHP(tmp_hp);
+				itr++;
+
+				break;
+			case TYPE_ENEMY_BIT:
+
+				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+				{
+					if ((*itr)->GetObjNo() == Bit_itr->ObjNo)
 					{
-						Bit_itr->damageFlag = true;
-						(*itr)->Setdeath(true);
+						if (Bit_itr->damageFlag)
+						{
+							(*itr)->SetDamage(true, attack);
+							Bit_itr->damageFlag = false;
+						}
+						Bit_itr->pos = (*itr)->GetPos();
+						Bit_itr->HP = (*itr)->GetHP();
+						if (Bit_itr->deathFlag || (*itr)->CheckDeath())
+						{
+							objList->erase(itr);
+							Bit_itr->deathFlag = true;
+							tmpFlag = true;
+							Bit_itr->HP = 1;
+							break;
+						}
+
+					}
+
+				}
+				if (!tmpFlag)
+				{
+					itr++;
+
+				}
+				else {
+					breakFlag = true;
+				}
+
+				break;
+			case TYPE_PLAYER_SHOT:
+				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+				{
+					attack = (*itr)->GetAttack();
+					if (!Bit_itr->deathFlag)
+					{
+						if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
+						{
+							Bit_itr->damageFlag = true;
+							(*itr)->Setdeath(true);
+						}
 					}
 				}
-			}
-			if ((*itr)->CheckDeath())
-			{
-				objList->erase(itr);
-				breakFlag=true;
-			}
-			else { itr++; }
-			break;
-		case TYPE_ENEMY_SHOT:
-
-			if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{ 14,0 }, VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
-			{
-				if (playerPos.damageFlag)
+				if ((*itr)->CheckDeath())
 				{
-					playerPos.deathFlag = true;
+					objList->erase(itr);
+					breakFlag = true;
 				}
-				else {
-					playerPos.damageFlag = true;
-					lpEffect.SetEffectFlag(SHAKE,true);
-				}
+				else { itr++; }
+				break;
+			case TYPE_ENEMY_SHOT:
 
-				(*itr)->Setdeath(true);
-			}
-			if ((*itr)->CheckDeath())
-			{
-				objList->erase(itr);
-				breakFlag=true;
-			}
-			else { itr++; }
-			break;
-		case TYPE_METEO:
-			if (circleHit((*itr)->GetPos() + MeteoOffset[(*itr)->GetObjNo()] + MeteoRad[(*itr)->GetObjNo()],
-				MeteoRad[(*itr)->GetObjNo()],
-				playerPos.pos + VECTOR2{ 14,0 },
-				VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
-			{
-				if (playerPos.damageFlag)
+				if (circleHit((*itr)->GetPos() + 15, 10, playerPos.pos + VECTOR2{ 14,0 }, VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
 				{
-					playerPos.deathFlag = true;
-				}
-				else {
-					playerPos.damageFlag = true;
-					lpEffect.SetEffectFlag(SHAKE,true);
-				}
+					if (playerPos.damageFlag)
+					{
+						playerPos.deathFlag = true;
+					}
+					else {
+						playerPos.damageFlag = true;
+						lpEffect.SetEffectFlag(SHAKE, true);
+					}
 
-				(*itr)->Setdeath(true);
+					(*itr)->Setdeath(true);
+				}
+				if ((*itr)->CheckDeath())
+				{
+					objList->erase(itr);
+					breakFlag = true;
+				}
+				else { itr++; }
+				break;
+			case TYPE_METEO:
+				if (circleHit((*itr)->GetPos() + MeteoOffset[(*itr)->GetObjNo()] + MeteoRad[(*itr)->GetObjNo()],
+					MeteoRad[(*itr)->GetObjNo()],
+					playerPos.pos + VECTOR2{ 14,0 },
+					VECTOR2{ PLAYER_SIZE_X - 14,PLAYER_SIZE_Y }))
+				{
+					if (playerPos.damageFlag)
+					{
+						playerPos.deathFlag = true;
+					}
+					else {
+						playerPos.damageFlag = true;
+						lpEffect.SetEffectFlag(SHAKE, true);
+					}
+
+					(*itr)->Setdeath(true);
+				}
+				if ((*itr)->CheckDeath())
+				{
+					objList->erase(itr);
+					breakFlag = true;
+				}
+				else { itr++; }
+				break;
+			default:
+				break;
 			}
-			if ((*itr)->CheckDeath())
+			if (breakFlag)
 			{
-				objList->erase(itr);
-				breakFlag = true;
+				break;
 			}
-			else { itr++; }
-			break;
-		default:
-			break;
-		}
-		if(breakFlag)
-		{
-			break;
-		}
 
+		}
 	}
 	SeasonSwitch();
 	lpSpeedMng.move();
@@ -251,8 +253,9 @@ bool GameScene::GameDraw(void)
 		(*data).Draw();
 	}
 	int time = lpSpeedMng.GetTime();
-	DrawFormatString(500, 0, 0xffff00, "%d.%d.%d", time / 3600, time / 60 % 60, time % 60);
-	
+
+	DrawFormatStringToHandle(450, 0, 0xffff00, timeFont,"%d.%d.%d", time / 3600, time / 60 % 60, time % 60);
+
 	//¿ﬁ“∞ºﬁÇéÛÇØÇΩç€ÇÃeffect
 	if (lpEffect.GetEffectFlag(SHAKE))
 	{
@@ -318,6 +321,7 @@ int GameScene::Init(void)
 	MeteoRad = {
 		20,15,15,20
 	};
+	timeFont = CreateFontToHandle(NULL, 60, 10, DX_FONTTYPE_ANTIALIASING);
 	lpSoundMng.PlaySound("Sound/BGM/GameSceen.mp3", DX_PLAYTYPE_LOOP);
 	return 0;
 }

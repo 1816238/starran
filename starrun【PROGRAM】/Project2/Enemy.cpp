@@ -46,9 +46,10 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	//“G‚ÌËÞ¯Ä‚Ì²Ý½ÀÝ½
 	if (enemyBossFlag)
 	{
+		BitObj.resize(enemy_bit_cnt[enemyType]);
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
 		{
-			auto obj=AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
+				BitObj[bit_cnt]=AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
 		}
 			enemyBossFlag = false;
 	}
@@ -124,7 +125,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		HP = 0;
 	}
 	enemy_hp[enemyType] = static_cast<float>(HP);
-	deathFlag = (enemy_hp[enemyType] <= 0 ? true : false);
+	deathFlag = (enemy_hp[enemyType] <= 0 ? true : deathFlag);
 }
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
@@ -199,14 +200,23 @@ void Enemy::HitCheck(void)
 	{
 		if (enemyType < PISCES)
 		{
+			for (int i = 0; i < enemy_bit_cnt[enemyType]; i++)
+			{
+				(*BitObj[i])->Setdeath(true);
+			}
 			enemyType = static_cast<BOSS_ID>(enemyType + 1);
 			HP = max_hp[enemyType];		
 			enemyBossFlag = true;
 			enemy_shift_flag = false;
 			deathFlag = false;
+			
 		}
 		else
 		{
+			for (int i = 0; i < enemy_bit_cnt[enemyType]; i++)
+			{
+				(*BitObj[i])->Setdeath(true);
+			}
 			enemyType = CANCER;
 			HP = max_hp[enemyType];
 			enemyBossFlag = true;
