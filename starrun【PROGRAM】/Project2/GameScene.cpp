@@ -332,7 +332,7 @@ void GameScene::SeasonSwitch(void)
 		switch (SeasonSwitchFlag)
 		{
 		case 0:
-			lpMapControl.MapLoad("data/mapdata3.map", objList, false, true);
+			lpMapControl.MapLoad("data/mapdata1.map", objList, false, true);
 			SeasonSwitchFlag++;
 				break;
 		case 1:
@@ -345,6 +345,8 @@ void GameScene::SeasonSwitch(void)
 
 			break;
 		case 3:
+			lpMapControl.MapLoad("data/mapdata4.map", objList, false, true);
+			SeasonSwitchFlag=0;
 
 			break;
 		case 4:

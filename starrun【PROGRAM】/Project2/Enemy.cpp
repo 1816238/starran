@@ -78,7 +78,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			if ((shot_waitCnt / at_wait) % at_wait == 1 || (shot_waitCnt / at_wait) % at_wait == 3 || (shot_waitCnt / at_wait) % at_wait == 7)
 			{
 				auto DrawShot = [&](int h) {
-					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 6));
+					AddObjList()(objList, std::make_unique<Shot>(VECTOR2{ tmpPos.x,tmpPos.y - h * CHIP_SIZE }, VECTOR2{ 0,0 }, TYPE_ENEMY_SHOT, 12));
 				};
 				switch ((shot_waitCnt / at_wait) % at_wait)
 				{
@@ -200,10 +200,6 @@ void Enemy::HitCheck(void)
 	{
 		if (enemyType < PISCES)
 		{
-			for (int i = 0; i < enemy_bit_cnt[enemyType]; i++)
-			{
-				(*BitObj[i])->Setdeath(true);
-			}
 			enemyType = static_cast<BOSS_ID>(enemyType + 1);
 			HP = max_hp[enemyType];		
 			enemyBossFlag = true;

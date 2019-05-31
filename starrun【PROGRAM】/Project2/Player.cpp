@@ -21,7 +21,7 @@ Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawO
 	initAnim();
 	this->objType = objType;
 	pos = setUpPos;
-	Obj::init("image/player_W.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(1, 1), setUpPos);	
+	Obj::init("image/player.png", VECTOR2(PLAYER_SIZE_X, PLAYER_SIZE_Y), VECTOR2(2, 1), setUpPos);	
 	Sound_ID("Sound/SE/pshot.mp3")[0];
 	init();
 }
@@ -263,9 +263,9 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 void Player::Draw(void)
 {
-	SetDrawBlendMode(DX_BLENDMODE_ALPHA, !(time["ÀÞÒ°¼Þ"] / 10 % 2) * 255);
-	DrawGraph(CHIP_SIZE * 2, pos.y, IMAGE_ID("image/player_W.png")[0], true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//SetDrawBlendMode(DX_BLENDMODE_ALPHA, !(time["ÀÞÒ°¼Þ"] / 10 % 2) * 255);
+	DrawGraph(CHIP_SIZE * 2, pos.y, IMAGE_ID("image/player.png",)[time["ÀÞÒ°¼Þ"] / 10%2], true);
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	for (int i = 0; i < 4; i++)
 	{
 		double star = getcnt[i] % 30;
@@ -337,6 +337,10 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 				Setdeath(true);
 			}
 			break;
+		case MAP_ID_FULL_MOON:
+		case MAP_ID_HALF_MOON:
+		case MAP_ID_CRESCENT_MOON:
+			break;
 		default:
 		case MAP_ID_NON:
 		case MAP_ID_CLOUD1:
@@ -345,9 +349,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_CLOUD_DOWN1:
 		case MAP_ID_CLOUD_DOWN2:
 		case MAP_ID_CLOUD_DOWN3:
-		case MAP_ID_FULL_MOON:
-		case MAP_ID_HALF_MOON:
-		case MAP_ID_CRESCENT_MOON:
+
 		case MAP_ID_MAX:
 
 			return false;
