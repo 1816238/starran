@@ -1,5 +1,7 @@
 #include "DxLib.h"
 #include "BaseScene.h"
+#include "Enemy.h"
+#include "EnemyBit.h"
 #include "Effect.h"
 
 Effect::Effect()
@@ -18,9 +20,17 @@ void Effect::Shake(void)
 	SetDrawScreen(effect_image);
 }
 
+void Effect::Rotation(void)
+{
+	escape_flag = true;
+	effect_image = MakeScreen(SCREEN_SIZE_X, SCREEN_SIZE_Y);
+	SetDrawScreen(effect_image);
+}
+
 bool Effect::init()
 {
 	shake_flag = false;
+	escape_flag = false;
 	return false;
 }
 
@@ -40,6 +50,13 @@ void Effect::Draw()
 			shake_flag = false;
 		}
 		shake_cnt++;
+	}
+	if (escape_flag)
+	{
+		for (float num = 0; num <= 1; num += 0.1f)
+		{
+			DrawRotaGraph2(0, 0, CIRCLE_RANGE + 43 / 2, 45 / 2, 1.0f - num, PI / 2.0f*num, escape_flag,false,false);
+		}
 	}
 }
 

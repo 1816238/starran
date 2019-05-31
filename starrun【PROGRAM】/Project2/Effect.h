@@ -11,6 +11,7 @@ public:
 		return s_Instance;
 	}
 	void Shake(void);
+	void Rotation(void);
 	void Draw();
 	const void SetEffectFlag(bool flag);
 	const bool GetEffectFlag();
@@ -23,6 +24,7 @@ private:
 	int effect_image;
 	bool effect_flag;
 	bool shake_flag;
+	bool escape_flag;
 	int shake_cnt;
 };
 

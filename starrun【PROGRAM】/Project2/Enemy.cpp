@@ -49,8 +49,8 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
 		{
 			auto obj=AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
-			enemyBossFlag = false;
 		}
+			enemyBossFlag = false;
 	}
 	
 	//Ë¶êŒÇÃ≤›Ω¿›Ω
@@ -163,6 +163,7 @@ void Enemy::Draw(void)
 	DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", At_Type[enemyType][SHOT]);
 	DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", At_Type[enemyType][METEORITE]);
 	DrawFormatString(1100, 125, 0xffff00, "ìGÇÃçUåÇïpìx..%d", frequency[enemyType]);
+	DrawFormatString(0, 20 * 13, 0x000ff0, "enemy_shift_flag...%d", enemy_shift_flag);
 	/*if (At_Type[enemyType][SHOT])
 	{*/
 		DrawFormatString(1100, 175, 0xffff00, "íeÇÃç¿ïW......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
@@ -190,16 +191,17 @@ void Enemy::Draw(void)
 
 void Enemy::HitCheck(void)
 {
-	if (lpSpeedMng.GetSeasoonFlag(Main) && !lpSpeedMng.GetSeasoonFlag(Sub))
+	if (lpSpeedMng.GetFlag(Main) && !lpSpeedMng.GetFlag(Sub))
 	{
 		enemy_shift_flag = true;
 	}
-	if (deathFlag || (enemy_shift_flag &&!lpSpeedMng.GetSeasoonFlag(Main) && lpSpeedMng.GetSeasoonFlag(Sub)))
+	if (deathFlag || (enemy_shift_flag &&!lpSpeedMng.GetFlag(Main) && lpSpeedMng.GetFlag(Sub)))
 	{
 		if (enemyType < PISCES)
 		{
 			enemyType = static_cast<BOSS_ID>(enemyType + 1);
-			HP = max_hp[enemyType];
+			HP = max_hp[enemyType];		
+			enemyBossFlag = true;
 			enemy_shift_flag = false;
 			deathFlag = false;
 		}
@@ -207,6 +209,7 @@ void Enemy::HitCheck(void)
 		{
 			enemyType = CANCER;
 			HP = max_hp[enemyType];
+			enemyBossFlag = true;
 			enemy_shift_flag = false;
 			deathFlag = false;
 		}

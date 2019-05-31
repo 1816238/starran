@@ -1,6 +1,9 @@
 #pragma once
 #include "Obj.h"
 
+#define PI  3.1415926535897932384626433832795f
+#define CIRCLE_PI ( PI*2 )
+
 typedef struct Move_Circle
 {
 	float x;
