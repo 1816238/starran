@@ -136,8 +136,8 @@ void Enemy::Draw(void)
 
 	auto Draw = [&](VECTOR2 divID)
 	{
-		DrawCircle(CENTER_POS_X, CENTER_POS_Y, CIRCLE_RANGE, 0xff0000, false);
-		DrawCircle(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125, SCREEN_SIZE_Y / 4 + 125, 4, 0xff0000, true);
+		//DrawCircle(CENTER_POS_X, CENTER_POS_Y, CIRCLE_RANGE, 0xff0000, false);
+		//DrawCircle(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125, SCREEN_SIZE_Y / 4 + 125, 4, 0xff0000, true);
 		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
 	};
 	int Pos = (SCREEN_SIZE_X - 80)*(enemy_hp[enemyType] / max_hp[enemyType]);
@@ -153,32 +153,57 @@ void Enemy::Draw(void)
 		IMAGE_ID("image/boss_body.png")[0], true, false);
 	
 	//ÉfÉoÉbÉNóp====================================================================================================================
-	DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
-	DrawFormatString(1100, 0, 0xffff00, "ìGÇÃéÌóﬁ......%d", enemy_name[enemyType]);
-	DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP....%d", max_hp[enemyType]);
-	DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%d", enemy_hp[enemyType]);
-	DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", At_Type[enemyType][SHOT]);
-	DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", At_Type[enemyType][METEORITE]);
-	DrawFormatString(1100, 125, 0xffff00, "ìGÇÃçUåÇïpìx..%d", frequency[enemyType]);
-	DrawFormatString(0, 20 * 13, 0x000ff0, "enemy_shift_flag...%d", enemy_shift_flag);
-	/*if (At_Type[enemyType][SHOT])
-	{*/
-		DrawFormatString(1100, 175, 0xffff00, "íeÇÃç¿ïW......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
+	//DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
+	//DrawFormatString(1100, 0, 0xffff00, "ìGÇÃéÌóﬁ......%d", enemy_name[enemyType]);
+	//DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP....%d", max_hp[enemyType]);
+	//DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%d", enemy_hp[enemyType]);
+	//DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", At_Type[enemyType][SHOT]);
+	//DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", At_Type[enemyType][METEORITE]);
+	//DrawFormatString(1100, 125, 0xffff00, "ìGÇÃçUåÇïpìx..%d", frequency[enemyType]);
+	//DrawFormatString(0, 20 * 13, 0x000ff0, "enemy_shift_flag...%d", enemy_shift_flag);
+	///*if (At_Type[enemyType][SHOT])
+	//{*/
+	//	DrawFormatString(1100, 175, 0xffff00, "íeÇÃç¿ïW......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
 
-		for (int num = 0; num < AT_DRAW_MAX; num++)
-		{
-			DrawFormatString(1100, 150, 0xffff00, "íeÇÃFlag[%d]......%d",num ,shotFlag[num]);
-		}
+	//	for (int num = 0; num < AT_DRAW_MAX; num++)
+	//	{
+	//		DrawFormatString(1100, 150, 0xffff00, "íeÇÃFlag[%d]......%d",num ,shotFlag[num]);
+	//	}
+	////}
+	//if (At_Type[enemyType][METEORITE])
+	//{
+	//	DrawFormatString(1100, 300, 0xffff00, "Ë¶êŒÇÃFlag....%d", lpEnemyAct.GetmeteoriteFlag());
+	//	DrawFormatString(1100, 325, 0xffff00, "Ë¶êŒÇÃç¿ïW....%d", pos.y);
+	//	DrawFormatString(1100, 350, 0xffff00, "Ë¶êŒÇÃäpìx....%d", lpEnemyAct.SetAngle());
+	//	for (int num = 0; num <= AT_DRAW_MAX; num++)
+	//	{
+	//	}
+	//}	//DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
+	//DrawFormatString(1100, 0, 0xffff00, "ìGÇÃéÌóﬁ......%d", enemy_name[enemyType]);
+	//DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP....%d", max_hp[enemyType]);
+	//DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%d", enemy_hp[enemyType]);
+	//DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", At_Type[enemyType][SHOT]);
+	//DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", At_Type[enemyType][METEORITE]);
+	//DrawFormatString(1100, 125, 0xffff00, "ìGÇÃçUåÇïpìx..%d", frequency[enemyType]);
+	//DrawFormatString(0, 20 * 13, 0x000ff0, "enemy_shift_flag...%d", enemy_shift_flag);
+	///*if (At_Type[enemyType][SHOT])
+	//{*/
+	//	DrawFormatString(1100, 175, 0xffff00, "íeÇÃç¿ïW......%d", SCREEN_SIZE_X - SCREEN_SIZE_X / 4 - pos.x);
+
+	//	for (int num = 0; num < AT_DRAW_MAX; num++)
+	//	{
+	//		DrawFormatString(1100, 150, 0xffff00, "íeÇÃFlag[%d]......%d",num ,shotFlag[num]);
+	//	}
+	////}
+	//if (At_Type[enemyType][METEORITE])
+	//{
+	//	DrawFormatString(1100, 300, 0xffff00, "Ë¶êŒÇÃFlag....%d", lpEnemyAct.GetmeteoriteFlag());
+	//	DrawFormatString(1100, 325, 0xffff00, "Ë¶êŒÇÃç¿ïW....%d", pos.y);
+	//	DrawFormatString(1100, 350, 0xffff00, "Ë¶êŒÇÃäpìx....%d", lpEnemyAct.SetAngle());
+	//	for (int num = 0; num <= AT_DRAW_MAX; num++)
+	//	{
+	//	}
 	//}
-	if (At_Type[enemyType][METEORITE])
-	{
-		DrawFormatString(1100, 300, 0xffff00, "Ë¶êŒÇÃFlag....%d", lpEnemyAct.GetmeteoriteFlag());
-		DrawFormatString(1100, 325, 0xffff00, "Ë¶êŒÇÃç¿ïW....%d", pos.y);
-		DrawFormatString(1100, 350, 0xffff00, "Ë¶êŒÇÃäpìx....%d", lpEnemyAct.SetAngle());
-		for (int num = 0; num <= AT_DRAW_MAX; num++)
-		{
-		}
-	}
 	//==============================================================================================================================
 	if (enemyType < ENEMY_ID_MAX)
 	{
