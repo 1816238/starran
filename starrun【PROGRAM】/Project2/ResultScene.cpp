@@ -64,6 +64,9 @@ bool ResultScene::ResultDraw(void)
 	DrawFormatString(0, 40, 0x00ff00, "SCORE...%d",lpResultCtl.GetLoadScoreData());
 	int time = lpResultCtl.GetLoadTimeData();
 	DrawFormatString(0, 60, 0x00ff00, "TIME...%d.%d.%d",time/3600,time/60%60,time%60);
+	SetFontSize(70);
+	DrawString(500, 300, "çHéñíÜ", 0xffffff);
+	SetFontSize(-1);
 	ScreenFlip();
 	return true;
 }

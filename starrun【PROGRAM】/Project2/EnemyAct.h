@@ -21,10 +21,12 @@ public:
 	const int SetPos();
 	const int SetAngle();
 	void SetMeteoFlag(bool flag);
+	void Setswitch(bool flag);
+	bool Getswitch(void);
 private:
 	int randPos;
 	int randAngle;
 	int max_waitCnt;
-
+	bool switchflag;
 };
 

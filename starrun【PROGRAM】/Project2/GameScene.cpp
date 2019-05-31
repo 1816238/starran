@@ -15,6 +15,7 @@
 #include "SoundMng.h"
 #include "Effect.h"
 #include "GameScene.h"
+#include "EnemyAct.h"
 
 GameScene::GameScene()
 {
@@ -86,7 +87,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						}
 						Bit_itr->pos = (*itr)->GetPos();
 						Bit_itr->HP = (*itr)->GetHP();
-						if (Bit_itr->deathFlag || (*itr)->CheckDeath())
+						if (Bit_itr->deathFlag || (*itr)->CheckDeath()||lpEnemyAct.Getswitch())
 						{
 							objList->erase(itr);
 							Bit_itr->deathFlag = true;
