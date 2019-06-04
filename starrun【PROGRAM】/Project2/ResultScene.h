@@ -5,7 +5,7 @@ class ResultScene :
 	public BaseScene
 {
 public:
-	ResultScene();
+	ResultScene(int play_score,int play_time);
 	~ResultScene();
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
 private:
@@ -14,5 +14,10 @@ private:
 	bool ResultDraw(void);
 	int score;
 	int time;
+	int digit_score[7];
+	int digit_high_score[7];
+	int digit_high;
+	int digit;
+
 };
 

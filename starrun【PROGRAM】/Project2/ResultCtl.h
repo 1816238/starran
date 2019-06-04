@@ -32,7 +32,9 @@ public:
 	bool SetUpGameObj(sharedListObj objList, bool DrawFlag);
 	void SetLoadData(int score, int time);
 	const int GetLoadScoreData();
+	const int GetLoadScore();		//•Û‘¶‚³‚ê‚½score‚ğŒÄ‚Ño‚·
 	const int GetLoadTimeData();
+	const int GetLoadTime();		//•Û‘¶‚³‚ê‚½time‚ğŒÄ‚Ño‚·
 private:
 	int score;
 	int time;

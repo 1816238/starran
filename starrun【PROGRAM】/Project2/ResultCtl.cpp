@@ -95,8 +95,8 @@ bool ResultCtl::SetUpGameObj(sharedListObj objList, bool objFlag)
 
 void ResultCtl::SetLoadData(int score, int time)
 {
-	score2 = score;
-	time2 = time;
+	this->score = score;
+	this->time = time;
 }
 
 const int ResultCtl::GetLoadScoreData()
@@ -104,7 +104,17 @@ const int ResultCtl::GetLoadScoreData()
 	return ResultCtl::score2;
 }
 
+const int ResultCtl::GetLoadScore()
+{
+	return score;
+}
+
 const int ResultCtl::GetLoadTimeData()
 {
 	return ResultCtl::time2;
+}
+
+const int ResultCtl::GetLoadTime()
+{
+	return time;
 }
