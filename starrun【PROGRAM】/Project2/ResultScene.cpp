@@ -57,7 +57,7 @@ int ResultScene::Init(void)
 	objList->clear();
 	//lpResultCtl.SetUp(0,0);
 	SetWindowText("AGS.exe Result");
-	lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+	
 	lpSoundMng.StopSound(SOUND_METEO);
 	for (int num = 0; num <= 7; num++)
 	{

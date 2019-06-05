@@ -230,10 +230,7 @@ void Enemy::HitCheck(void)
 		}
 		else
 		{
-			for (int i = 0; i < enemy_bit_cnt[enemyType]; i++)
-			{
-				(*BitObj[i])->Setdeath(true);
-			}
+			
 			enemyType = CANCER;
 			HP = max_hp[enemyType];
 			enemyBossFlag = true;
