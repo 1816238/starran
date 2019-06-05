@@ -355,7 +355,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			return false;
 			break;
 		}
-		Score = ScoreTbl[id]; 
+		Score += ScoreTbl[id]; 
 		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
 		return true;
 
