@@ -314,24 +314,33 @@ void Player::CheckMapHit(void)		//œØÃﬂÇ∆ÇÃìñÇΩÇËîªíË
 		case MAP_ID_BLUE:			//íeÇÃΩÀﬂ∞ƒﬁ±ØÃﬂ
 			getcnt[0]++;
 			getcnt[0] = (getcnt[0] > 100 ? 100 : getcnt[0]);
-			
+			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
+
 			break;
 		case MAP_ID_YELLOW:			//ΩÀﬂ∞ƒﬁ±ØÃﬂ
 			lpSpeedMng.AddStar();
 			getcnt[3]++;
+			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
+
 			break;
 		case MAP_ID_GREEN:			//
 			getcnt[1]++;
+			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
+
 			break;
 		case MAP_ID_RED:			//çUåÇóÕ±ØÃﬂ
 			getcnt[2]++;
+			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
+
 			break;
 		case MAP_ID_PURPLE:			//¿ﬁ“∞ºﬁ
 			if (!damageFlag)
 			{
 				damageFlag = true;
 				time["¿ﬁ“∞ºﬁ"] = 0;
+				lpSoundMng.PlaySound("Sound/SE/stardamage.mp3", DX_PLAYTYPE_BACK);
 				lpEffect.SetEffectFlag(SHAKE,true);
+
 			}
 			else {
 				Setdeath(true);

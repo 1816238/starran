@@ -52,6 +52,8 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					//lpResultCtl.ResultSave(objList);
 
 					play_score = (*itr)->GetScore();
+					lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
 					objList->erase(itr);
 					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
@@ -141,6 +143,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					}
 					else {
 						playerPos.damageFlag = true;
+						lpSoundMng.PlaySound("Sound/SE/damage.mp3", DX_PLAYTYPE_BACK);
 						lpEffect.SetEffectFlag(SHAKE, true);
 					}
 
@@ -291,7 +294,6 @@ int GameScene::Init(void)
 	SetWindowText("AGS.exe Game");
 
 	srand(time(NULL));
-	lpSoundMng.StopSound("Sound/BGM/milkyway.mp3");
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));

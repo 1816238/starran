@@ -54,7 +54,7 @@ bool Shot::init(void)
 		Obj::init("image/Eshot.png", VECTOR2{ 200,30 }, VECTOR2{ 7,2 });
 		AddAnim("“G‚Ì’e", 0, 0, 14, 1, true);
 		SetAnim("“G‚Ì’e");
-		lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_BACK);
+		//lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_BACK);
 		
 		return true;
 	}

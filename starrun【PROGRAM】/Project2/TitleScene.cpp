@@ -28,6 +28,8 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > start&&Mpos < start + VECTOR2{ 320,160 }))
 	{
 		lpSoundMng.PlaySound("Sound/SE/decision27.mp3", DX_PLAYTYPE_BACK);
+		lpSoundMng.StopSound("Sound/BGM/milkyway.mp3");
+
 		return std::make_unique<GameScene>();
 	}
 
