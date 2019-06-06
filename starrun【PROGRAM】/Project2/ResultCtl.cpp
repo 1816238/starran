@@ -53,7 +53,7 @@ bool ResultCtl::ResultLoad(sharedListObj objList, bool objFlag)
 	DrawFormatString(0, 40, 0x00ff00, "F1でコンテニュー", expData.time);
 
 	fclose(file);
-	ResultCtl::SetLoadData(expData.score,expData.time);
+	ResultCtl::SetUp(expData.score,expData.time);
 	bool flag = true;
 	int sum = 0;
 
@@ -93,25 +93,9 @@ bool ResultCtl::SetUpGameObj(sharedListObj objList, bool objFlag)
 	return true;
 }
 
-void ResultCtl::SetLoadData(int score, int time)
-{
-	this->score = score;
-	this->time = time;
-}
-
-const int ResultCtl::GetLoadScoreData()
-{
-	return ResultCtl::score2;
-}
-
 const int ResultCtl::GetLoadScore()
 {
 	return score;
-}
-
-const int ResultCtl::GetLoadTimeData()
-{
-	return ResultCtl::time2;
 }
 
 const int ResultCtl::GetLoadTime()

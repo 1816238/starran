@@ -22,10 +22,6 @@ ResultScene::~ResultScene()
 
 unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 {
-	if (lpResultCtl.GetLoadScore()< this->score)
-	{
-		lpResultCtl.SetLoadData(this->score, this->time);
-	}
 	for (auto itr = objList->begin(); itr != objList->end(); itr++)
 	{
 		(*itr)->UpDate(controller, objList);
@@ -44,6 +40,11 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 	//–qyÌßÚÃŞ¨¹°Äz
 	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
 	lpResultCtl.ResultLoad(objList, false);
+	if (lpResultCtl.GetLoadScore()< this->score)
+	{
+		lpResultCtl.SetUp(this->score, this->time);
+		lpResultCtl.ResultSave(objList);
+	}
 	ResultDraw();
 	return std::move(own);		//Š—LŒ ‚ğˆÚ‚·
 }

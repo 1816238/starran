@@ -49,7 +49,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				{
 					int play_score = 0;
 					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
-					lpResultCtl.ResultSave(objList);
+					//lpResultCtl.ResultSave(objList);
 
 					play_score = (*itr)->GetScore();
 
