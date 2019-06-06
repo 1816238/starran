@@ -110,6 +110,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					{
 						if (Bit_itr->damageFlag)
 						{
+							lpSoundMng.PlaySound("Sound/SE/edamage.mp3", DX_PLAYTYPE_BACK);
 							(*itr)->SetDamage(true, attack);
 							Bit_itr->damageFlag = false;
 						}

@@ -349,6 +349,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_FULL_MOON:
 		case MAP_ID_HALF_MOON:
 		case MAP_ID_CRESCENT_MOON:
+			lpSoundMng.PlaySound("Sound/SE/getmoon.mp3", DX_PLAYTYPE_BACK);
 			break;
 		default:
 		case MAP_ID_NON:
