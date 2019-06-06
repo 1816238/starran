@@ -311,7 +311,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		switch (id)
 		{
 
-		case MAP_ID_BLUE:			//’e‚Ì½Ëß°ÄÞ±¯Ìß
+		case MAP_ID_BLUE:			//Žc’e‰ñ•œ
 			getcnt[0]++;
 			getcnt[0] = (getcnt[0] > 100 ? 100 : getcnt[0]);
 			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
@@ -323,7 +323,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
 
 			break;
-		case MAP_ID_GREEN:			//
+		case MAP_ID_GREEN:			//’e‚Ì½Ëß°ÄÞ±¯Ìß
 			getcnt[1]++;
 			lpSoundMng.PlaySound("Sound/SE/get.mp3", DX_PLAYTYPE_BACK);
 

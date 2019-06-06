@@ -46,12 +46,16 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	//ìGÇÃÀﬁØƒÇÃ≤›Ω¿›Ω
 	if (enemyBossFlag)
 	{
-		BitObj.resize(enemy_bit_cnt[enemyType]);
-		for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
+		if (lpSpeedMng.GetFlag(Main)&~lpSpeedMng.GetFlag(Sub))
 		{
-				BitObj[bit_cnt]=AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt,max_hp[enemyType]/4));
-		}
+			BitObj.resize(enemy_bit_cnt[enemyType]);
+			for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
+			{
+				BitObj[bit_cnt] = AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt, max_hp[enemyType] / 4));
+			}
 			enemyBossFlag = false;
+			Obj::switchFlag = false;
+		}
 	}
 	
 	//Ë¶êŒÇÃ≤›Ω¿›Ω
@@ -226,7 +230,7 @@ void Enemy::HitCheck(void)
 			enemyBossFlag = true;
 			enemy_shift_flag = false;
 			deathFlag = false;
-			
+			Obj::switchFlag = true;
 		}
 		else
 		{
@@ -236,6 +240,7 @@ void Enemy::HitCheck(void)
 			enemyBossFlag = true;
 			enemy_shift_flag = false;
 			deathFlag = false;
+			Obj::switchFlag = true;
 		}
 		lpEnemyAct.Setswitch(true);
 	}

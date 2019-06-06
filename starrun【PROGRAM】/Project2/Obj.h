@@ -62,6 +62,8 @@ public:
 	int GetAttack(void);
 	int GetScore(void);
 	void AddScore(int num);
+	bool GetSwitchFlag(void);
+	void SetSwitchFlag(bool flag);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”
 	virtual bool init(void) = 0;		//ƒˆ‰¼‘zŠÖ”
@@ -89,5 +91,6 @@ protected:
 	int obj_no;
 	int attack;
 	int Score;
+	bool switchFlag;
 };
 

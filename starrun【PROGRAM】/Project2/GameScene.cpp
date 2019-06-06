@@ -70,9 +70,33 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				break;
 			case TYPE_ENEMY:
 
+				if (BitObj.empty())
+				{
+					BitObj.resize(4);
+					int i = 0;
+					for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
+					{
+						Bit_itr->ObjNo = i;
+						Bit_itr->HP = 1;
+						i++;
+						Bit_itr->deathFlag = false;
+					}
+				}
 				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 				{
+					
 					tmp_hp += Bit_itr->HP;
+					if ((*itr)->GetSwitchFlag())
+					{
+						Bit_itr->deathFlag = true;
+
+					}
+				
+				}
+				if ((*itr)->GetSwitchFlag())
+				{
+					(*itr)->SetSwitchFlag(false);
+
 				}
 				(*itr)->SetHP(tmp_hp);
 				itr++;
@@ -91,12 +115,12 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						}
 						Bit_itr->pos = (*itr)->GetPos();
 						Bit_itr->HP = (*itr)->GetHP();
-						if (Bit_itr->deathFlag || (*itr)->CheckDeath()||lpEnemyAct.Getswitch())
+						if (Bit_itr->deathFlag || (*itr)->CheckDeath())
 						{
 							objList->erase(itr);
-							Bit_itr->deathFlag = true;
+							BitObj.erase(Bit_itr);
 							tmpFlag = true;
-							Bit_itr->HP = 1;
+							
 							break;
 						}
 
@@ -307,14 +331,14 @@ int GameScene::Init(void)
 	playerPos.deathFlag = false;
 	attack = 0;
 
-	Bit_itr = BitObj.begin();
+
 	BitObj.resize(4);
 	int i = 0;
-	for (auto itr = BitObj.begin(); itr != BitObj.end(); itr++)
+	for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 	{
 		
-		itr->ObjNo = i;
-		itr->HP = 1;
+		Bit_itr->ObjNo = i;
+		Bit_itr->HP = 1;
 		i++;
 	}
 

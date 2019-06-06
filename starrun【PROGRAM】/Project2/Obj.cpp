@@ -233,6 +233,16 @@ void Obj::AddScore(int num)
 	Score += num;
 }
 
+bool Obj::GetSwitchFlag(void)
+{
+	return switchFlag;
+}
+
+void Obj::SetSwitchFlag(bool flag)
+{
+	switchFlag = flag;
+}
+
 
 OBJ_TYPE Obj::CheckObjType(void)
 {
