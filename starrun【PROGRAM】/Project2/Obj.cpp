@@ -179,18 +179,18 @@ bool Obj::CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize
 	return false;
 }
 
-void Obj::Setdeath(bool flag)
+const void Obj::Setdeath(bool flag)
 {
 	deathFlag = flag;
 }
 
-void Obj::SetDamage(bool flag, int damage)
+const void Obj::SetDamage(bool flag, int damage)
 {
 	damageFlag = flag;
 	Obj::damage = damage;
 }
 
-void Obj::SetDamage(bool flag)
+const void Obj::SetDamage(bool flag)
 {
 	if (!damageFlag&&flag)
 	{
@@ -203,37 +203,37 @@ void Obj::SetDamage(bool flag)
 	else {}
 }
 
-int Obj::GetObjNo(void)
+const int Obj::GetObjNo(void)const
 {
 	return obj_no;
 }
 
-int Obj::GetHP(void)
+const int Obj::GetHP(void)const
 {
 	return HP;
 }
 
-void Obj::SetHP(int hp)
+const void Obj::SetHP(int hp)
 {
 	HP = hp;
 }
 
-int Obj::GetAttack(void)
+const int Obj::GetAttack(void) const
 {
 	return attack;
 }
 
-int Obj::GetScore(void)
+const int Obj::GetScore(void)const
 {
 	return Score;
 }
 
-void Obj::AddScore(int num)
+const void Obj::AddScore(int num)
 {
 	Score += num;
 }
 
-bool Obj::GetSwitchFlag(void)
+const bool Obj::GetSwitchFlag(void)const
 {
 	return switchFlag;
 }

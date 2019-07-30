@@ -31,6 +31,7 @@ enum OBJ_TYPE {
 	TYPE_MAX
 };
 
+
 class GameCtl;
 using namespace std;
 
@@ -53,16 +54,16 @@ public:
 	bool SetAnim(string animName);			//•\¦‰æ‘œÌ§²Ù–¼‹y‚Ñ±ÆÒ°¼®İ¶³İÀ°‚Ì‰Šú‰»
 	string GetAnim(void);			//•\¦‰æ‘œÌ§²Ù–¼‚Ìæ“¾
 	virtual OBJ_TYPE CheckObjType(void);
-	void Setdeath(bool flag);
-	void SetDamage(bool flag, int damage);
-	void SetDamage(bool flag);
-	int GetObjNo(void);
-	int GetHP(void);
-	void SetHP(int hp);
-	int GetAttack(void);
-	int GetScore(void);
-	void AddScore(int num);
-	bool GetSwitchFlag(void);
+	const void Setdeath(bool flag);
+	const void SetDamage(bool flag, int damage);
+	const void SetDamage(bool flag);
+	const int  GetObjNo(void)const;
+	const int  GetHP(void)const;
+	const void SetHP(int hp);
+	const int  GetAttack(void)const;
+	const int  GetScore(void)const;
+	const void AddScore(int num);
+	const bool GetSwitchFlag(void)const;
 	void SetSwitchFlag(bool flag);
 private:
 	virtual void SetMove(const GameCtl &controller, weekListObj objList) = 0;		//‰æ‘œˆÚ“®‚Ì·°§Œä		ƒˆ‰¼‘zŠÖ”

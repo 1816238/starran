@@ -11,7 +11,7 @@
 #define SHOT_DAMAGE 5
 
 #define lpPlayer Player::GetInstance()
-
+class Enemy;
 
 enum DIR_TBL_ID
 {
@@ -82,6 +82,9 @@ private:
 
 	array<VECTOR2,DIR_MAX>DirPos;
 	bool DownCheck;											//“–‚½‚è”»’è—pƒtƒ‰ƒO
+
+	//Enemy& enemy;
+
 	array<int, MAP_ID_MAX> ScoreTbl;
 
 };

@@ -3,7 +3,6 @@
 #include <math.h>
 #include <DxLib.h>
 #include "SceneMng.h"
-#include "Player.h"
 #include "MapControl.h"
 #include "GameCtl.h"
 #include "ImageMng.h"
@@ -12,6 +11,8 @@
 #include "Shot.h"
 #include "Effect.h"
 #include "SoundMng.h"
+#include "Enemy.h"
+#include "Player.h"
 
 Player::Player(VECTOR2 setUpPos,OBJ_TYPE objType, VECTOR2 drawOffset) :Obj(drawOffset)
 {
@@ -117,6 +118,7 @@ bool Player::init(void)
 	500,		//MAP_ID_HALF_MOON,
 	250			//MAP_ID_CRESCENT_MOON,
 	};
+
 	OutputDebugString("playerèâä˙âªÇµÇΩÇÊ\n");
 
 	return false;
@@ -409,7 +411,7 @@ void Player::CheckMapHit(void)		//œØÃﬂÇ∆ÇÃìñÇΩÇËîªíË
 			{
 				if (!(jumpFlag & 0b11))
 				{
-					pos.y += 1 + time["ºﬁ¨›Ãﬂ"] / ADD_SPEED;
+					pos.y += 5;
 				}
 			}
 			break;
@@ -420,7 +422,7 @@ void Player::CheckMapHit(void)		//œØÃﬂÇ∆ÇÃìñÇΩÇËîªíË
 			{
 				if (!(jumpFlag & 0b11))
 				{
-					pos.y += 1 + time["ºﬁ¨›Ãﬂ"] / ADD_SPEED;
+					pos.y += 5;
 				}
 			}
 
