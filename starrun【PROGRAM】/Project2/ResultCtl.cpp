@@ -14,14 +14,14 @@ ResultCtl::~ResultCtl()
 {
 }
 
-bool ResultCtl::SetUp(const int score, const int time)
+bool ResultCtl::SetUp(const int tmp_score, const int tmp_time)
 {
-	ResultCtl::score = score;
-	ResultCtl::time = time;
+	ResultCtl::score = tmp_score;
+	ResultCtl::time = tmp_time;
 	return false;
 }
 
-bool ResultCtl::ResultSave(sharedListObj objList)
+bool ResultCtl::ResultSave(sharedListObj objList,string f_name,int score)
 {
 	DataHeader expData = {
 			BBM_FILE_ID,
@@ -37,17 +37,17 @@ bool ResultCtl::ResultSave(sharedListObj objList)
 	expData.sum = (char)sum;
 
 	FILE *file;
-	fopen_s(&file, "data/Resultdata.data", "wb");
+	fopen_s(&file, f_name.c_str(), "wb");
 	fwrite(&expData, sizeof(expData), 1, file);
 	fclose(file);
 	return true;
 }
 
-bool ResultCtl::ResultLoad(sharedListObj objList, bool objFlag)
+bool ResultCtl::ResultLoad(sharedListObj objList, string f_name, bool objFlag)
 {
 	FILE *file;
 	DataHeader expData;
-	fopen_s(&file, "data/Resultdata.data", "rb");
+	fopen_s(&file, f_name.c_str(), "rb");
 	fread(&expData, sizeof(expData), 1, file);
 	DrawFormatString(0, 20, 0x00ff00, "F1でコンテニュー", expData.score);
 	DrawFormatString(0, 40, 0x00ff00, "F1でコンテニュー", expData.time);
@@ -98,7 +98,46 @@ const int ResultCtl::GetLoadScore()
 	return score;
 }
 
+const int ResultCtl::GetLoadScore(int num)
+{
+	return rankscore[num];
+}
+
 const int ResultCtl::GetLoadTime()
 {
 	return time;
+}
+
+const int ResultCtl::GetLoadTime(int num)
+{
+	return ranktime[num];
+}
+
+void ResultCtl::RankingScore(sharedListObj objList)
+{
+	if (score > rankscore[0])
+	{
+		rankscore[2] = rankscore[1];
+		rankscore[1] = rankscore[0];
+		rankscore[0] = score;
+		ranktime[2] = ranktime[1];
+		ranktime[1] = ranktime[0];
+		ranktime[0] = time;
+		lpResultCtl.ResultSave(objList, "data/Resultdata1.data", rankscore[0]);
+	}
+	if ((score < rankscore[0]) && score > rankscore[1])
+	{
+		rankscore[2] = rankscore[1];
+		rankscore[1] = score;
+		ranktime[2] = ranktime[1];
+		ranktime[1] = time;
+		lpResultCtl.ResultSave(objList, "data/Resultdata2.data", rankscore[1]);
+	}
+	if ((score < rankscore[1]) && score > rankscore[2])
+	{
+		rankscore[2] = score;
+		ranktime[2] = time;
+		lpResultCtl.ResultSave(objList, "data/Resultdata3.data", rankscore[2]);
+	}
+
 }
