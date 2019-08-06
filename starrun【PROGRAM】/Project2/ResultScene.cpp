@@ -30,7 +30,7 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 		(*itr)->UpDate(controller, objList);
 	}
 	GetMousePoint(&Mpos.x, &Mpos.y);
-	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > move_title&&Mpos < move_title + VECTOR2{ 320,160 }))
+	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > move_title&&Mpos < move_title + title_size))
 	{
 		lpSoundMng.PlaySound("Sound/SE/decision27.mp3", DX_PLAYTYPE_BACK);
 		return std::make_unique<TitleScene>();
@@ -40,9 +40,11 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 		lpSoundMng.PlaySound("Sound/SE/decision27.mp3", DX_PLAYTYPE_BACK);
 		return std::make_unique<GameScene>();
 	}
-
 	//叙述【ﾌﾟﾚﾃﾞｨｹｰﾄ】
 	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
+	lpResultCtl.ResultLoad(objList, "data/Resultdata1.data", false);
+	lpResultCtl.ResultLoad(objList, "data/Resultdata2.data", false);
+	lpResultCtl.ResultLoad(objList, "data/Resultdata3.data", false);
 
 	if (lpResultCtl.GetLoadScore(2) < this->score)
 	{
@@ -77,9 +79,10 @@ int ResultScene::Init(void)
 	digit = 10000000;
 	digit_high = 10000000;
 	time_digit = 10;
-
-	move_title = { 140, 500 };
-	play_continue = { 800, 500 };
+	GetGraphSize(IMAGE_ID("image/title.png")[0], &title_size.x, &title_size.y);
+	GetGraphSize(IMAGE_ID("image/continue.png")[0], &continue_size.x, &continue_size.y);
+	move_title = { 200, 525 };
+	play_continue = { 800, 525 };
 	return 0;
 }
 
@@ -87,10 +90,14 @@ bool ResultScene::ResultDraw(void)
 {
 	ClsDrawScreen();
 	DrawGraph(0, 0, IMAGE_ID("image/back.jpg")[0], false);
-	DrawRectGraph(SCORE_IMAGE_POS, 50, 0, 0, 175, 100, IMAGE_ID("image/SCORE.png")[0], true, false);
-	DrawRectGraph(TIME_IMAGE_POS, 150, 0, 0, 175, 100, IMAGE_ID("image/play_time.png")[0], true, false);
-	DrawGraph(TIME_IMAGE_POS + 155, 200,IMAGE_ID("image/Unit.png")[0], true);
+	DrawRotaGraph(175, 60, 1, 0, IMAGE_ID("image/SCORE.png")[0], true, false);
+	DrawRectGraph(TIME_IMAGE_POS, 60, 0, 0, 560, 158, IMAGE_ID("image/play_time.png")[0], true, false);
+	for (int num = 0; num < 3; num++)
+	{
+		DrawRectGraph(TIME_IMAGE_POS + 155 + 130*num, 200, 0, 89*num, 104, 89, IMAGE_ID("image/msf.png")[0], true, false);
+	}
 
+	//playスコアの表示
 	for (int num = 0; num <= 7; num++)
 	{
 		if (digit != 0)
@@ -98,23 +105,47 @@ bool ResultScene::ResultDraw(void)
 			digit_score[num] = (this->score / digit) % 10;
 			digit = digit / 10;
 		}
-		DrawRectGraph(70 + 340 + 35 * num, 70, 25 * digit_score[num], 0, 25, 51, IMAGE_ID("image/num.png")[0], true, false);
+		if (num != 0)
+		{
+			DrawRectGraph(80 + 220 + 50 * num, 30, 60 * digit_score[num], 0, 60, 58, IMAGE_ID("image/num.png")[0], true, false);
+		}
 	}
-
-
+	//play時間の表示
 	auto Time = [&](int posX, int n, int time) {
 		digit_play_time[n][0] = (time / 10) % 10;
 		digit_play_time[n][1] = (time / 1) % 10;
-		DrawRectGraph(posX, 175, 25 * digit_play_time[n][0], 0, 25, 51, IMAGE_ID("image/num.png")[0], true, false);
-		DrawRectGraph(posX + 30, 175, 25 * digit_play_time[n][1], 0, 25, 51, IMAGE_ID("image/num.png")[0], true, false);
+		DrawRectGraph(posX, 175, 60 * digit_play_time[n][0], 0, 60, 58, IMAGE_ID("image/num.png")[0], true, false);
+		DrawRectGraph(posX + 40, 175, 60 * digit_play_time[n][1], 0, 60, 58, IMAGE_ID("image/num.png")[0], true, false);
 	};
 
-		Time((TIME_IMAGE_POS)+155, 0, (this->time / 3600));
-		Time(TIME_IMAGE_POS + 250, 1, (this->time / 60 % 60));
-		Time(TIME_IMAGE_POS + 345, 2, (this->time % 60));
+	//読み込んだﾗﾝｷﾝｸﾞｽｺｱの表示
+	for (int n = 0; n < 3; n++)
+	{
+		digit = 10000000;
+		for (int num = 0; num <= 7; num++)
+		{
+			if (digit != 0)
+			{
+				rank_score[n][num] = (lpResultCtl.GetLoadScore(n) / digit) % 10;
+				digit = digit / 10;
+			}
+			if (num != 0)
+			{
+				DrawRectGraph(180 + 50 * num, 270 + 80 * n, 60 * rank_score[n][num], 0, 60, 58, IMAGE_ID("image/ranknum.png")[0], true, false);
+			}
+		}
+		DrawRectGraph(0, 245 + 80 *n, 0, 94 * n, 196, 94, IMAGE_ID("image/rank.png")[0], true, false);
+	}
 
-	DrawGraph(move_title.x, move_title.y, IMAGE_ID("image/TITLEbutton.png")[0], true);
-	DrawGraph(play_continue.x, play_continue.y, IMAGE_ID("image/CONTINUEbutton.png")[0], true);
+	
+
+		Time((TIME_IMAGE_POS)+105  , 0, (this->time / 3600));
+		Time(TIME_IMAGE_POS + 250, 1, (this->time / 60 % 60));
+		Time(TIME_IMAGE_POS + 375, 2, (this->time % 60));/**/
+
+	DrawGraph(0, 140, IMAGE_ID("image/Ranking.png")[0], true);
+	DrawGraph(move_title.x, move_title.y, IMAGE_ID("image/title.png")[0], true);
+	DrawGraph(play_continue.x, play_continue.y, IMAGE_ID("image/continue.png")[0], true);
 	DrawFormatString(0, 0, 0xff, "No.1:%d", lpResultCtl.GetLoadScore(0));
 	DrawFormatString(0, 25, 0xff, "No.2:%d", lpResultCtl.GetLoadScore(1));
 	DrawFormatString(0, 50, 0xff, "No.3:%d", lpResultCtl.GetLoadScore(2));

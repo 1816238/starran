@@ -33,6 +33,9 @@ private:
 	bool ClickCheck;
 	bool ClickCheckOld;
 
+	VECTOR2 title_size;
+	VECTOR2 continue_size;
+
 	VECTOR2 move_title;
 	VECTOR2 play_continue;
 

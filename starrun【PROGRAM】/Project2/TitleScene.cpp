@@ -54,8 +54,9 @@ unique_Base TitleScene::UpDate(unique_Base own, const GameCtl & controller)
 bool TitleScene::TitleDraw(void)
 {
 	ClsDrawScreen();
+	SetDrawMode(DX_DRAWMODE_BILINEAR);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	DrawGraph(0, 0, IMAGE_ID("image/backImage.png")[0], true);
+	DrawGraph(0, 0, IMAGE_ID("image/back.jpg")[0], true);
 
 	//星座の描画
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, abs(int(cnt % 512 - 256)));
@@ -66,9 +67,11 @@ bool TitleScene::TitleDraw(void)
 	if (cnt / 60 % 2)
 	{
 		DrawGraph(start.x,start.y, IMAGE_ID("image/start.png")[0], true);
-		DrawString(start.x+70, start.y+130, "クリックでスタート", 0xffff00);
+		DrawString(start.x+30, start.y+100, "クリックでスタート", 0xffff00);
 
 	}
+	DrawRotaGraph(300, 80, 1.5f,0,IMAGE_ID("image/star run.png")[0], true, false);
+	
 	ScreenFlip();
 	return false;
 }

@@ -21,6 +21,21 @@ bool ResultCtl::SetUp(const int tmp_score, const int tmp_time)
 	return false;
 }
 
+bool ResultCtl::SetUp(const int tmp_score,string f_name)
+{
+	auto rank = [&](string f_pass, int num)
+	{
+		if (f_name == f_pass)
+		{
+			ResultCtl::rankscore[num] = tmp_score;
+		}
+	};
+	rank("data/Resultdata1.data", 0);
+	rank("data/Resultdata2.data", 1);
+	rank("data/Resultdata3.data", 2);
+	return false;
+}
+
 bool ResultCtl::ResultSave(sharedListObj objList,string f_name,int score)
 {
 	DataHeader expData = {
@@ -49,11 +64,9 @@ bool ResultCtl::ResultLoad(sharedListObj objList, string f_name, bool objFlag)
 	DataHeader expData;
 	fopen_s(&file, f_name.c_str(), "rb");
 	fread(&expData, sizeof(expData), 1, file);
-	DrawFormatString(0, 20, 0x00ff00, "F1でコンテニュー", expData.score);
-	DrawFormatString(0, 40, 0x00ff00, "F1でコンテニュー", expData.time);
 
 	fclose(file);
-	ResultCtl::SetUp(expData.score,expData.time);
+	ResultCtl::SetUp(expData.score,f_name);
 	bool flag = true;
 	int sum = 0;
 
@@ -124,6 +137,8 @@ void ResultCtl::RankingScore(sharedListObj objList)
 		ranktime[1] = ranktime[0];
 		ranktime[0] = time;
 		lpResultCtl.ResultSave(objList, "data/Resultdata1.data", rankscore[0]);
+		lpResultCtl.ResultSave(objList, "data/Resultdata2.data", rankscore[1]);
+		lpResultCtl.ResultSave(objList, "data/Resultdata3.data", rankscore[2]);
 	}
 	if ((score < rankscore[0]) && score > rankscore[1])
 	{
@@ -132,6 +147,7 @@ void ResultCtl::RankingScore(sharedListObj objList)
 		ranktime[2] = ranktime[1];
 		ranktime[1] = time;
 		lpResultCtl.ResultSave(objList, "data/Resultdata2.data", rankscore[1]);
+		lpResultCtl.ResultSave(objList, "data/Resultdata3.data", rankscore[2]);
 	}
 	if ((score < rankscore[1]) && score > rankscore[2])
 	{

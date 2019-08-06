@@ -124,8 +124,10 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	{
 		HP = 0;
 	}
+
 	enemy_hp[enemyType] = static_cast<float>(HP);
-	deathFlag = (enemy_hp[enemyType] <= 0 ? true : deathFlag);
+	
+	deathFlag = (enemy_hp[enemyType] <= 0 ? true : false);
 }
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
@@ -190,7 +192,8 @@ void Enemy::Draw(void)
 	//}	//DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
 	//DrawFormatString(1100, 0, 0xffff00, "“G‚ÌŽí—Þ......%d", enemy_name[enemyType]);
 	//DrawFormatString(1100, 25, 0xffff00, "“G‚ÌÅ‘åHP....%d", max_hp[enemyType]);
-	//DrawFormatString(1100, 50, 0xffff00, "“G‚ÌŽc‚èHP....%d", enemy_hp[enemyType]);
+	DrawFormatString(1100, 50, 0xffff00, "“G‚ÌŽc‚èHP....%f", enemy_hp[enemyType]);
+	DrawFormatString(1100, 75, 0xffff00, "“G‚ÌŽc‚èHP....%d", HP);
 	//DrawFormatString(1100, 75, 0xffff00, "UŒ‚SHOT......%d", At_Type[enemyType][SHOT]);
 	//DrawFormatString(1100, 100, 0xffff00, "UŒ‚METEO.....%d", At_Type[enemyType][METEORITE]);
 	//DrawFormatString(1100, 125, 0xffff00, "“G‚ÌUŒ‚•p“x..%d", frequency[enemyType]);
@@ -222,31 +225,23 @@ void Enemy::Draw(void)
 
 void Enemy::HitCheck(void)
 {
-	if (lpSpeedMng.GetFlag(Main) && !lpSpeedMng.GetFlag(Sub))
-	{
-		enemy_shift_flag = true;
-	}
-	if (deathFlag || (enemy_shift_flag &&!lpSpeedMng.GetFlag(Main) && lpSpeedMng.GetFlag(Sub)))
+	if (deathFlag)
 	{
 		if (enemyType < PISCES)
 		{
 			enemyType = static_cast<BOSS_ID>(enemyType + 1);
-			HP = max_hp[enemyType];		
-			enemyBossFlag = true;
-			enemy_shift_flag = false;
+			HP = max_hp[enemyType];
 			deathFlag = false;
-			Obj::switchFlag = true;
 		}
 		else
 		{
-			
+
 			enemyType = CANCER;
 			HP = max_hp[enemyType];
-			enemyBossFlag = true;
-			enemy_shift_flag = false;
 			deathFlag = false;
-			Obj::switchFlag = true;
 		}
+		enemyBossFlag = true;
+		Obj::switchFlag = true;
 		lpEnemyAct.Setswitch(true);
 	}
 }
@@ -281,12 +276,12 @@ bool Enemy::init(void)
 				true,true,
 				false,false };
 
-	max_hp = { 100, 200, 250,
+	max_hp = { 8, 200, 250,
 			   350, 500, 650,
 			   800, 950,1050,
 			  1250,1450,1650,0 };
 
-	enemy_hp = { 100, 200, 250,
+	enemy_hp = { 8, 200, 250,
 				 350, 500, 650,
 				 800, 950,1050,
 				1250,1450,1650,0 };
