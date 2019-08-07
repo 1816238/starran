@@ -45,20 +45,20 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			switch ((*itr)->CheckObjType())
 			{
 			case TYPE_PLAYER:
-				if ((*itr)->CheckDeath())
-				{
-					int play_score = 0;
-					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
-					//lpResultCtl.ResultSave(objList);
+				//if ((*itr)->CheckDeath())
+				//{
+				//	int play_score = 0;
+				//	//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
+				//	//lpResultCtl.ResultSave(objList);
 
-					play_score = (*itr)->GetScore();
-					lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
-					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
+				//	play_score = (*itr)->GetScore();
+				//	lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+				//	lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
-					objList->erase(itr);
-					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
+				//	objList->erase(itr);
+				//	return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
 
-				}
+				//}
 				(*itr)->Setdeath(playerPos.deathFlag);
 				(*itr)->SetDamage(playerPos.damageFlag);
 				playerPos.damageFlag = false;
@@ -77,7 +77,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 					{
 						Bit_itr->ObjNo = i;
-						Bit_itr->HP = 1;
+						Bit_itr->HP = 0;
 						i++;
 						Bit_itr->deathFlag = false;
 					}
@@ -324,7 +324,10 @@ int GameScene::Init(void)
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 4));
-	lpMapControl.MapLoad("data/mapdata2.map",objList, false,true);
+	lpMapControl.MapLoad("data/springMap.map",objList, false,true,SEASON_ID::SPRING);
+	lpMapControl.MapLoad("data/summerMap.map", objList, false, true, SEASON_ID::SUMMER);
+	lpMapControl.MapLoad("data/autumnMap.map", objList, false, true, SEASON_ID::AUTUMN);
+	lpMapControl.MapLoad("data/winterMap.map", objList, false, true, SEASON_ID::WINTER);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
 	SeasonSwitchFlag = 0;
@@ -353,36 +356,13 @@ int GameScene::Init(void)
 	};
 	timeFont = CreateFontToHandle(NULL, 60, 10, DX_FONTTYPE_ANTIALIASING);
 	lpSoundMng.PlaySound("Sound/BGM/GameSceen.mp3", DX_PLAYTYPE_LOOP);
+
 	return 0;
 }
 void GameScene::SeasonSwitch(void)
 {
-	if (lpSpeedMng.GetSeasoonFlag(Main) == SeasonSwitchFlag)
-	{
-		switch (SeasonSwitchFlag)
-		{
-		case 0:
-			lpMapControl.MapLoad("data/mapdata1.map", objList, false, true);
-			SeasonSwitchFlag++;
-				break;
-		case 1:
-			lpMapControl.MapLoad("data/mapdata2.map", objList, false, true);
-			SeasonSwitchFlag++;
-			break;
-		case 2:
-			lpMapControl.MapLoad("data/mapdata3.map", objList, false, true);
-			SeasonSwitchFlag++;
+	
+	
 
-			break;
-		case 3:
-			lpMapControl.MapLoad("data/mapdata4.map", objList, false, true);
-			SeasonSwitchFlag=0;
-
-			break;
-		case 4:
-			break;
-		default:
-			break;
-		}
-	}
 }
+
