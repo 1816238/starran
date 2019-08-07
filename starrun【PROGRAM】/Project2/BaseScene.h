@@ -37,6 +37,20 @@ enum SEASONE
 	SEASONE_MAX
 };
 
+enum class Mode
+{
+	Easy,
+	Normal,
+	Hard,
+	MAX
+};
+
+struct Parameter
+{
+	unsigned int Hp;
+	unsigned int Bonus;
+};
+
 class BaseScene;
 class GameCtl;
 

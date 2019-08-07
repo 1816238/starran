@@ -12,6 +12,12 @@
 #define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 - 43 / 2)
 #define CIRCLE_RANGE ( 250 -(60+43))
 
+struct enemy
+{
+	unsigned int maxHp;
+	unsigned int Hp;
+	int bit_cnt;
+};
 
 enum ENEMY_TYPE
 {
@@ -67,7 +73,7 @@ class Enemy :
 	public Obj
 {
 public:
-	Enemy(OBJ_TYPE objType);
+	Enemy(OBJ_TYPE objType,Mode mode);
 	Enemy();
 	~Enemy();
 	bool init(void);
@@ -81,35 +87,31 @@ private:
 	//VECTOR2 EnemyType(void);
 	void Draw(void);
 	void HitCheck(void);
-	BOSS_NAME enemy_name;
-	BOSS_SEASONE seasone;
-	unsigned int enemyHp;
-	unsigned int maxHp;
-	BOSS_ect max_hp;
-	BOSS_ect enemy_hp;
-	BOSS_ect enemy_bit_cnt;
+	//BOSS_NAME enemy_name;
+	//BOSS_SEASONE seasone;
+	enemy enemy;
 	bool enemyBossFlag;
-	BOSS_DIV_ID boss_ID;
-	VECTOR2 meteoPos;
+	//BOSS_DIV_ID boss_ID;
+	//VECTOR2 meteoPos;
 	VECTOR2 speed;
- 	int meteo_waitCnt;
+ 	//int meteo_waitCnt;
 	int shot_waitCnt;
     bool shotFlag[AT_DRAW_MAX];						//’e‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool enemy_shift_flag;
+	//bool enemy_shift_flag;
 	unsigned int at_Cnt;				//ˆê“x‚É”­Ë‚Å‚«‚éŒÂ”
 	unsigned int at_wait;				//UŒ‚‚ÌŠÔŠu
 	unsigned int waitCnt[AT_DRAW_MAX];
 	unsigned int shotcnt;
 	vector<ListObj_itr> BitObj;
 	BOSS_SHOT enemy_shot_tbl;
-	
+	Mode mode;
 
 protected:
-	BOSS_ID enemyType;
+	//BOSS_ID enemyType;
 	sharedListObj objList;
 	BOSS_ect frequency;
 	unsigned int Frequency;				//UŒ‚•p“x
 	bool meteoriteFlag;					//è¦Î‚ğ”­Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool AttackType[AT_TYPE_MAX];		//UŒ‚ÊßÀ°İ
-	BOSS_AT_TYPE At_Type;				//UŒ‚ÊßÀ°İ
+	//BOSS_AT_TYPE At_Type;				//UŒ‚ÊßÀ°İ
 };
