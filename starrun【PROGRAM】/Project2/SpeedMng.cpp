@@ -8,11 +8,10 @@ void SpeedMng::move(void)
 {
 	int start;
 	int end ;
-	if (Seasonflag != 4 && subseasonFlag != 4)
+	/*if (Seasonflag != 4 && subseasonFlag != 4)
 	{
 		for (int i = 0; i < switchFlag.size(); i++)
 		{
-			
 			if (standardTime >= switchFlag[i])
 			{
 				if (i / 5==0)
@@ -31,10 +30,7 @@ void SpeedMng::move(void)
 					}
 				}
 			}
-		
 		}
-	
-
 		//Seasonflag += (standardTime % 10240 == 10239 ? 1 : 0);
 
 		start = -1280 + Seasonflag * MAP_SIZE * 2;
@@ -49,27 +45,58 @@ void SpeedMng::move(void)
 			start = 0 - 1280 + subseasonFlag * MAP_SIZE * 2;
 			end = 0 + subseasonFlag * MAP_SIZE * 2;
 			speedFlag[Sub] = (standardTime >= start && standardTime <= end ? true : false);
-
-
 		}
 	}
 	else {
 
+	}*/
+	for (int a = 0; a < static_cast<int>(SEASON::MAX); a++)
+	{
+		if (standardTime >= switchFlag[a] && standardTime <= switchFlag[a] + MAP_SIZE+1280)
+		{
+			Seasonflag[a] = true;
+			
+		}
+		else {
+			Seasonflag[a] = false;
+		}
 	}
+	if (standardTime >= switchFlag[4] && standardTime <=1280)
+	{
+		speedFlag[Sub] = true;
+	}
+	else {
+		speedFlag[Sub] = false;
+	}
+	
+	if (standardTime >= switchFlag[5] && standardTime <= switchFlag[5]+1280)
+	{
+		speedFlag[Sub] = true;
+	}
+	else {
+		speedFlag[Sub] = false;
+	}
+
+
+
 	//‰ÁZˆ—
 	speedTime[Main] += (speedFlag[Main] ? speed : 0);
 	speedTime[Sub] += (speedFlag[Sub] ? speed : 0);
+	for (int a = 0; a < static_cast<int>(SEASON::MAX); a++)
+	{
+		seasonTime[a] += (Seasonflag[a] ? speed : 0);
+	}
 	//ŠeêŠ‚ÌãŒÀ
 	if (speedTime[Sub] > MAP_SIZE+SCREEN_SIZE||speedFlag[Sub]==false)
 	{
 		speedTime[Sub] = -SCREEN_SIZE;
-		//speedFlag[Sub] = false;
+		speedFlag[Sub] = false;
 	}
-	if (speedTime[Main] > MAP_SIZE||speedFlag[Main]==false)
+	/*if (speedTime[Main] > MAP_SIZE||speedFlag[Main]==false)
 	{
 		speedTime[Main] = -SCREEN_SIZE;
-		//speedFlag[Main] = false;
-	}
+		speedFlag[Main] = false;
+	}*/
 	if (standardTime > MAP_SIZE * 8-SCREEN_SIZE)
 	{
 		reset();
@@ -95,14 +122,17 @@ int SpeedMng::GetYellow(void)
 	return yellowstar;
 }
 
-int SpeedMng::GetSpeed(MapType type)
+int SpeedMng::GetSpeed(MapType type,SEASON season)
 {
 	if (type == MapType::Std)
 	{
 		return standardTime;
 	}
+	else if(type==Sub){
+		return speedTime[Sub];
+	}
 	else {
-		return speedTime[type];
+		return seasonTime[static_cast<int>(season)];
 	}
 
 }
@@ -118,29 +148,26 @@ bool SpeedMng::Init(void)
 	yellowstar = 0;
 	speed = SPEED;
 	time = 0;
-	switchFlag.resize(10);
+	switchFlag.resize(6);
 	switchFlag = {
 		-1280,		//tğŒ1
-		8960,		//‰ÄğŒ
-		19200,		//HğŒ
-		29440,		//“~ğŒ
-		39680,		//tğŒ2
-		-1280 ,		//ƒTƒutğŒ1
-		10240,		//ƒTƒu‰ÄğŒ
-		20480,		//ƒTƒuHğŒ
-		30720,		//ƒTƒu“~ğŒ
-		40960		//ƒTƒutğŒ2
+		3840,		//‰ÄğŒ
+		8960,		//HğŒ
+		14080,		//“~ğŒ
+		-1280,			//ƒTƒu‚ÌğŒ
+		21760		//ƒTƒu‚ÌğŒ2
 	};
+	Seasonflag.resize(static_cast<int>(SEASON::MAX));
 	reset();
 	return false;
 	
 }
 
-unsigned int SpeedMng::GetSeasoonFlag(MapType type)
+bool SpeedMng::GetSeasonFlag(MapType type,SEASON season)
 {
 	if (type == Main)
 	{
-		return Seasonflag;
+		return Seasonflag[static_cast<int>(season)];
 	}
 	return subseasonFlag;
 }
@@ -161,7 +188,15 @@ void SpeedMng::reset(void)
 	speedTime[Sub] =MAP_SIZE-SCREEN_SIZE;
 	speedFlag[Main] = true;
 	speedFlag[Sub] = false;
+	speedFlag[Sub] = false;
 	standardTime = -1280;
-	Seasonflag = 0;
-	subseasonFlag=0;
+	for (auto flag : Seasonflag)
+	{
+		flag = false;
+	}
+	for (auto speed=0;speed<static_cast<int>(SEASON::MAX);speed++)
+	{
+		seasonTime[speed] =-1280;
+	}
+	subseasonFlag=false;
 }

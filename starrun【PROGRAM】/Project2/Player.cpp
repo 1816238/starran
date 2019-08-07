@@ -43,10 +43,7 @@ bool Player::initAnim(void)
 	return true;
 }
 
-const bool Player::GetDeathFlag(void)
-{
-	return deathFlag;
-}
+
 
 bool Player::init(void)
 {
@@ -292,7 +289,7 @@ void Player::Draw(void)
 	DrawFormatString(0, 240, 0xffff, "star:ê¬%d,óŒ%d,ê‘%d", getcnt[0], getcnt[1], getcnt[2]);
 	DrawFormatString(0, 280, 0xffff, "écíe:%d",shotcnt );*/
 
-
+	DrawFormatString(0, 100, 0xffffff, "%d", lpSpeedMng.GetSpeed(MapType::Std));
 
 
 }

@@ -14,7 +14,13 @@ enum MapType {
 	Std,
 	Max
 };
-
+enum class SEASON {
+	SPRING,
+	SUMMER,
+	AUTUMN,
+	WINTER,
+	MAX
+};
 
 class SpeedMng
 {
@@ -28,12 +34,12 @@ public:
 	int GetTime(void);
 	void AddStar(void);
 	int GetYellow(void);
-	int GetSpeed(MapType type);
+	int GetSpeed(MapType type,SEASON season=SEASON::MAX);
 	bool GetFlag(MapType type);
 	bool Init(void);
 	SpeedMng(SpeedMng& in) {};
 	void operator=(SpeedMng& in) {};
-	unsigned int GetSeasoonFlag(MapType type);
+	bool GetSeasonFlag(MapType type,SEASON season=SEASON::MAX);
 	vector<int> switchFlag;
 private:
 	SpeedMng();
@@ -41,14 +47,15 @@ private:
 	void reset(void);
 
 	int speedTime[Max];
+	int seasonTime[static_cast<int>(SEASON::MAX)];
 	int yellowstar;
 	int SpeedCnt;
 	int speed;
 	bool speedFlag[Max];	
 	int time;				//経過時間
 	int standardTime;		//speedflagの判定に使用する基本となるｶｳﾝﾄ
-	unsigned int Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
-	unsigned int subseasonFlag;
+	vector<bool> Seasonflag;			//0で春、1で夏、2で秋、3で冬、4でEX
+	bool subseasonFlag;
 	
 };
 

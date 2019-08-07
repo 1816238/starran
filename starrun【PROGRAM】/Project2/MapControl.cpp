@@ -28,17 +28,58 @@ void MapControl::Draw(bool TitleFlag)
 		{
 			for (int x = 0; x < (SCREEN_SIZE_X * 4) / CHIP_SIZE; x++)
 			{
-				if (lpSpeedMng.GetFlag(Main))
+				if (lpSpeedMng.GetFlag(Main))//ﾒｲﾝマップの表示
 				{
-					if (mapData.main[y][x] <= MAP_ID_MAX)
+					if (lpSpeedMng.GetSeasonFlag(Main,SEASON::SPRING))
 					{
-						int add = Speed(Main);
-						if (x*CHIP_SIZE-add> -CHIP_SIZE*4&& x*CHIP_SIZE - add<SCREEN_SIZE_X)
+						if (mapData.main.spring[y][x] <= MAP_ID_MAX)
 						{
-							DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main[y][x]], true);
-
+							int add = lpSpeedMng.GetSpeed(Main,SEASON::SPRING);
+							if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
+							{
+								DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main.spring[y][x]], true);
+								DrawFormatString(0, 120, 0xffffff, "%d", (add));
+							}
 						}
 					}
+					if (lpSpeedMng.GetSeasonFlag(Main, SEASON::SUMMER))
+					{
+						if (mapData.main.summer[y][x] <= MAP_ID_MAX)
+						{
+							int add = lpSpeedMng.GetSpeed(Main,SEASON::SUMMER);
+							if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
+							{
+								DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main.summer[y][x]], true);
+								DrawFormatString(0, 140, 0xffffff, "%d", (add ));
+							}
+						}
+					}
+					if (lpSpeedMng.GetSeasonFlag(Main, SEASON::AUTUMN))
+					{
+						if (mapData.main.autumn[y][x] <= MAP_ID_MAX)
+						{
+							int add = lpSpeedMng.GetSpeed(Main,SEASON::AUTUMN);
+							if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
+							{
+								DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main.autumn[y][x]], true);
+								DrawFormatString(0, 160, 0xffffff, "%d", ( add ));
+							}
+						}
+					}
+					if (lpSpeedMng.GetSeasonFlag(Main, SEASON::WINTER))
+					{
+						if (mapData.main.winter[y][x] <= MAP_ID_MAX)
+						{
+							int add = lpSpeedMng.GetSpeed(Main,SEASON::WINTER);
+							if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
+							{
+								DrawGraph(x * CHIP_SIZE - add + CHIP_SIZE * 3, y*CHIP_SIZE, lpImageMng.GetID("image/map.png")[mapData.main.winter[y][x]], true);
+								DrawFormatString(0, 180, 0xffffff, "%d", ( add ));
+							}
+						}
+					}
+				
+					
 
 				}
 				if (lpSpeedMng.GetFlag(Sub))
@@ -58,6 +99,7 @@ void MapControl::Draw(bool TitleFlag)
 
 			}
 		}
+		
 }
 
 bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECTOR2 drawOffSet)
@@ -65,18 +107,51 @@ bool MapControl::SetUp(const VECTOR2 & size, const VECTOR2 &chipSize, const VECT
 	mapSize = VECTOR2(size.x / chipSize.x, size.y / chipSize.y);
 	MapControl::chipSize = chipSize;
 	MapControl::drawOffSet = drawOffSet;
-
-	mapDataBace.main.resize(mapSize.x * mapSize.y);
-	mapData.main.resize(mapSize.y);
-	for (int count = 0; count < mapData.main.size(); count++)
+	//春
+	mapDataBace.main.spring.resize(mapSize.x * mapSize.y);
+	mapData.main.spring.resize(mapSize.y);
+	for (int count = 0; count < mapData.main.spring.size(); count++)
 	{
-		mapData.main[count] = &mapDataBace.main[mapSize.x * count];
+		mapData.main.spring[count] = &mapDataBace.main.spring[mapSize.x * count];
 	}
-	for (int j = 0; j < mapDataBace.main.size(); j++)
+	for (int j = 0; j < mapDataBace.main.spring.size(); j++)
 	{
-		mapDataBace.main[j] = MAP_ID_NON;
+		mapDataBace.main.spring[j] = MAP_ID_NON;
 	}
-
+	//夏
+	mapDataBace.main.summer.resize(mapSize.x * mapSize.y);
+	mapData.main.summer.resize(mapSize.y);
+	for (int count = 0; count < mapData.main.summer.size(); count++)
+	{
+		mapData.main.spring[count] = &mapDataBace.main.summer[mapSize.x * count];
+	}
+	for (int j = 0; j < mapDataBace.main.summer.size(); j++)
+	{
+		mapDataBace.main.summer[j] = MAP_ID_NON;
+	}
+	//秋
+	mapDataBace.main.autumn.resize(mapSize.x * mapSize.y);
+	mapData.main.autumn.resize(mapSize.y);
+	for (int count = 0; count < mapData.main.autumn.size(); count++)
+	{
+		mapData.main.spring[count] = &mapDataBace.main.autumn[mapSize.x * count];
+	}
+	for (int j = 0; j < mapDataBace.main.autumn.size(); j++)
+	{
+		mapDataBace.main.autumn[j] = MAP_ID_NON;
+	}
+	//冬
+	mapDataBace.main.winter.resize(mapSize.x * mapSize.y);
+	mapData.main.winter.resize(mapSize.y);
+	for (int count = 0; count < mapData.main.winter.size(); count++)
+	{
+		mapData.main.spring[count] = &mapDataBace.main.winter[mapSize.x * count];
+	}
+	for (int j = 0; j < mapDataBace.main.winter.size(); j++)
+	{
+		mapDataBace.main.winter[j] = MAP_ID_NON;
+	}
+	//サブ
 	mapDataBace.sub.resize(mapSize.x * mapSize.y);
 	mapData.sub.resize(mapSize.y);
 	for (int count = 0; count < mapData.sub.size(); count++)
@@ -102,7 +177,7 @@ struct CheckSize
 		return true;
 	}
 };
-bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type)	//true:main,false:Sub
+bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type,SEASON_ID season)	//true:main,false:Sub
 {
 	//VECTOR2 selPos;
 	//selPos.x = pos.x / chipSize.x;
@@ -112,17 +187,37 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type)	//true:
 	{
 		return false;
 	}
-	if (type==Main)
+	
+	if (type == Main)
 	{
-		mapData.main[selPos.y][selPos.x] = id;
+		switch (season)
+		{
+		case SEASON_ID::SPRING:
+			mapData.main.spring[selPos.y][selPos.x] = id;
+			break;
+		case SEASON_ID::SUMMER:
+			mapData.main.summer[selPos.y][selPos.x] = id;
+			break;
+		case SEASON_ID::AUTUMN:
+			mapData.main.autumn[selPos.y][selPos.x] = id;
+			break;
+		case SEASON_ID::WINTER:
+			mapData.main.winter[selPos.y][selPos.x] = id;
+			break;
+		case SEASON_ID::EX:
+		case SEASON_ID::MAX:
+		default:
+			break;
+		}
 	}
-	else if(type==Sub){
+	else if (type == Sub) {
 		mapData.sub[selPos.y][selPos.x] = id;
-	}else{}
+	}
+	else {}
 	return true;
 }
 
-MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type)
+MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type,SEASON_ID season)
 {
 	VECTOR2 selpos(pos / chipSize);
 	if (!CheckSize()(selpos, mapSize))
@@ -132,7 +227,25 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type)
 	}
 	if (type==Main)
 	{
-		return mapData.main[selpos.y][selpos.x];
+		switch (season)
+		{
+		case SEASON_ID::SPRING:
+			return mapData.main.spring[selpos.y][selpos.x];
+			break;
+		case SEASON_ID::SUMMER:
+			return mapData.main.summer[selpos.y][selpos.x];
+			break;
+		case SEASON_ID::AUTUMN:
+			return mapData.main.autumn[selpos.y][selpos.x];
+			break;
+		case SEASON_ID::WINTER:
+			return mapData.main.winter[selpos.y][selpos.x];
+			break;
+		case SEASON_ID::EX:
+		case SEASON_ID::MAX:
+		default:
+			break;
+		}
 
 	}
 	else if(type==Sub)
@@ -142,102 +255,291 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type)
 	else { return MAP_ID_NON; }
 }
 
-bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type)
+bool MapControl::LoadSpring(string FileName, sharedListObj objList, bool objFlag)
 {
-
 	FILE *file;
 	DataHeader expData;
 	fopen_s(&file, FileName.c_str(), "rb");
 	fread(&expData, sizeof(expData), 1, file);
+	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+	mapDataBace.main.spring.resize(expData.sizeX * expData.sizeY);
+	fread(&mapDataBace.main.spring[0], sizeof(MAP_ID), mapDataBace.main.spring.size(), file);
+	fclose(file);
+	bool flag = true;
+	int sum = 0;
+	for (int count = 0; count < mapData.main.spring.size(); count++)
+	{
+		mapData.main.spring[count] = &mapDataBace.main.spring[mapSize.x * count];
+	}
+	for (auto data : mapDataBace.main.spring)
+	{
+		sum += (int)data;
+	}
+
+	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+	//if(strcmp(expData.fileID, BBM_FILE_ID))
+	if ((std::string)expData.fileID != BBM_FILE_ID
+		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+	{
+		flag = false;
+	}
+	//ﾃﾞｰﾀをｸﾘｱする
+	if (!flag)
+	{
+		for (auto &data : mapDataBace.main.spring)
+		{
+			data = MAP_ID_NON;
+			if (MessageBox(NULL, "ERROR!!",
+				"確認ダイアログ", MB_OK) == IDOK)
+			{
+				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+			}
+		}
+	}
+	if (flag)
+	{
+		SetUpGameObj(objList, objFlag);
+	}
+	return flag;
+}
+
+bool MapControl::LoadSummer(string FileName, sharedListObj objList, bool objFlag)
+{
+	FILE *file;
+	DataHeader expData;
+	fopen_s(&file, FileName.c_str(), "rb");
+	fread(&expData, sizeof(expData), 1, file);
+	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+	mapDataBace.main.summer.resize(expData.sizeX * expData.sizeY);
+	fread(&mapDataBace.main.summer[0], sizeof(MAP_ID), mapDataBace.main.summer.size(), file);
+	fclose(file);
+	bool flag = true;
+	int sum = 0;
+	for (int count = 0; count < mapData.main.summer.size(); count++)
+	{
+		mapData.main.summer[count] = &mapDataBace.main.summer[mapSize.x * count];
+	}
+	for (auto data : mapDataBace.main.summer)
+	{
+		sum += (int)data;
+	}
+
+	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+	//if(strcmp(expData.fileID, BBM_FILE_ID))
+	if ((std::string)expData.fileID != BBM_FILE_ID
+		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+	{
+		flag = false;
+	}
+	//ﾃﾞｰﾀをｸﾘｱする
+	if (!flag)
+	{
+		for (auto &data : mapDataBace.main.summer)
+		{
+			data = MAP_ID_NON;
+			if (MessageBox(NULL, "ERROR!!",
+				"確認ダイアログ", MB_OK) == IDOK)
+			{
+				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+			}
+		}
+	}
+	if (flag)
+	{
+		SetUpGameObj(objList, objFlag);
+	}
+	return flag;
+}
+
+bool MapControl::LoadAutumn(string FileName, sharedListObj objList, bool objFlag)
+{
+	FILE *file;
+	DataHeader expData;
+	fopen_s(&file, FileName.c_str(), "rb");
+	fread(&expData, sizeof(expData), 1, file);
+	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+	mapDataBace.main.autumn.resize(expData.sizeX * expData.sizeY);
+	fread(&mapDataBace.main.autumn[0], sizeof(MAP_ID), mapDataBace.main.autumn.size(), file);
+	fclose(file);
+	bool flag = true;
+	int sum = 0;
+	for (int count = 0; count < mapData.main.autumn.size(); count++)
+	{
+		mapData.main.autumn[count] = &mapDataBace.main.autumn[mapSize.x * count];
+	}
+	for (auto data : mapDataBace.main.autumn)
+	{
+		sum += (int)data;
+	}
+
+	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+	//if(strcmp(expData.fileID, BBM_FILE_ID))
+	if ((std::string)expData.fileID != BBM_FILE_ID
+		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+	{
+		flag = false;
+	}
+	//ﾃﾞｰﾀをｸﾘｱする
+	if (!flag)
+	{
+		for (auto &data : mapDataBace.main.autumn)
+		{
+			data = MAP_ID_NON;
+			if (MessageBox(NULL, "ERROR!!",
+				"確認ダイアログ", MB_OK) == IDOK)
+			{
+				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+			}
+		}
+	}
+	if (flag)
+	{
+		SetUpGameObj(objList, objFlag);
+	}
+	return flag;
+}
+
+bool MapControl::LoadWinter(string FileName, sharedListObj objList, bool objFlag)
+{
+	FILE *file;
+	DataHeader expData;
+	fopen_s(&file, FileName.c_str(), "rb");
+	fread(&expData, sizeof(expData), 1, file);
+	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+	mapDataBace.main.winter.resize(expData.sizeX * expData.sizeY);
+	fread(&mapDataBace.main.winter[0], sizeof(MAP_ID), mapDataBace.main.winter.size(), file);
+	fclose(file);
+	bool flag = true;
+	int sum = 0;
+	for (int count = 0; count < mapData.main.winter.size(); count++)
+	{
+		mapData.main.winter[count] = &mapDataBace.main.winter[mapSize.x * count];
+	}
+	for (auto data : mapDataBace.main.winter)
+	{
+		sum += (int)data;
+	}
+
+	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+	//if(strcmp(expData.fileID, BBM_FILE_ID))
+	if ((std::string)expData.fileID != BBM_FILE_ID
+		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+	{
+		flag = false;
+	}
+	//ﾃﾞｰﾀをｸﾘｱする
+	if (!flag)
+	{
+		for (auto &data : mapDataBace.main.winter)
+		{
+			data = MAP_ID_NON;
+			if (MessageBox(NULL, "ERROR!!",
+				"確認ダイアログ", MB_OK) == IDOK)
+			{
+				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+			}
+		}
+	}
+	if (flag)
+	{
+		SetUpGameObj(objList, objFlag);
+	}
+	return flag;
+}
+
+bool MapControl::LoadSub(string FileName, sharedListObj objList, bool objFlag)
+{
+	FILE *file;
+	DataHeader expData;
+	fopen_s(&file, FileName.c_str(), "rb");
+	fread(&expData, sizeof(expData), 1, file);
+	//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
+	mapDataBace.sub.resize(expData.sizeX * expData.sizeY);
+	fread(&mapDataBace.sub[0], sizeof(MAP_ID), mapDataBace.sub.size(), file);
+	fclose(file);
+	bool flag = true;
+	int sum = 0;
+	for (int count = 0; count < mapData.sub.size(); count++)
+	{
+		mapData.sub[count] = &mapDataBace.sub[mapSize.x * count];
+	}
+	for (auto data : mapDataBace.sub)
+	{
+		sum += (int)data;
+	}
+
+	//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
+	//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
+	//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
+	//if(strcmp(expData.fileID, BBM_FILE_ID))
+	if ((std::string)expData.fileID != BBM_FILE_ID
+		|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
+	{
+		flag = false;
+	}
+	//ﾃﾞｰﾀをｸﾘｱする
+	if (!flag)
+	{
+		for (auto &data : mapDataBace.sub)
+		{
+			data = MAP_ID_NON;
+			if (MessageBox(NULL, "ERROR!!",
+				"確認ダイアログ", MB_OK) == IDOK)
+			{
+				DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
+			}
+		}
+	}
+	if (flag)
+	{
+		SetUpGameObj(objList, objFlag);
+	}
+	return flag;
+}
+
+bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type,SEASON_ID season)
+{
+
+	
 	if (type)
 	{
-		//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
-		mapDataBace.main.resize(expData.sizeX * expData.sizeY);
-		fread(&mapDataBace.main[0], sizeof(MAP_ID), mapDataBace.main.size(), file);
-		fclose(file);
-		bool flag = true;
-		int sum = 0;
-		for (int count = 0; count < mapData.main.size(); count++)
+		switch (season)
 		{
-			mapData.main[count] = &mapDataBace.main[mapSize.x * count];
+		case SEASON_ID::SPRING:
+			return LoadSpring(FileName, objList, objFlag);
+			mapData.reload.spring = mapData.main.spring;
+			break;
+		case SEASON_ID::SUMMER:
+			return LoadSummer(FileName, objList, objFlag);
+			mapData.reload.summer = mapData.main.summer;
+			break;
+		case SEASON_ID::AUTUMN:
+			return LoadAutumn(FileName, objList, objFlag);
+			mapData.reload.autumn = mapData.main.autumn;
+			break;
+		case SEASON_ID::WINTER:
+			return LoadWinter(FileName, objList, objFlag);
+			mapData.reload.winter = mapData.main.winter;
+			break;
+		case SEASON_ID::EX:
+		case SEASON_ID::MAX:
+		default:
+			return false;
+			break;
 		}
-		for (auto data : mapDataBace.main)
-		{
-			sum += (int)data;
-		}
-
-		//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
-		//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
-		//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
-		//if(strcmp(expData.fileID, BBM_FILE_ID))
-		if ((std::string)expData.fileID != BBM_FILE_ID
-			|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
-		{
-			flag = false;
-		}
-		//ﾃﾞｰﾀをｸﾘｱする
-		if (!flag)
-		{
-			for (auto &data : mapDataBace.main)
-			{
-				data = MAP_ID_NON;
-				if (MessageBox(NULL, "ERROR!!",
-					"確認ダイアログ", MB_OK) == IDOK)
-				{
-					DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
-				}
-			}
-		}
-		if (flag)
-		{
-			SetUpGameObj(objList, objFlag);
-		}
-		return flag;
 	}
 	else {
-		//ﾍｯﾀﾞｰのｻｲｽﾞ情報を元にmapDataBaceのｻｲｽﾞする
-		mapDataBace.sub.resize(expData.sizeX * expData.sizeY);
-		fread(&mapDataBace.sub[0], sizeof(MAP_ID), mapDataBace.sub.size(), file);
-		fclose(file);
-		bool flag = true;
-		int sum = 0;
-		for (int count = 0; count < mapData.sub.size(); count++)
-		{
-			mapData.sub[count] = &mapDataBace.sub[mapSize.x * count];
-		}
-		for (auto data : mapDataBace.sub)
-		{
-			sum += (int)data;
-		}
-
-		//ﾍｯﾀﾞｰのﾌｧｲﾙID情報と内部で持っているIDと比べる
-		//ﾍｯﾀﾞｰのﾊﾞｰｼﾞｮﾝ番号と内部持っている番号を比べる	
-		//sum値を計算しﾍｯﾀﾞｰのSUM値と比べて違ったら、
-		//if(strcmp(expData.fileID, BBM_FILE_ID))
-		if ((std::string)expData.fileID != BBM_FILE_ID
-			|| expData.verID != BBM_VER_ID || expData.sum != (char)sum)
-		{
-			flag = false;
-		}
-		//ﾃﾞｰﾀをｸﾘｱする
-		if (!flag)
-		{
-			for (auto &data : mapDataBace.sub)
-			{
-				data = MAP_ID_NON;
-				if (MessageBox(NULL, "ERROR!!",
-					"確認ダイアログ", MB_OK) == IDOK)
-				{
-					DxLib_End();	// DXﾗｲﾌﾞﾗﾘの終了処理
-				}
-			}
-		}
-		if (flag)
-		{
-			SetUpGameObj(objList, objFlag);
-		}
-		return flag;
+		return LoadSub(FileName, objList, objFlag);
 	}
+	return false;
 }
 
 bool MapControl::SetUpGameObj(sharedListObj objList, bool objFlag)
@@ -259,6 +561,11 @@ bool MapControl::init(void)
 {
 
 	return false;
+}
+
+void MapControl::ReLoadMap(void)
+{
+	mapData.main = mapData.reload;
 }
 
 MapControl::MapControl()
