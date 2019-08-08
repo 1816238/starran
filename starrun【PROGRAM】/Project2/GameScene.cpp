@@ -42,7 +42,6 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			bool breakFlag = false;
 			bool tmpFlag = false;
 			int tmp_hp = 0;
-			int play_score = 0;
 			switch ((*itr)->CheckObjType())
 			{
 			case TYPE_PLAYER:
@@ -58,7 +57,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
 					objList->erase(itr);
-					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(), param);
 
 				}
 				(*itr)->SetEnd(playerPos.EndFlag);
@@ -71,9 +70,9 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 				break;
 			case TYPE_ENEMY:
+				play_score = (*itr)->GetScore();
 				if ((*itr)->CheckEnd())
 				{
-					
 					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
 					//lpResultCtl.ResultSave(objList);
 
@@ -81,7 +80,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
 					objList->erase(itr);
-					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(),param);
 
 				}
 
@@ -370,6 +369,22 @@ int GameScene::Init(void)
 		20,15,15,20
 	};
 	timeFont = CreateFontToHandle(NULL, 60, 10, DX_FONTTYPE_ANTIALIASING);
+
+	switch (mode)
+	{
+	case Mode::Easy:
+		param.Bonus = 100;
+		break;
+	case Mode::Normal:
+		param.Bonus = 100;
+		break;
+	case Mode::Hard:
+		param.Bonus = 100;
+		break;
+	default:
+		break;
+	}
+	play_score = 0;
 	lpSoundMng.PlaySound("Sound/BGM/GameSceen.mp3", DX_PLAYTYPE_LOOP);
 
 	return 0;

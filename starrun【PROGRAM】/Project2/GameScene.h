@@ -45,5 +45,7 @@ private:
 	vector<int> MeteoRad;
 	int timeFont;
 	Mode mode;
+	Parameter param;
+	int play_score;
 };
 

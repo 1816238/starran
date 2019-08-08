@@ -8,9 +8,9 @@
 #include "ResultScene.h"
 #include "SoundMng.h"
 
-ResultScene::ResultScene(int play_score,int play_time)
+ResultScene::ResultScene(int play_score,int play_time,Parameter param)
 {
-	this->score = play_score;
+	this->score = play_score + param.Bonus + play_time/ param.Bonus;
 	this->time = play_time;
 	Init();
 }

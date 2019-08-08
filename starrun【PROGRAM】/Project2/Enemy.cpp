@@ -154,13 +154,13 @@ void Enemy::Draw(void)
 		//HP•\Ž¦
 		if (enemy.Hp > 0)
 		{
-			DrawBox(1090, SCREEN_SIZE_Y - 64, HPP*(SCREEN_SIZE_X-80-1090)+1090, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+			DrawBox(900, 10, HPP*(SCREEN_SIZE_X-80-900)+900,30, 0x00ffff, true);
 
 		}
 		
 	
-		DrawBox(1090, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
-		DrawBox(1089, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
+		DrawBox(900, 10, SCREEN_SIZE_X - 80, 30, 0xff0000, false);
+		DrawBox(899, 9, SCREEN_SIZE_X - 81, 31, 0xff0000, false);
 	
 	DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE, CENTER_POS_Y - 45 / 2, 43, 0, 43, 45,
 		IMAGE_ID("image/boss_body.png")[0], true, false);
