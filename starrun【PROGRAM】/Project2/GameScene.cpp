@@ -37,9 +37,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 	}
 	//–qyÌßÚÃÞ¨¹°Äz
 	//(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeth(); });
-	if ((lpSpeedMng.GetFlag(Main)))
-	{
-		for (auto itr = objList->begin(); itr != objList->end(); )
+	for (auto itr = objList->begin(); itr != objList->end(); )
 		{
 			bool breakFlag = false;
 			bool tmpFlag = false;
@@ -47,20 +45,20 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			switch ((*itr)->CheckObjType())
 			{
 			case TYPE_PLAYER:
-				//if ((*itr)->CheckDeath())
-				//{
-				//	int play_score = 0;
-				//	//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
-				//	//lpResultCtl.ResultSave(objList);
+				if ((*itr)->CheckDeath())
+				{
+					int play_score = 0;
+					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
+					//lpResultCtl.ResultSave(objList);
 
-				//	play_score = (*itr)->GetScore();
-				//	lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
-				//	lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
+					play_score = (*itr)->GetScore();
+					lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
-				//	objList->erase(itr);
-				//	return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
+					objList->erase(itr);
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
 
-				//}
+				}
 				(*itr)->Setdeath(playerPos.deathFlag);
 				(*itr)->SetDamage(playerPos.damageFlag);
 				playerPos.damageFlag = false;
@@ -216,7 +214,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			}
 
 		}
-	}
+	
 	SeasonSwitch();
 	lpSpeedMng.move();
 	GameDraw();
@@ -326,10 +324,10 @@ int GameScene::Init(void)
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
 	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY,this->mode));
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 4));
-	lpMapControl.MapLoad("data/springMap.map",objList, false,true,SEASON_ID::SPRING);
-	lpMapControl.MapLoad("data/summerMap.map", objList, false, true, SEASON_ID::SUMMER);
-	lpMapControl.MapLoad("data/autumnMap.map", objList, false, true, SEASON_ID::AUTUMN);
-	lpMapControl.MapLoad("data/winterMap.map", objList, false, true, SEASON_ID::WINTER);
+	lpMapControl.MapLoad("data/springMap.map",objList, false,true,SEASON::SPRING);
+	lpMapControl.MapLoad("data/summerMap.map", objList, false, true, SEASON::SUMMER);
+	lpMapControl.MapLoad("data/autumnMap.map", objList, false, true, SEASON::AUTUMN);
+	lpMapControl.MapLoad("data/winterMap.map", objList, false, true, SEASON::WINTER);
 	lpMapControl.MapLoad("data/submap.map", objList, false, false);
 	lpSpeedMng.Init();
 	SeasonSwitchFlag = 0;

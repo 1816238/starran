@@ -149,20 +149,19 @@ void Enemy::Draw(void)
 	//};
 	DrawRotaGraph2(CENTER_POS_X, CENTER_POS_Y,70,70, 1.5f, (fram+= 0.08) / (2*DX_PI_F),IMAGE_ID("image/Ophiuchus/ring.png")[0], true, false);
 	DrawRotaGraph2(CENTER_POS_X, CENTER_POS_Y, 70, 70, 1.5f,0,IMAGE_ID("image/Ophiuchus/Ophiuchus.png")[0], true, false);
-	int Pos = (SCREEN_SIZE_X - 80)*(static_cast<float>(enemy.Hp) / static_cast<float>(enemy.maxHp));
-	if (lpSpeedMng.GetFlag(Main) && !lpSpeedMng.GetFlag(Sub))
-	{
+	float HPP = (static_cast<float>(enemy.Hp) / static_cast<float>(enemy.maxHp));
+	
 		//HP•\Ž¦
 		if (enemy.Hp > 0)
 		{
-			DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
+			DrawBox(1090, SCREEN_SIZE_Y - 64, HPP*(SCREEN_SIZE_X-80-1090)+1090, SCREEN_SIZE_Y - 32, 0x00ffff, true);
 
 		}
 		
 	
-		DrawBox(100, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
-		DrawBox(99, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
-	}
+		DrawBox(1090, SCREEN_SIZE_Y - 64, SCREEN_SIZE_X - 80, SCREEN_SIZE_Y - 32, 0xff0000, false);
+		DrawBox(1089, SCREEN_SIZE_Y - 63, SCREEN_SIZE_X - 81, SCREEN_SIZE_Y - 33, 0xff0000, false);
+	
 	DrawRectGraph(CENTER_POS_X - 43 / 2 - CIRCLE_RANGE, CENTER_POS_Y - 45 / 2, 43, 0, 43, 45,
 		IMAGE_ID("image/boss_body.png")[0], true, false);
 	
@@ -282,8 +281,8 @@ bool Enemy::init(void)
 	switch (mode)
 	{
 	case Mode::Easy:
-		enemy.maxHp = 1000;
-		enemy.Hp = 1000;
+		enemy.maxHp = 8;
+		enemy.Hp = 8;
 		break;
 	case Mode::Normal:
 		enemy.maxHp = 10000;

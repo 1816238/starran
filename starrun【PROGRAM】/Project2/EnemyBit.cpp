@@ -7,7 +7,7 @@
 #define PI  3.1415926535897932384626433832795f
 #define CIRCLE_PI ( PI*2 )
 
-EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP)
+EnemyBit::EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,float HP)
 {
 	//Obj::init("image/player_W.png", VECTOR2(40, 64), VECTOR2(1, 1), pos);
 

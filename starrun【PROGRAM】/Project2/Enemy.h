@@ -14,8 +14,8 @@
 
 struct enemy
 {
-	unsigned int maxHp;
-	unsigned int Hp;
+	 float maxHp;
+	 float Hp;
 	int bit_cnt;
 };
 

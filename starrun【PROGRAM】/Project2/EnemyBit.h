@@ -21,7 +21,7 @@ class EnemyBit :
 	public Obj
 {
 public:
-	EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt,int HP);
+	EnemyBit(VECTOR2 pos, VECTOR2 offset,int bit_cnt, float HP);
 	~EnemyBit();
 	bool initAnim(void);
 	bool init(void);
