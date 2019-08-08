@@ -73,7 +73,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			case TYPE_ENEMY:
 				if ((*itr)->CheckEnd())
 				{
-					int play_score = 0;
+					
 					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
 					//lpResultCtl.ResultSave(objList);
 
