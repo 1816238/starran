@@ -58,7 +58,7 @@ public:
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//Player‚ÌˆÚ“®
 	void Draw(void);
-	void CheckMapHit(void);									//map‚Æ‚Ì“–‚½‚è”»’è
+	void CheckMapHit(SEASON season);									//map‚Æ‚Ì“–‚½‚è”»’è
 
 	float JSpeed;											//ˆÚ“®‘¬“x
 	unsigned int jumpFlag;											//¶¸Ø¯¸‚µ‚½‚çtrue

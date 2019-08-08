@@ -11,6 +11,7 @@ using namespace std;
 enum MapType {
 	Main,
 	Sub,
+	Sub2,
 	Std,
 	Max
 };
@@ -34,13 +35,14 @@ public:
 	int GetTime(void);
 	void AddStar(void);
 	int GetYellow(void);
-	int GetSpeed(MapType type,SEASON season=SEASON::MAX);
-	bool GetFlag(MapType type);
+	int GetSpeed(MapType type,SEASON season=SEASON::MAX);	//どれくらい動いたかの取得seasonは入れなかったらMAXが入る
+	bool GetFlag(MapType type,SEASON season=SEASON::MAX);	//各タイプのフラグの取得seasonに入れるとそのseasonFlagを返してくれる
 	bool Init(void);
 	SpeedMng(SpeedMng& in) {};
 	void operator=(SpeedMng& in) {};
-	bool GetSeasonFlag(MapType type,SEASON season=SEASON::MAX);
+	bool GetSeasonFlag(MapType type,SEASON season=SEASON::MAX);	//
 	vector<int> switchFlag;
+	SEASON GetSeason(void);
 private:
 	SpeedMng();
 	~SpeedMng();

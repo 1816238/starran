@@ -32,7 +32,7 @@ void MapControl::Draw(bool TitleFlag)
 				{
 					if (lpSpeedMng.GetSeasonFlag(Main,SEASON::SPRING))
 					{
-						if (mapData.main.spring[y][x] <= MAP_ID_MAX)
+						if (mapData.main.spring[y][x] < MAP_ID_MAX)
 						{
 							int add = lpSpeedMng.GetSpeed(Main,SEASON::SPRING);
 							if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
@@ -82,11 +82,11 @@ void MapControl::Draw(bool TitleFlag)
 					
 
 				}
-				if (lpSpeedMng.GetFlag(Sub))
+				if (lpSpeedMng.GetFlag(Sub)||lpSpeedMng.GetFlag(Sub2))
 				{
 					if (mapData.sub[y][x] <= MAP_ID_MAX)
 					{
-						int add = Speed(Sub);
+						int add = (lpSpeedMng.GetFlag(Sub) ? Speed(Sub) : Speed(Sub2));
 						if (x*CHIP_SIZE - add > -CHIP_SIZE * 4 && x*CHIP_SIZE - add < SCREEN_SIZE_X)
 						{
 
@@ -177,7 +177,7 @@ struct CheckSize
 		return true;
 	}
 };
-bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type,SEASON_ID season)	//true:main,false:Sub
+bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type,SEASON season)	//true:main,false:Sub
 {
 	//VECTOR2 selPos;
 	//selPos.x = pos.x / chipSize.x;
@@ -192,20 +192,19 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type,SEASON_I
 	{
 		switch (season)
 		{
-		case SEASON_ID::SPRING:
+		case SEASON::SPRING:
 			mapData.main.spring[selPos.y][selPos.x] = id;
 			break;
-		case SEASON_ID::SUMMER:
+		case SEASON::SUMMER:
 			mapData.main.summer[selPos.y][selPos.x] = id;
 			break;
-		case SEASON_ID::AUTUMN:
+		case SEASON::AUTUMN:
 			mapData.main.autumn[selPos.y][selPos.x] = id;
 			break;
-		case SEASON_ID::WINTER:
+		case SEASON::WINTER:
 			mapData.main.winter[selPos.y][selPos.x] = id;
 			break;
-		case SEASON_ID::EX:
-		case SEASON_ID::MAX:
+		case SEASON::MAX:
 		default:
 			break;
 		}
@@ -217,7 +216,7 @@ bool MapControl::SetMapData(const VECTOR2 & pos, MAP_ID id,MapType type,SEASON_I
 	return true;
 }
 
-MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type,SEASON_ID season)
+MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type,SEASON season)
 {
 	VECTOR2 selpos(pos / chipSize);
 	if (!CheckSize()(selpos, mapSize))
@@ -229,20 +228,19 @@ MAP_ID MapControl::GetMapDate(const VECTOR2 & pos,MapType type,SEASON_ID season)
 	{
 		switch (season)
 		{
-		case SEASON_ID::SPRING:
+		case SEASON::SPRING:
 			return mapData.main.spring[selpos.y][selpos.x];
 			break;
-		case SEASON_ID::SUMMER:
+		case SEASON::SUMMER:
 			return mapData.main.summer[selpos.y][selpos.x];
 			break;
-		case SEASON_ID::AUTUMN:
+		case SEASON::AUTUMN:
 			return mapData.main.autumn[selpos.y][selpos.x];
 			break;
-		case SEASON_ID::WINTER:
+		case SEASON::WINTER:
 			return mapData.main.winter[selpos.y][selpos.x];
 			break;
-		case SEASON_ID::EX:
-		case SEASON_ID::MAX:
+		case SEASON::MAX:
 		default:
 			break;
 		}
@@ -298,6 +296,7 @@ bool MapControl::LoadSpring(string FileName, sharedListObj objList, bool objFlag
 			}
 		}
 	}
+	mapDataBace.reload.spring = mapDataBace.main.spring;
 	if (flag)
 	{
 		SetUpGameObj(objList, objFlag);
@@ -348,6 +347,8 @@ bool MapControl::LoadSummer(string FileName, sharedListObj objList, bool objFlag
 			}
 		}
 	}
+	mapDataBace.reload.summer = mapDataBace.main.summer;
+
 	if (flag)
 	{
 		SetUpGameObj(objList, objFlag);
@@ -398,6 +399,8 @@ bool MapControl::LoadAutumn(string FileName, sharedListObj objList, bool objFlag
 			}
 		}
 	}
+	mapDataBace.reload.autumn = mapDataBace.main.autumn;
+
 	if (flag)
 	{
 		SetUpGameObj(objList, objFlag);
@@ -448,6 +451,8 @@ bool MapControl::LoadWinter(string FileName, sharedListObj objList, bool objFlag
 			}
 		}
 	}
+	mapDataBace.reload.winter = mapDataBace.main.winter;
+
 	if (flag)
 	{
 		SetUpGameObj(objList, objFlag);
@@ -505,7 +510,7 @@ bool MapControl::LoadSub(string FileName, sharedListObj objList, bool objFlag)
 	return flag;
 }
 
-bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type,SEASON_ID season)
+bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,bool type,SEASON season)
 {
 
 	
@@ -513,24 +518,21 @@ bool MapControl::MapLoad(string FileName,sharedListObj objList, bool objFlag,boo
 	{
 		switch (season)
 		{
-		case SEASON_ID::SPRING:
+		case SEASON::SPRING:
+			
 			return LoadSpring(FileName, objList, objFlag);
-			mapData.reload.spring = mapData.main.spring;
+			
 			break;
-		case SEASON_ID::SUMMER:
+		case SEASON::SUMMER:
 			return LoadSummer(FileName, objList, objFlag);
-			mapData.reload.summer = mapData.main.summer;
 			break;
-		case SEASON_ID::AUTUMN:
+		case SEASON::AUTUMN:
 			return LoadAutumn(FileName, objList, objFlag);
-			mapData.reload.autumn = mapData.main.autumn;
 			break;
-		case SEASON_ID::WINTER:
+		case SEASON::WINTER:
 			return LoadWinter(FileName, objList, objFlag);
-			mapData.reload.winter = mapData.main.winter;
 			break;
-		case SEASON_ID::EX:
-		case SEASON_ID::MAX:
+		case SEASON::MAX:
 		default:
 			return false;
 			break;
@@ -565,7 +567,13 @@ bool MapControl::init(void)
 
 void MapControl::ReLoadMap(void)
 {
-	mapData.main = mapData.reload;
+	for (int count = 0; count < mapData.main.winter.size(); count++)
+	{
+		mapData.main.spring[count] = &mapDataBace.reload.spring[mapSize.x * count];
+		mapData.main.summer[count] = &mapDataBace.reload.summer[mapSize.x * count];
+		mapData.main.autumn[count] = &mapDataBace.reload.autumn[mapSize.x * count];
+		mapData.main.winter[count] = &mapDataBace.reload.winter[mapSize.x * count];
+	}
 }
 
 MapControl::MapControl()

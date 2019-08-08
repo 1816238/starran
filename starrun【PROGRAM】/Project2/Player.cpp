@@ -133,22 +133,39 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	auto &key_Old_Tbl = controller.GetCtl(OLD);
 	bool Click[2];
 	bool ClickOld[2];
-	MAP_ID id;
-	//player‚ÌXÀ•W‚ğ“®‚©‚·
-	if (lpSpeedMng.GetFlag(Main)&lpSpeedMng.GetFlag(Sub) == 1)
+	MAP_ID id=MAP_ID_NON;
+	SEASON season = lpSpeedMng.GetSeason();
+	if (season == SEASON::MAX)
 	{
-		if (Speed(Main) < 0)
+		if (lpSpeedMng.GetFlag(Sub))
+		{
+			pos.x = Speed(Sub) - CHIP_SIZE;
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
+		}
+		else if(lpSpeedMng.GetFlag(Sub2)) {
+			pos.x = Speed(Sub2) - CHIP_SIZE;
+			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub2);
+		}
+	}
+	else {
+		pos.x = lpSpeedMng.GetSpeed(Main,season) - CHIP_SIZE;
+		id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main,season);
+	}
+	//player‚ÌXÀ•W‚ğ“®‚©‚·
+	/*if (lpSpeedMng.GetFlag(Main)&lpSpeedMng.GetFlag(Sub) == 1)
+	{
+		if (Speed(Main,SEASON::SPRING) < 0)
 		{
 			pos.x = Speed(Sub) - CHIP_SIZE;
 			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Sub);
 		}
 		else if (Speed(Sub) < 0)
 		{
-			pos.x = Speed(Main) - CHIP_SIZE;
+			pos.x = lpSpeedMng.GetSpeed(Main,SEASON::SPRING)-CHIP_SIZE;
 			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
 		}
 		else {
-			pos.x = Speed(Main) - CHIP_SIZE;
+			pos.x = lpSpeedMng.GetSpeed(Main) - CHIP_SIZE;
 			id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main);
 		}
 	}
@@ -164,7 +181,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 
 	}
 	else { id = lpMapControl.GetMapDate(pos + DirPos[DIR_TBL_DOWN], Main); }
-
+*/
 	for (int i = 0x00; i < MOUSE_INPUT_RIGHT; i++)
 	{
 		Click[i] = controller.GetClick(i+1, NOW);
@@ -252,7 +269,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 			time["ÀŞÒ°¼Ş"] = 0;
 		}
 	}
-	CheckMapHit();
+	CheckMapHit(season);
 	time["¼Ş¬İÌß"] += (CheckFlag[id]>>static_cast<int>(MAP_FLAG_TYPE::JUMP) ? 0.0 : 1.0);
 	time["ÀŞÒ°¼Ş"] += (damageFlag ? 1 : 0);
 }
@@ -294,12 +311,12 @@ void Player::Draw(void)
 
 }
 
-void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
+void Player::CheckMapHit(SEASON season)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 {
 	MAP_ID id;
 	bool mainflag = lpSpeedMng.GetFlag(Main);
-	bool subflag = lpSpeedMng.GetFlag(Sub);
-
+	bool subflag = lpSpeedMng.GetFlag(Sub)||lpSpeedMng.GetFlag(Sub2);
+	
 	MapType type;
 
 
@@ -365,7 +382,7 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 			break;
 		}
 		Score += ScoreTbl[id]; 
-		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type);
+		lpMapControl.SetMapData(pos + DirPos[dir], MAP_ID_NON, type,season);
 		return true;
 
 	};
@@ -434,42 +451,36 @@ void Player::CheckMapHit(void)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 	};
 
 
-	if (mainflag&&subflag)
+	if (season == SEASON::MAX)
 	{
-		if (Speed(Main) < 0)
+		if (lpSpeedMng.GetFlag(Sub))
 		{
 			type = Sub;
 		}
-		else if (Speed(Sub) < 0)
-		{
-			type = Main;
-
+		else if(lpSpeedMng.GetFlag(Sub2)){
+		
+			type = Sub2;
 		}
 		else {
-
+			type = Main;
 		}
 
 	}
-	else if (mainflag) {
+	else {
 		type = Main;
 	}
-	else if (subflag)
-	{
-		type = Sub;
-	}
-	else {}
 	for (int i = 0; i < DIR_TBL_MAX; i++)
 	{
 
-		id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+		id = lpMapControl.GetMapDate(pos + DirPos[i], type,season);
 
 
 		if (id == MAP_ID_MAX)
 		{
-			id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+			id = lpMapControl.GetMapDate(pos + DirPos[i], type,season);
 			if (id == MAP_ID_MAX)
 			{
-				id = lpMapControl.GetMapDate(pos + DirPos[i], type);
+				id = lpMapControl.GetMapDate(pos + DirPos[i], type,season);
 
 			}
 

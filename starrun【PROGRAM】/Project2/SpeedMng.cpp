@@ -1,5 +1,6 @@
 #include "SpeedMng.h"
-
+#include <DxLib.h>
+#include"MapControl.h"
 #define SCREEN_SIZE 1280
 #define MAP_SIZE SCREEN_SIZE*4
 #define OFFSET 1280
@@ -50,41 +51,54 @@ void SpeedMng::move(void)
 	else {
 
 	}*/
+	bool flag=false;
 	for (int a = 0; a < static_cast<int>(SEASON::MAX); a++)
 	{
+		
 		if (standardTime >= switchFlag[a] && standardTime <= switchFlag[a] + MAP_SIZE+1280)
 		{
 			Seasonflag[a] = true;
-			
+			flag = true;
 		}
 		else {
 			Seasonflag[a] = false;
+			
 		}
+
 	}
-	if (standardTime >= switchFlag[4] && standardTime <=1280)
+	speedFlag[Main] = (flag ? true : false);
+	if ((standardTime >= switchFlag[4] && standardTime <=1280))
 	{
 		speedFlag[Sub] = true;
 	}
 	else {
 		speedFlag[Sub] = false;
+	}
+	if (standardTime >= switchFlag[5] && standardTime <= switchFlag[5] + 1280*2)
+	{
+		speedFlag[Sub2] = true;
+	}
+	else {
+		speedFlag[Sub2] = false;
 	}
 	
-	if (standardTime >= switchFlag[5] && standardTime <= switchFlag[5]+1280)
-	{
-		speedFlag[Sub] = true;
-	}
-	else {
-		speedFlag[Sub] = false;
-	}
-
-
 
 	//加算処理
 	speedTime[Main] += (speedFlag[Main] ? speed : 0);
 	speedTime[Sub] += (speedFlag[Sub] ? speed : 0);
+	speedTime[Sub2] += (speedFlag[Sub2] ? speed : 0);
 	for (int a = 0; a < static_cast<int>(SEASON::MAX); a++)
 	{
 		seasonTime[a] += (Seasonflag[a] ? speed : 0);
+		
+	}
+	if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		speed += 2;
+	}
+	else
+	{
+		speed = SPEED;
 	}
 	//各場所の上限
 	if (speedTime[Sub] > MAP_SIZE+SCREEN_SIZE||speedFlag[Sub]==false)
@@ -100,6 +114,11 @@ void SpeedMng::move(void)
 	if (standardTime > MAP_SIZE * 8-SCREEN_SIZE)
 	{
 		reset();
+	}
+	if (speedFlag[Sub2] && !Seasonflag[static_cast<int>(SEASON::WINTER)])
+	{
+		reset();
+		lpMapControl.ReLoadMap();
 	}
 	standardTime += speed;
 	time++;
@@ -128,8 +147,8 @@ int SpeedMng::GetSpeed(MapType type,SEASON season)
 	{
 		return standardTime;
 	}
-	else if(type==Sub){
-		return speedTime[Sub];
+	else if(type==Sub||type==Sub2){
+		return speedTime[type];
 	}
 	else {
 		return seasonTime[static_cast<int>(season)];
@@ -137,9 +156,16 @@ int SpeedMng::GetSpeed(MapType type,SEASON season)
 
 }
 
-bool SpeedMng::GetFlag(MapType type)
+bool SpeedMng::GetFlag(MapType type,SEASON season)
 {
-	return speedFlag[type];
+	if (season == SEASON::MAX)
+	{
+		return speedFlag[type];
+
+	}
+	else {
+		return Seasonflag[static_cast<int>(season)];
+	}
 }
 
 bool SpeedMng::Init(void)
@@ -155,7 +181,7 @@ bool SpeedMng::Init(void)
 		8960,		//秋条件
 		14080,		//冬条件
 		-1280,			//サブの条件
-		21760		//サブの条件2
+		19200		//サブの条件2
 	};
 	Seasonflag.resize(static_cast<int>(SEASON::MAX));
 	reset();
@@ -172,6 +198,93 @@ bool SpeedMng::GetSeasonFlag(MapType type,SEASON season)
 	return subseasonFlag;
 }
 
+SEASON SpeedMng::GetSeason(void)
+{
+	if (speedFlag[Sub])
+	{
+		if (Seasonflag[static_cast<int>(SEASON::SPRING)])
+		{
+			if (seasonTime[static_cast<int>(SEASON::SPRING)] > 0)
+			{
+				return SEASON::SPRING;
+			}
+			else {
+				return SEASON::MAX;
+			}
+		}
+		else {
+			return SEASON::MAX;
+		}
+	}
+	if (Seasonflag[static_cast<int>(SEASON::SPRING)])
+	{
+		if (Seasonflag[static_cast<int>(SEASON::SUMMER)])
+		{
+			if (seasonTime[static_cast<int>(SEASON::SUMMER)] > 0)
+			{
+				return SEASON::SUMMER;
+			}
+			else {
+				return SEASON::SPRING;
+			}
+		}
+		else {
+			return SEASON::SPRING;
+		}
+	}
+	else if (Seasonflag[static_cast<int>(SEASON::SUMMER)])
+	{
+		if (Seasonflag[static_cast<int>(SEASON::AUTUMN)])
+		{
+			if (seasonTime[static_cast<int>(SEASON::AUTUMN)] > 0)
+			{
+				return SEASON::AUTUMN;
+			}
+			else {
+				return SEASON::SUMMER;
+			}
+		}
+		else {
+			return SEASON::SUMMER;
+		}
+	}
+	else if(Seasonflag[static_cast<int>(SEASON::AUTUMN)]){
+		if (Seasonflag[static_cast<int>(SEASON::WINTER)])
+		{
+			if (seasonTime[static_cast<int>(SEASON::WINTER)] > 0)
+			{
+				return SEASON::WINTER;
+			}
+			else {
+				return SEASON::AUTUMN;
+			}
+		}
+		else {
+			return SEASON::AUTUMN;
+		}
+	}
+	else if (Seasonflag[static_cast<int>(SEASON::WINTER)])
+	{
+		if (speedFlag[Sub2])
+		{
+			if (speedTime[Sub2] > -64)
+			{
+				return SEASON::MAX;
+			}
+			else {
+				return SEASON::WINTER;
+			}
+		}
+		else {
+			return SEASON::WINTER;
+		}
+
+	}
+	else {
+		return SEASON::MAX;
+	}
+}
+
 SpeedMng::SpeedMng()
 {
 	Init();
@@ -186,6 +299,7 @@ void SpeedMng::reset(void)
 {
 	speedTime[Main] = -1280;
 	speedTime[Sub] =MAP_SIZE-SCREEN_SIZE;
+	speedTime[Sub2] = -1280;
 	speedFlag[Main] = true;
 	speedFlag[Sub] = false;
 	speedFlag[Sub] = false;
