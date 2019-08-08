@@ -66,9 +66,9 @@ OBJ_TYPE Shot::CheckObjType(void)
 	return objType;
 }
 
-bool Shot::CheckDeath(void)
+bool Shot::CheckEnd(void)
 {
-	return deathFlag;
+	return EndFlag;
 }
 
 void Shot::SetMove(const GameCtl & controller, weekListObj objList)
@@ -80,7 +80,7 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 
 		if (pos.x > SCREEN_SIZE_X)
 		{
-			deathFlag = true;
+			EndFlag = true;
 		
 		}
 
@@ -90,7 +90,7 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 		pos.x -= speed;
 		if (pos.x+256 <0)
 		{
-			deathFlag = true;
+			EndFlag = true;
 			lpSoundMng.StopSound(SOUND_METEO);
 		}
 

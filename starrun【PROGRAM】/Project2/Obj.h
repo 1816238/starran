@@ -46,7 +46,7 @@ public:
 	virtual bool initAnim(void) { return true; };
 	virtual ~Obj();
 	void UpDate(const GameCtl &controller, weekListObj objList);
-	virtual bool CheckDeath(void);
+	virtual bool CheckEnd(void);
 	void Draw(unsigned int id);				//ŒÅ’èID‚Å‚Ì¶¬
 	virtual void Draw(void);						//map‰æ‘œ‚Ì•`‰æŠÖŒW
 	const VECTOR2 & GetPos(void);			//pos‚Ìæ“¾
@@ -54,7 +54,7 @@ public:
 	bool SetAnim(string animName);			//•\¦‰æ‘œÌ§²Ù–¼‹y‚Ñ±ÆÒ°¼®İ¶³İÀ°‚Ì‰Šú‰»
 	string GetAnim(void);			//•\¦‰æ‘œÌ§²Ù–¼‚Ìæ“¾
 	virtual OBJ_TYPE CheckObjType(void);
-	const void Setdeath(bool flag);
+	const void SetEnd(bool flag);
 	const void SetDamage(bool flag, int damage);
 	const void SetDamage(bool flag);
 	const int  GetObjNo(void)const;
@@ -89,7 +89,7 @@ protected:
 	OBJ_TYPE objType;
 	bool damageFlag;
 	int damage;
-	bool deathFlag;
+	bool EndFlag;
 	int HP;
 	int obj_no;
 	int attack;

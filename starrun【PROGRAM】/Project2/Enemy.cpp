@@ -129,7 +129,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 
 	enemy.Hp = static_cast<float>(HP);
 	
-	deathFlag = (enemy.Hp <= 0 ? true : false);
+	EndFlag = (enemy.Hp <= 0 ? true : false);
 }
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
@@ -227,25 +227,26 @@ void Enemy::Draw(void)
 
 void Enemy::HitCheck(void)
 {
-	/*if (deathFlag)
+	/*if (EndFlag)
 	{
 		if (enemyType < PISCES)
 		{
 			enemyType = static_cast<BOSS_ID>(enemyType + 1);
 			HP = max_hp[enemyType];
-			deathFlag = false;
+			EndFlag = false;
 		}
 		else
 		{
 
 			enemyType = CANCER;
 			HP = max_hp[enemyType];
-			deathFlag = false;
+			EndFlag = false;
 		}
 		enemyBossFlag = true;
 		Obj::switchFlag = true;
 		lpEnemyAct.Setswitch(true);
 	}*/
+	EndFlag = (enemy.Hp <= 0 ? true : false);
 }
 
 bool Enemy::init(void)
@@ -336,7 +337,7 @@ bool Enemy::init(void)
 	Obj::HP = enemy.Hp;
 	shotcnt = 0;
 	//enemy_shift_flag = false;
-	deathFlag = false;
+	EndFlag = false;
 	return false;
 }
 

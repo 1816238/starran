@@ -85,8 +85,8 @@ void EnemyBit::SetMove(const GameCtl & controller, weekListObj objList)
 		
 	}
 
-	deathFlag = (HP <= 0 ? true : false);
-	Setdeath(deathFlag);
+	EndFlag = (HP <= 0 ? true : false);
+	SetEnd(EndFlag);
 	/*
 	tmp_pos_x = circle_pos.center_pos.x - cos(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;
 	tmp_pos_y = circle_pos.center_pos.y - sin(CIRCLE_PI / circle_pos.time*cnt) * circle_pos.circle_r;¶*/

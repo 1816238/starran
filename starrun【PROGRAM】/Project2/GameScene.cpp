@@ -42,16 +42,18 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 			bool breakFlag = false;
 			bool tmpFlag = false;
 			int tmp_hp = 0;
+			int play_score = 0;
 			switch ((*itr)->CheckObjType())
 			{
 			case TYPE_PLAYER:
-				if ((*itr)->CheckDeath())
+				play_score = (*itr)->GetScore();
+				if ((*itr)->CheckEnd())
 				{
-					int play_score = 0;
+					
 					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
 					//lpResultCtl.ResultSave(objList);
 
-					play_score = (*itr)->GetScore();
+					
 					lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
 					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
@@ -59,16 +61,30 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
 
 				}
-				(*itr)->Setdeath(playerPos.deathFlag);
+				(*itr)->SetEnd(playerPos.EndFlag);
 				(*itr)->SetDamage(playerPos.damageFlag);
 				playerPos.damageFlag = false;
-				playerPos.deathFlag = false;
+				playerPos.EndFlag = false;
 
 				playerPos.pos = VECTOR2{ 64,(*itr)->GetPos().y };
 				itr++;
 
 				break;
 			case TYPE_ENEMY:
+				if ((*itr)->CheckEnd())
+				{
+					int play_score = 0;
+					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
+					//lpResultCtl.ResultSave(objList);
+
+					lpSoundMng.StopSound("Sound/BGM/GameSceen.mp3");
+					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
+
+					objList->erase(itr);
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime());
+
+				}
+
 
 				if (BitObj.empty())
 				{
@@ -79,7 +95,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						Bit_itr->ObjNo = i;
 						Bit_itr->HP = 0;
 						i++;
-						Bit_itr->deathFlag = false;
+						Bit_itr->EndFlag = false;
 					}
 				}
 				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
@@ -88,7 +104,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					tmp_hp += Bit_itr->HP;
 					if ((*itr)->GetSwitchFlag())
 					{
-						Bit_itr->deathFlag = true;
+						Bit_itr->EndFlag = true;
 
 					}
 				
@@ -116,7 +132,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						}
 						Bit_itr->pos = (*itr)->GetPos();
 						Bit_itr->HP = (*itr)->GetHP();
-						if (Bit_itr->deathFlag || (*itr)->CheckDeath())
+						if (Bit_itr->EndFlag || (*itr)->CheckEnd())
 						{
 							objList->erase(itr);
 							BitObj.erase(Bit_itr);
@@ -142,16 +158,16 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				for (Bit_itr = BitObj.begin(); Bit_itr != BitObj.end(); Bit_itr++)
 				{
 					attack = (*itr)->GetAttack();
-					if (!Bit_itr->deathFlag)
+					if (!Bit_itr->EndFlag)
 					{
 						if (circleHit(Bit_itr->pos + 22, 22, (*itr)->GetPos() + VECTOR2{ 32,16 }, 10))
 						{
 							Bit_itr->damageFlag = true;
-							(*itr)->Setdeath(true);
+							(*itr)->SetEnd(true);
 						}
 					}
 				}
-				if ((*itr)->CheckDeath())
+				if ((*itr)->CheckEnd())
 				{
 					objList->erase(itr);
 					breakFlag = true;
@@ -164,7 +180,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				{
 					if (playerPos.damageFlag)
 					{
-						playerPos.deathFlag = true;
+						playerPos.EndFlag = true;
 					}
 					else {
 						playerPos.damageFlag = true;
@@ -172,9 +188,9 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 						lpEffect.SetEffectFlag(SHAKE, true);
 					}
 
-					(*itr)->Setdeath(true);
+					(*itr)->SetEnd(true);
 				}
-				if ((*itr)->CheckDeath())
+				if ((*itr)->CheckEnd())
 				{
 					objList->erase(itr);
 					breakFlag = true;
@@ -189,16 +205,16 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 				{
 					if (playerPos.damageFlag)
 					{
-						playerPos.deathFlag = true;
+						playerPos.EndFlag = true;
 					}
 					else {
 						playerPos.damageFlag = true;
 						lpEffect.SetEffectFlag(SHAKE, true);
 					}
 
-					(*itr)->Setdeath(true);
+					(*itr)->SetEnd(true);
 				}
-				if ((*itr)->CheckDeath())
+				if ((*itr)->CheckEnd())
 				{
 					objList->erase(itr);
 					breakFlag = true;
@@ -332,7 +348,7 @@ int GameScene::Init(void)
 	lpSpeedMng.Init();
 	SeasonSwitchFlag = 0;
 	playerPos.damageFlag = false;
-	playerPos.deathFlag = false;
+	playerPos.EndFlag = false;
 	attack = 0;
 
 	BitObj.resize(4);

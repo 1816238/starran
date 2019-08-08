@@ -17,6 +17,6 @@ private:
 	VECTOR2 enemy_speed;
 	int speed;
 	int time;
-	bool deathFlag;
+	bool EndFlag;
 };
 

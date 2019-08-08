@@ -53,7 +53,7 @@ bool Player::init(void)
 	}
 	jumpFlag = false;
 	DownCheck = false;
-	deathFlag = false;
+	EndFlag = false;
 	damageFlag = false;
 	JSpeed = 5;
 	shotcnt = 100;
@@ -259,7 +259,7 @@ void Player::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 	if (pos.y > SCREEN_SIZE_Y)
 	{
-		Obj::Setdeath(true);
+		Obj::SetEnd(true);
 	}
 	if (damageFlag)
 	{
@@ -359,7 +359,7 @@ void Player::CheckMapHit(SEASON season)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 
 			}
 			else {
-				Setdeath(true);
+				SetEnd(true);
 			}
 			break;
 		case MAP_ID_FULL_MOON:
@@ -444,7 +444,7 @@ void Player::CheckMapHit(SEASON season)		//Ï¯Ìß‚Æ‚Ì“–‚½‚è”»’è
 		case MAP_ID_MAX:
 			break;
 		default:
-			deathFlag = true;
+			EndFlag = true;
 			break;
 		}
 

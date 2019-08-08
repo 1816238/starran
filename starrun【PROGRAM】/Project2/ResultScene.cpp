@@ -41,7 +41,7 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 		return std::make_unique<GameScene>(mode);
 	}
 	//–qyÌßÚÃÞ¨¹°Äz
-	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
+	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckEnd(); });
 	lpResultCtl.ResultLoad(objList, "data/Resultdata1.data", false);
 	lpResultCtl.ResultLoad(objList, "data/Resultdata2.data", false);
 	lpResultCtl.ResultLoad(objList, "data/Resultdata3.data", false);

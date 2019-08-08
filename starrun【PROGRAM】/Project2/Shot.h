@@ -11,7 +11,7 @@ public:
 	bool initAnim(void);
 	bool init(void);
 	OBJ_TYPE CheckObjType(void);
-	bool CheckDeath(void);
+	bool CheckEnd(void);
 private:
 	void SetMove(const GameCtl &controller, weekListObj objList);		//
 	//void Draw(void);

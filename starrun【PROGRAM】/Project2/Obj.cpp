@@ -38,9 +38,9 @@ void Obj::UpDate(const GameCtl &controller, weekListObj objList)
 	SetMove(controller, objList);
 }
 
-bool Obj::CheckDeath(void)
+bool Obj::CheckEnd(void)
 {
-	return deathFlag;
+	return EndFlag;
 }
 
 void Obj::Draw(unsigned int id)
@@ -179,9 +179,9 @@ bool Obj::CheckHit(VECTOR2 pos1, VECTOR2 objSize1, VECTOR2 pos2, VECTOR2 objSize
 	return false;
 }
 
-const void Obj::Setdeath(bool flag)
+const void Obj::SetEnd(bool flag)
 {
-	deathFlag = flag;
+	EndFlag = flag;
 }
 
 const void Obj::SetDamage(bool flag, int damage)
@@ -198,7 +198,7 @@ const void Obj::SetDamage(bool flag)
 	}
 	else if (damageFlag&&flag)
 	{
-		Setdeath(true);
+		SetEnd(true);
 	}
 	else {}
 }

@@ -32,7 +32,7 @@ private:
 	VECTOR2 offset;
 	int speed;
 	int time;
-	bool deathFlag;
+	bool EndFlag;
 	/*‰~‰^“®ŒvŽZ—p*/
 	Move_Pos circle_pos;
 	int cnt;

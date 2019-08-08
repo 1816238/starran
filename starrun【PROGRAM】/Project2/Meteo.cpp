@@ -70,7 +70,7 @@ bool Meteo::init(void)
 
 void Meteo::SetMove(const GameCtl & controller, weekListObj objList)
 {
-	if (deathFlag && !lpSoundMng.CheckSound(SOUND_METEO))
+	if (EndFlag && !lpSoundMng.CheckSound(SOUND_METEO))
 	{
 		lpSoundMng.PlaySound(SOUND_METEO, DX_PLAYTYPE_LOOP);
 	}
@@ -80,7 +80,7 @@ void Meteo::SetMove(const GameCtl & controller, weekListObj objList)
 		lpSoundMng.StopSound(SOUND_METEO);
 		lpEnemyAct.SetMeteoFlag(false);
 
-		deathFlag = true;
+		EndFlag = true;
 	}
 
 	switch (lpEnemyAct.SetAngle())

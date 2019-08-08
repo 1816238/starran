@@ -12,7 +12,7 @@ class Player;
 typedef struct HIT {
 	VECTOR2 pos;
 	int ObjNo;
-	bool deathFlag;
+	bool EndFlag;
 	bool damageFlag;
 	float HP;
 };
