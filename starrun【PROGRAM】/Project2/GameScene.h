@@ -21,7 +21,7 @@ class GameScene :
 	public BaseScene
 {
 public:
-	GameScene();
+	GameScene(Mode mode);
 	~GameScene();
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
 private:
@@ -44,5 +44,6 @@ private:
 	vector<VECTOR2> MeteoOffset;
 	vector<int> MeteoRad;
 	int timeFont;
+	Mode mode;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScene.h"
 #include "Obj.h"
+
 class TitleScene :
 	public BaseScene
 {
@@ -10,6 +11,7 @@ public:
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
 private:
 	sharedListObj objList;
+	float time;
 	virtual int Init(void);
 	bool TitleDraw(void);
 	void TitleMove(void);
@@ -19,5 +21,11 @@ private:
 	bool ClickCheck;
 	bool ClickCheckOld;
 	VECTOR2 start;
+	VECTOR2 easy_size;
+	VECTOR2 Normal_size;
+	VECTOR2 Hard_size;
+	Parameter param;
+	Mode mode;
+
 };
 

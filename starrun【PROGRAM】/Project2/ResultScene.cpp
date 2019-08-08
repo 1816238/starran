@@ -38,7 +38,7 @@ unique_Base ResultScene::UpDate(unique_Base own, const GameCtl & controller)
 	if ((ClickCheck&(~ClickCheckOld)) && (Mpos > play_continue&&Mpos < play_continue + VECTOR2{ 320,160 }))
 	{
 		lpSoundMng.PlaySound("Sound/SE/decision27.mp3", DX_PLAYTYPE_BACK);
-		return std::make_unique<GameScene>();
+		return std::make_unique<GameScene>(mode);
 	}
 	//叙述【ﾌﾟﾚﾃﾞｨｹｰﾄ】
 	(*objList).remove_if([](uniqueObj& obj) {return obj->CheckDeath(); });
@@ -94,7 +94,7 @@ bool ResultScene::ResultDraw(void)
 	DrawRectGraph(TIME_IMAGE_POS, 60, 0, 0, 560, 158, IMAGE_ID("image/play_time.png")[0], true, false);
 	for (int num = 0; num < 3; num++)
 	{
-		DrawRectGraph(TIME_IMAGE_POS + 155 + 130*num, 200, 0, 89*num, 104, 89, IMAGE_ID("image/msf.png")[0], true, false);
+		DrawRectGraph(TIME_IMAGE_POS + 155 + 130 * num, 200, 0, 89 * num, 104, 89, IMAGE_ID("image/msf.png")[0], true, false);
 	}
 
 	//playスコアの表示
@@ -134,14 +134,14 @@ bool ResultScene::ResultDraw(void)
 				DrawRectGraph(180 + 50 * num, 270 + 80 * n, 60 * rank_score[n][num], 0, 60, 58, IMAGE_ID("image/ranknum.png")[0], true, false);
 			}
 		}
-		DrawRectGraph(0, 245 + 80 *n, 0, 94 * n, 196, 94, IMAGE_ID("image/rank.png")[0], true, false);
+		DrawRectGraph(0, 245 + 80 * n, 0, 94 * n, 196, 94, IMAGE_ID("image/rank.png")[0], true, false);
 	}
 
-	
 
-		Time((TIME_IMAGE_POS)+105  , 0, (this->time / 3600));
-		Time(TIME_IMAGE_POS + 250, 1, (this->time / 60 % 60));
-		Time(TIME_IMAGE_POS + 375, 2, (this->time % 60));/**/
+
+	Time((TIME_IMAGE_POS)+105, 0, (this->time / 3600));
+	Time(TIME_IMAGE_POS + 250, 1, (this->time / 60 % 60));
+	Time(TIME_IMAGE_POS + 375, 2, (this->time % 60));/**/
 
 	DrawGraph(0, 140, IMAGE_ID("image/Ranking.png")[0], true);
 	DrawGraph(move_title.x, move_title.y, IMAGE_ID("image/title.png")[0], true);

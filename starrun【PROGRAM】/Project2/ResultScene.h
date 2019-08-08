@@ -39,5 +39,7 @@ private:
 	VECTOR2 move_title;
 	VECTOR2 play_continue;
 
+	Mode mode;
+
 };
 

@@ -16,7 +16,7 @@ public:
 	}
 	EnemyAct();
 	~EnemyAct();
-	void SelectAct(VECTOR2 pos, VECTOR2 pos2, int frequency ,BOSS_ID enemy_name, int at_wait,int waitcnt,int waitcnt2,int waitcnt3);
+	void SelectAct(VECTOR2 pos,int frequency ,BOSS_ID enemy_name, int at_wait,int waitcnt,int waitcnt2,int waitcnt3);
 	const bool GetmeteoriteFlag();
 	const int SetPos();
 	const int SetAngle();

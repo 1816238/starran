@@ -14,11 +14,11 @@ EnemyAct::~EnemyAct()
 {
 }
 
-void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , BOSS_ID enemy_name,int at_wait,int waitcnt,int waitcnt2,int waitcnt3)
+void EnemyAct::SelectAct(VECTOR2 pos,int frequency , BOSS_ID enemy_name,int at_wait,int waitcnt,int waitcnt2,int waitcnt3)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
 
-		switch (ATCnt %frequency)
+		/*switch (ATCnt %frequency)
 		{
 		case 2:
 			if (At_Type[enemy_name][METEORITE])
@@ -32,7 +32,7 @@ void EnemyAct::SelectAct(VECTOR2 pos,VECTOR2 pos2,int frequency , BOSS_ID enemy_
 			break;
 		default:
 			break;
-		}
+		}*/
 
 }
 

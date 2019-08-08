@@ -19,10 +19,12 @@
 #define CENTER_POS_Y ( SCREEN_SIZE_Y / 4 + 125 )
 #define CIRCLE_RANGE ( 250 -(60+43))
 
-Enemy::Enemy(OBJ_TYPE objType)
+	float fram = 0;
+Enemy::Enemy(OBJ_TYPE objType,Mode mode)
 {
 	Obj::init("image/constellation.png", VECTOR2(250, 250), VECTOR2(4, 4));
 	Obj::init("image/boss_body.png", VECTOR2(215, 45), VECTOR2(5, 1));
+	this->mode = mode;
 	this->objType = objType;
 	init();
 }
@@ -42,16 +44,16 @@ Enemy::~Enemy()
 void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 {
 	HitCheck();
-	lpEnemyAct.SelectAct(pos, meteoPos, frequency[enemyType], enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
+	//lpEnemyAct.SelectAct(pos,frequency[enemyType], enemyType, at_wait, waitCnt[0], waitCnt[1], waitCnt[2]);
 	//ìGÇÃÀﬁØƒÇÃ≤›Ω¿›Ω
 	if (enemyBossFlag)
 	{
 		if (lpSpeedMng.GetFlag(Main)&~lpSpeedMng.GetFlag(Sub))
 		{
-			BitObj.resize(enemy_bit_cnt[enemyType]);
-			for (int bit_cnt = 0; bit_cnt < enemy_bit_cnt[enemyType]; bit_cnt++)
+			BitObj.resize(enemy.bit_cnt);
+			for (int bit_cnt = 0; bit_cnt < enemy.bit_cnt; bit_cnt++)
 			{
-				BitObj[bit_cnt] = AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt, max_hp[enemyType] / 4));
+				BitObj[bit_cnt] = AddObjList()(objList, std::make_unique<EnemyBit>(VECTOR2{ CIRCLE_RANGE + 43 / 2 , 45 / 2 }, VECTOR2{ 0,0 }, bit_cnt, enemy.maxHp / 4));
 			}
 			enemyBossFlag = false;
 			Obj::switchFlag = false;
@@ -59,7 +61,7 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 	
 	//Ë¶êŒÇÃ≤›Ω¿›Ω
-	if (lpEnemyAct.GetmeteoriteFlag())
+	/*if (lpEnemyAct.GetmeteoriteFlag())
 	{
 		if (meteo_waitCnt > 120)
 		{
@@ -68,11 +70,11 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			meteo_waitCnt = 0;
 		}
 		meteo_waitCnt++;
-	}
+	}*/
 
 	//ìGÇÃíeÇÃ≤›Ω¿›ΩãyÇ—î≠éÀÇ‹Ç≈ÇÃä«óù
-	if (At_Type[enemyType][SHOT])
-	{
+	/*if (At_Type[enemyType][SHOT])
+	{*/
 
 
 		if (!shotFlag[0] || !shotFlag[1] || !shotFlag[2])
@@ -119,15 +121,15 @@ void Enemy::SetMove(const GameCtl & controller, weekListObj objList)
 			}
 			shot_waitCnt = 0;
 		}
-	}
+	//}
 	if (CheckHitKey(KEY_INPUT_S))
 	{
 		HP = 0;
 	}
 
-	enemy_hp[enemyType] = static_cast<float>(HP);
+	enemy.Hp = static_cast<float>(HP);
 	
-	deathFlag = (enemy_hp[enemyType] <= 0 ? true : false);
+	deathFlag = (enemy.Hp <= 0 ? true : false);
 }
 
 VECTOR2 Enemy::GetCircleMove_pos(void)
@@ -139,18 +141,19 @@ void Enemy::Draw(void)
 {
 	auto ATCnt = SEASONE_LIM - Speed(Main);
 	SetAnim("í èÌ");
-
-	auto Draw = [&](VECTOR2 divID)
-	{
-		//DrawCircle(CENTER_POS_X, CENTER_POS_Y, CIRCLE_RANGE, 0xff0000, false);
-		//DrawCircle(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125, SCREEN_SIZE_Y / 4 + 125, 4, 0xff0000, true);
-		DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
-	};
-	int Pos = (SCREEN_SIZE_X - 80)*(enemy_hp[enemyType] / max_hp[enemyType]);
+	//auto Draw = [&](VECTOR2 divID)
+	//{
+	//	//DrawCircle(CENTER_POS_X, CENTER_POS_Y, CIRCLE_RANGE, 0xff0000, false);
+	//	//DrawCircle(SCREEN_SIZE_X - SCREEN_SIZE_X / 4 + 125, SCREEN_SIZE_Y / 4 + 125, 4, 0xff0000, true);
+	//	DrawRectGraph(SCREEN_SIZE_X - SCREEN_SIZE_X / 4, SCREEN_SIZE_Y / 4, divID.x * 250, divID.y * 250, 250, 250, IMAGE_ID("image/constellation.png")[0], true, false);
+	//};
+	DrawRotaGraph2(CENTER_POS_X, CENTER_POS_Y,70,70, 1.5f, (fram+= 0.08) / (2*DX_PI_F),IMAGE_ID("image/Ophiuchus/ring.png")[0], true, false);
+	DrawRotaGraph2(CENTER_POS_X, CENTER_POS_Y, 70, 70, 1.5f,0,IMAGE_ID("image/Ophiuchus/Ophiuchus.png")[0], true, false);
+	int Pos = (SCREEN_SIZE_X - 80)*(static_cast<float>(enemy.Hp) / static_cast<float>(enemy.maxHp));
 	if (lpSpeedMng.GetFlag(Main) && !lpSpeedMng.GetFlag(Sub))
 	{
 		//HPï\é¶
-		if (enemy_hp[enemyType] > 0)
+		if (enemy.Hp > 0)
 		{
 			DrawBox(100, SCREEN_SIZE_Y - 64, Pos, SCREEN_SIZE_Y - 32, 0x00ffff, true);
 
@@ -192,7 +195,7 @@ void Enemy::Draw(void)
 	//}	//DrawLine((SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, 0, (SCREEN_SIZE_X - SCREEN_SIZE_X / 4) - pos.x, SCREEN_SIZE_Y, 0xff0000);
 	//DrawFormatString(1100, 0, 0xffff00, "ìGÇÃéÌóﬁ......%d", enemy_name[enemyType]);
 	//DrawFormatString(1100, 25, 0xffff00, "ìGÇÃç≈ëÂHP....%d", max_hp[enemyType]);
-	DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%f", enemy_hp[enemyType]);
+	DrawFormatString(1100, 50, 0xffff00, "ìGÇÃécÇËHP....%d", enemy.Hp);
 	DrawFormatString(1100, 75, 0xffff00, "ìGÇÃécÇËHP....%d", HP);
 	//DrawFormatString(1100, 75, 0xffff00, "çUåÇSHOT......%d", At_Type[enemyType][SHOT]);
 	//DrawFormatString(1100, 100, 0xffff00, "çUåÇMETEO.....%d", At_Type[enemyType][METEORITE]);
@@ -217,15 +220,15 @@ void Enemy::Draw(void)
 	//	}
 	//}
 	//==============================================================================================================================
-	if (enemyType < ENEMY_ID_MAX)
+	/*if (enemyType < ENEMY_ID_MAX)
 	{
 		Draw(boss_ID[enemyType]);
-	}
+	}*/
 }
 
 void Enemy::HitCheck(void)
 {
-	if (deathFlag)
+	/*if (deathFlag)
 	{
 		if (enemyType < PISCES)
 		{
@@ -243,7 +246,7 @@ void Enemy::HitCheck(void)
 		enemyBossFlag = true;
 		Obj::switchFlag = true;
 		lpEnemyAct.Setswitch(true);
-	}
+	}*/
 }
 
 bool Enemy::init(void)
@@ -251,6 +254,7 @@ bool Enemy::init(void)
 
 
 	AddAnim("í èÌ", 0, 0, 30, 1, true);
+	/*
 
 	boss_ID = { VECTOR2(3,0), VECTOR2(0,1), VECTOR2(1,1),
 				VECTOR2(2,1), VECTOR2(3,1), VECTOR2(0,2),
@@ -274,22 +278,27 @@ bool Enemy::init(void)
 				true,false,
 				false,true,
 				true,true,
-				false,false };
-
-	max_hp = { 8, 200, 250,
-			   350, 500, 650,
-			   800, 950,1050,
-			  1250,1450,1650,0 };
-
-	enemy_hp = { 8, 200, 250,
-				 350, 500, 650,
-				 800, 950,1050,
-				1250,1450,1650,0 };
-
-	enemy_bit_cnt = { 4,4,4,
-					  4,4,4,
-					  4,4,4,
-					  4,4,4 };
+				false,false };*/
+	switch (mode)
+	{
+	case Mode::Easy:
+		enemy.maxHp = 1000;
+		enemy.Hp = 1000;
+		break;
+	case Mode::Normal:
+		enemy.maxHp = 10000;
+		enemy.Hp = 10000;
+		break;
+	case Mode::Hard:
+		enemy.maxHp = 100000;
+		enemy.Hp = 100000;
+		break;
+	case Mode::MAX:
+		break;
+	default:
+		break;
+	}
+	enemy.bit_cnt = 4;
 
 	frequency = { 20,20,20,
 				  15,15,15,
@@ -313,21 +322,21 @@ bool Enemy::init(void)
 					   0x0e13,//14,19,
 					   0x0f0b//15,12 */
 						};
-	enemyType = CANCER;
+	//enemyType = CANCER;
 
 	at_Cnt = 30;
 	at_wait = 30;
 
-	meteoPos = VECTOR2(0, 0);
+	//meteoPos = VECTOR2(0, 0);
 	speed = VECTOR2(0, 0);
 	for (int num = 0; num < AT_DRAW_MAX; num++)
 	{
 		shotFlag[num] = false;
 	}
 	enemyBossFlag = true;
-	Obj::HP = enemy_hp[CANCER];
+	Obj::HP = enemy.Hp;
 	shotcnt = 0;
-	enemy_shift_flag = false;
+	//enemy_shift_flag = false;
 	deathFlag = false;
 	return false;
 }

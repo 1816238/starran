@@ -1,6 +1,7 @@
 #include<math.h>
 #include "Dxlib.h"
 #include "time.h"
+#include "BaseScene.h"
 #include "classObj.h"
 #include "SceneMng.h"
 #include "MapControl.h"
@@ -17,8 +18,9 @@
 #include "GameScene.h"
 #include "EnemyAct.h"
 
-GameScene::GameScene()
+GameScene::GameScene(Mode mode)
 {
+	this->mode = mode;
 	Init();
 }
 
@@ -322,7 +324,7 @@ int GameScene::Init(void)
 	lpSceneMng.SetDrawOffset(VECTOR2(GAME_SCREEN_X, GAME_SCREEN_Y));
 	lpMapControl.SetUp(VECTOR2(SCREEN_SIZE_X*4, SCREEN_SIZE_Y), VECTOR2(CHIP_SIZE, CHIP_SIZE), lpSceneMng.GetDrawOffset());
 	player = AddObjList()(objList, std::make_unique<Player>(VECTOR2(CHIP_SIZE * 2, CHIP_SIZE * 15),TYPE_PLAYER, lpSceneMng.GetDrawOffset()));
-	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY));
+	auto obj = AddObjList()(objList, std::make_unique<Enemy>(TYPE_ENEMY,this->mode));
 	(*obj)->init("image/map.png", VECTOR2(32, 32), VECTOR2(4, 4));
 	lpMapControl.MapLoad("data/springMap.map",objList, false,true,SEASON_ID::SPRING);
 	lpMapControl.MapLoad("data/summerMap.map", objList, false, true, SEASON_ID::SUMMER);
@@ -334,7 +336,6 @@ int GameScene::Init(void)
 	playerPos.damageFlag = false;
 	playerPos.deathFlag = false;
 	attack = 0;
-
 
 	BitObj.resize(4);
 	int i = 0;

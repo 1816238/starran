@@ -218,6 +218,16 @@ const void Obj::SetHP(int hp)
 	HP = hp;
 }
 
+const int Obj::GetParam(void) const
+{
+	return 0;
+}
+
+const void Obj::SetParam(int hp)
+{
+	return void();
+}
+
 const int Obj::GetAttack(void) const
 {
 	return attack;

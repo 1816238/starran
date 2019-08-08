@@ -60,6 +60,8 @@ public:
 	const int  GetObjNo(void)const;
 	const int  GetHP(void)const;
 	const void SetHP(int hp);
+	const int  GetParam(void)const;
+	const void SetParam(int hp);
 	const int  GetAttack(void)const;
 	const int  GetScore(void)const;
 	const void AddScore(int num);
