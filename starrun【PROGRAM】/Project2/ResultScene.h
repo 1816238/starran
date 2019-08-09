@@ -12,7 +12,7 @@ private:
 	virtual int Init(void);
 	bool ResultDraw(void);
 public:
-	ResultScene(int play_score,int play_time, Parameter difficultyBonus);
+	ResultScene(int play_score,int play_time, Parameter difficultyBonus,bool clearflag);
 	~ResultScene();
 	virtual unique_Base UpDate(unique_Base own, const GameCtl &controller);
 private:

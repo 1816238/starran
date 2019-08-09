@@ -9,9 +9,9 @@ Shot::Shot(VECTOR2 pos, VECTOR2 offset, OBJ_TYPE objType,int speed,int attack)
 {
 	this->pos = pos;
 	this->offset = offset;
-	this->speed = speed/30 + 5;
+	this->speed = speed/15 + 5;
 	this->objType = objType;
-	this->attack = 1+attack/30;
+	this->attack = 1+attack/15;
 	Shot::init();
 
 	
@@ -87,7 +87,7 @@ void Shot::SetMove(const GameCtl & controller, weekListObj objList)
 	}
 	else if (objType == TYPE_ENEMY_SHOT)
 	{
-		pos.x -= speed;
+		pos.x -= speed ;
 		if (pos.x+256 <0)
 		{
 			EndFlag = true;

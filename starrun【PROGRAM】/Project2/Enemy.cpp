@@ -282,16 +282,16 @@ bool Enemy::init(void)
 	switch (mode)
 	{
 	case Mode::Easy:
-		enemy.maxHp = 8;
-		enemy.Hp = 8;
+		enemy.maxHp = 128;
+		enemy.Hp = 128;
 		break;
 	case Mode::Normal:
-		enemy.maxHp = 10000;
-		enemy.Hp = 10000;
+		enemy.maxHp = 1024;
+		enemy.Hp = 1024;
 		break;
 	case Mode::Hard:
-		enemy.maxHp = 100000;
-		enemy.Hp = 100000;
+		enemy.maxHp = 8192;
+		enemy.Hp = 8192;
 		break;
 	case Mode::MAX:
 		break;

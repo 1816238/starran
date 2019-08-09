@@ -6,7 +6,7 @@ class MapControl;
 using namespace std;
 #define lpSpeedMng SpeedMng::GetInstance()
 #define Speed(x) SpeedMng::GetInstance().GetSpeed(x)	//Main‚ÅÒ²İ‚ÌÀ²Ñ+‰©F‚¢¯‚Ìæ“¾—Ê/10*30ASub‚Å»ÌŞ‚ÌÀ²Ñ+‰©F‚¢¯‚Ìæ“¾—Ê/10*30‚ªæ“¾‚Å‚«‚é
-#define SPEED 3
+#define SPEED 4
 
 enum MapType {
 	Main,

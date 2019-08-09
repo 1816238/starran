@@ -55,7 +55,7 @@ bool Player::init(void)
 	DownCheck = false;
 	EndFlag = false;
 	damageFlag = false;
-	JSpeed = 5;
+	JSpeed = 8;
 	shotcnt = 100;
 
 	keyID_Tbl = { MOUSE_INPUT_LEFT,//左
@@ -284,13 +284,13 @@ void Player::Draw(void)
 	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	for (int i = 0; i < 4; i++)
 	{
-		double star = getcnt[i] % 30;
-		double tmp = (i != 0 ? star / 30.0 * 100:static_cast<double>(getcnt[0])/100.0*100.0);
+		double star = getcnt[i] % 15;
+		double tmp = (i != 0 ? star / 15.0 * 100:static_cast<double>(getcnt[0])/100.0*100.0);
 
 		DrawCircleGauge(i*CHIP_SIZE*3 +48, 48,tmp, IMAGE_ID(meter_name[i])[0],0.0);
 		DrawCircle(i*CHIP_SIZE * 3 + 48, 48, 48, 0xffffff, false);
 
-		(i!=0?DrawFormatString(i*CHIP_SIZE*3+10, 48, 0x000000, "Level.%d", getcnt[i] / 30): DrawFormatString(i*CHIP_SIZE * 3 + 10, 48, 0x000000, "残り%d発", getcnt[i]));
+		(i!=0?DrawFormatString(i*CHIP_SIZE*3+10, 48, 0x000000, "Level.%d", getcnt[i] / 15): DrawFormatString(i*CHIP_SIZE * 3 + 10, 48, 0x000000, "残り%d発", getcnt[i]));
 	}
 
 	//デバッグ用	
@@ -444,7 +444,6 @@ void Player::CheckMapHit(SEASON season)		//ﾏｯﾌﾟとの当たり判定
 		case MAP_ID_MAX:
 			break;
 		default:
-			EndFlag = true;
 			break;
 		}
 

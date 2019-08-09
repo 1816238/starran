@@ -57,7 +57,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
 					objList->erase(itr);
-					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(), param);
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(), param,false);
 
 				}
 				(*itr)->SetEnd(playerPos.EndFlag);
@@ -70,7 +70,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 
 				break;
 			case TYPE_ENEMY:
-				play_score = (*itr)->GetScore();
+				
 				if ((*itr)->CheckEnd())
 				{
 					//lpResultCtl.SetLoadData((*itr)->GetScore(), lpSpeedMng.GetTime());
@@ -80,7 +80,7 @@ unique_Base GameScene::UpDate(unique_Base own, const GameCtl & controller)
 					lpSoundMng.StopSound("Sound/BGM/wind1.mp3");
 
 					objList->erase(itr);
-					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(),param);
+					return std::make_unique<ResultScene>(play_score, lpSpeedMng.GetTime(),param,true);
 
 				}
 

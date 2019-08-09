@@ -7,7 +7,7 @@
 #define MOUSE_ROT_VOL (Rot)
 #define PLAYER_SIZE_X 50
 #define PLAYER_SIZE_Y 64
-#define ADD_SPEED 4
+#define ADD_SPEED 2
 #define SHOT_DAMAGE 5
 
 #define lpPlayer Player::GetInstance()

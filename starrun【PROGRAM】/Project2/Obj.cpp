@@ -17,6 +17,7 @@ bool Obj::init(string fileName, VECTOR2 divSize, VECTOR2 divCnt, VECTOR2 pos)
 {
 	init(fileName, divSize, divCnt);
 	SetPos(pos);
+	EndFlag = false;
 	return false;
 }
 
